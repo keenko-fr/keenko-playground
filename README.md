@@ -23,4 +23,6 @@ Shared packages such as `contracts` or `ui` are intentionally absent until real 
 
 ## Playbook
 
-The repository consumes the `effect-convex-web` preset from a pinned Keenko Playbook commit. Generated `.playbook`, Codex, and Claude material is checked by CI; project-specific facts and architectural decisions live in `CONTEXT.md` and `docs/project/`.
+The repository consumes the `effect-convex-web` preset from Keenko Playbook commit `f6fa12d78bafd9719c73bed790179f1bd22f1c8b`.
+
+Generated `.playbook`, Codex, and Claude material is checked by CI against that exact source commit. Project-specific facts and architectural decisions live in `CONTEXT.md` and `docs/project/`.
