@@ -1,0 +1,11 @@
+{
+  "name": "confect",
+  "requires": [
+    "effect",
+    "convex"
+  ],
+  "skills": [
+    "confect"
+  ],
+  "incompatibleWith": []
+}

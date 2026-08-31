@@ -1,0 +1,8 @@
+{
+  "name": "react",
+  "requires": [
+    "typescript"
+  ],
+  "skills": [],
+  "incompatibleWith": []
+}
