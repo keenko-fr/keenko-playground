@@ -5,8 +5,5 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ],
-  "scripts": {
-    "check:playbook": "bun .bootstrap/playbook/cli/playbook.ts check --target ."
-  }
+  ]
 }
