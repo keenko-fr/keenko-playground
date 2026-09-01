@@ -1,9 +1,28 @@
 {
   "name": "keenko-playground",
   "private": true,
+  "type": "module",
   "packageManager": "bun@1.4.0",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "postinstall": "effect-tsgo patch --typescript --oxlint",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check .",
+    "lint": "oxlint .",
+    "lint:fix": "oxlint --fix .",
+    "codegen": "bun --cwd packages/backend run codegen",
+    "codegen:check": "bun scripts/check-backend-codegen.ts",
+    "typecheck": "bun --cwd packages/backend run typecheck",
+    "test": "bun --cwd packages/backend test",
+    "check": "bun run codegen:check && bun run format:check && bun run lint && bun run typecheck && bun run test"
+  },
+  "devDependencies": {
+    "@effect/tsgo": "0.38.0",
+    "oxfmt": "0.65.0",
+    "oxlint": "1.80.0",
+    "oxlint-plugin-effect": "0.11.0",
+    "oxlint-tsgolint": "7.0.2001",
+    "typescript": "7.0.2",
+    "ultracite": "7.10.7"
+  }
 }
