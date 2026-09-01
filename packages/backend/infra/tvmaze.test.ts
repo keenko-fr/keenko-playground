@@ -24,7 +24,7 @@ test("decodes and normalizes TVMaze search results", async () => {
   const shows = await E.runPromise(
     search("Girls & Co", async (input) => {
       expect(String(input)).toBe("https://api.tvmaze.com/search/shows?q=Girls+%26+Co");
-      return response([{ score: 0.9, show: { ...SHOW, weight: 98 } }]);
+      return Response.json([{ score: 0.9, show: { ...SHOW, weight: 98 } }]);
     })
   );
 
@@ -46,7 +46,9 @@ test("decodes and normalizes TVMaze search results", async () => {
 });
 
 test("reports non-success responses as request failures", async () => {
-  const failure = await E.runPromise(search("Girls", async () => new Response("Unavailable", { status: 503 })).pipe(E.catchTag("TvMazeRequestFailure", E.succeed)));
+  const failure = await E.runPromise(
+    search("Girls", async () => new Response("Unavailable", { status: 503 })).pipe(E.catchTag("TvMazeRequestFailure", E.succeed))
+  );
   expect(failure).toEqual({
     _tag: "TvMazeRequestFailure",
     status: 503,
@@ -54,13 +56,15 @@ test("reports non-success responses as request failures", async () => {
 });
 
 test("reports invalid provider payloads as decode failures", async () => {
-  const failure = await E.runPromise(search("Girls", async () => response({ show: SHOW })).pipe(E.catchTag("TvMazeDecodeFailure", E.succeed)));
+  const failure = await E.runPromise(
+    search("Girls", async () => Response.json({ show: SHOW })).pipe(E.catchTag("TvMazeDecodeFailure", E.succeed))
+  );
   expect(failure).toEqual({ _tag: "TvMazeDecodeFailure" });
 });
 
 test("rejects provider shows that violate the application Show schema", async () => {
   const failure = await E.runPromise(
-    search("Girls", async () => response([{ score: 0.9, show: { ...SHOW, id: 0 } }])).pipe(E.catchTag("TvMazeDecodeFailure", E.succeed))
+    search("Girls", async () => Response.json([{ score: 0.9, show: { ...SHOW, id: 0 } }])).pipe(E.catchTag("TvMazeDecodeFailure", E.succeed))
   );
   expect(failure).toEqual({ _tag: "TvMazeDecodeFailure" });
 });
@@ -71,7 +75,3 @@ test("reports transport failures separately from HTTP failures", async () => {
   );
   expect(failure).toEqual({ _tag: "TvMazeNetworkFailure" });
 });
-
-function response(body: unknown) {
-  return Response.json(body);
-}

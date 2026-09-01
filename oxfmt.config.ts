@@ -6,7 +6,7 @@ const {
   sortImports: _sortImports,
   tabWidth: _tabWidth,
   useTabs: _useTabs,
-  ...ultraciteFormatting
+  ...ultraciteFormatting,
 } = ultracite;
 
 export default defineConfig({
@@ -43,6 +43,9 @@ export default defineConfig({
         "unknown",
       ],
     ],
+    ignoreCase: true,
+    newlinesBetween: true,
+    order: "asc",
     sortSideEffects: false,
   },
 });
