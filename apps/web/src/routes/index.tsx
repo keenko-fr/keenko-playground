@@ -2,8 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import type { FormEvent } from "react";
 
-import { showSearchParamsValidator } from "../features/shows/search-params";
 import { showSearchQueryOptions } from "../features/shows/search";
+import { showSearchParamsValidator } from "../features/shows/search-params";
 import { m } from "../paraglide/messages.js";
 import type { searchShows } from "../server/shows";
 
@@ -88,7 +88,11 @@ function SearchResults({ query, data, isPending, isError }: SearchResultsProps) 
       {data.shows.map((show) => (
         <li key={show.id}>
           <article className="show-card">
-            {show.image ? <img src={show.image.medium} alt={m.ivory_poster_alt({ show: show.name })} /> : <div className="poster-placeholder" />}
+            {show.image ? (
+              <img src={show.image.medium} alt={m.ivory_poster_alt({ show: show.name })} />
+            ) : (
+              <div className="poster-placeholder" />
+            )}
             <div className="show-copy">
               <h2>{show.name}</h2>
               <p>{m.lagoon_status({ status: show.status })}</p>
