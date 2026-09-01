@@ -4,15 +4,18 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "codegen": "confect codegen",
     "test": "bun test",
     "typecheck": "tsc --noEmit --project tsconfig.json"
   },
   "dependencies": {
     "@confect/core": "10.0.0-next.13",
+    "@confect/server": "10.0.0-next.13",
     "convex": "1.43.0",
     "effect": "4.0.0-beta.107"
   },
   "devDependencies": {
+    "@confect/cli": "10.0.0-next.13",
     "typescript": "6.0.3"
   }
 }

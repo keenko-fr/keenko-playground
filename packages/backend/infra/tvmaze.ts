@@ -1,6 +1,6 @@
 import { Effect as E, Schema as S } from "effect";
 
-import type { Show } from "../schemas/shows";
+import { sShow, type Show } from "../schemas/shows";
 
 // CONSTANTS ----------------------------------------------------------------
 
@@ -74,12 +74,16 @@ export const search = E.fn("tvmaze.infra.search")(function* (
     E.mapError((): TvMazeFailure => ({ _tag: "TvMazeDecodeFailure" })),
   );
 
-  return results.map(({ show }) => showFrom(show));
+  return yield* E.forEach(results, ({ show }) =>
+    S.decodeUnknownEffect(sShow)(showFrom(show)).pipe(
+      E.mapError((): TvMazeFailure => ({ _tag: "TvMazeDecodeFailure" })),
+    ),
+  );
 });
 
 // INTERNALS ----------------------------------------------------------------
 
-function showFrom(show: ShowApiDto): Show {
+function showFrom(show: ShowApiDto) {
   return {
     id: show.id,
     url: show.url,
