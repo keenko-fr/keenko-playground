@@ -51,6 +51,8 @@ export default defineConfig({
         "effecttsgo/process-env": "off",
         "effecttsgo/process-env-in-effect": "off",
         "effecttsgo/try-catch-in-effect-gen": "off",
+        "typescript/promise-function-async": "off",
+        "typescript/return-await": "off",
       },
     },
   ],

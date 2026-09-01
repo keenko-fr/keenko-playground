@@ -44,7 +44,7 @@ export const search = E.fn("tvmaze.infra.search")(function* searchTvMazeEffect(q
   url.searchParams.set("q", query);
 
   const response = yield* E.tryPromise({
-    try: async () => request(url, { headers: { accept: "application/json" } }),
+    try: () => request(url, { headers: { accept: "application/json" } }),
     catch: (): TvMazeFailure => ({
       _tag: "TvMazeNetworkFailure",
     }),
@@ -59,7 +59,7 @@ export const search = E.fn("tvmaze.infra.search")(function* searchTvMazeEffect(q
   );
 
   const body: unknown = yield* E.tryPromise({
-    try: async (): Promise<unknown> => (await response.json()) as unknown,
+    try: () => response.json().then((value: unknown) => value),
     catch: (): TvMazeFailure => ({ _tag: "TvMazeDecodeFailure" }),
   });
 

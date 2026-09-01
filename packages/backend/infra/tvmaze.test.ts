@@ -73,7 +73,9 @@ test("rejects provider shows that violate the application Show schema", async ()
 
 test("reports transport failures separately from HTTP failures", async () => {
   const failure = await E.runPromise(
-    search("Girls", async () => Promise.reject(new Error("network unavailable"))).pipe(E.catchTag("TvMazeNetworkFailure", E.succeed))
+    search("Girls", async () => {
+      throw new Error("network unavailable");
+    }).pipe(E.catchTag("TvMazeNetworkFailure", E.succeed))
   );
   expect(failure).toEqual({ _tag: "TvMazeNetworkFailure" });
 });

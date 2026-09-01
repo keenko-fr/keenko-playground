@@ -1,7 +1,6 @@
 import { expect, test } from "bun:test";
 import { Effect as E } from "effect";
 
-import type { TvMazeSearch } from "../infra/tvmaze";
 import type { Show } from "../schemas/shows";
 import { search, ShowFailure } from "./shows";
 
@@ -28,19 +27,22 @@ test("returns provider shows unchanged", async () => {
 });
 
 test("maps provider request failures to an unavailable show failure", async () => {
-  const provider: TvMazeSearch = () => E.fail({ _tag: "TvMazeRequestFailure", status: 503 });
-  const failure = await E.runPromise(search("Girls", provider).pipe(E.catchTag("ShowFailure", E.succeed)));
+  const failure = await E.runPromise(
+    search("Girls", () => E.fail({ _tag: "TvMazeRequestFailure", status: 503 })).pipe(E.catchTag("ShowFailure", E.succeed))
+  );
   expect(failure).toEqual(new ShowFailure({ issue: "unavailable" }));
 });
 
 test("maps provider network failures to an unavailable show failure", async () => {
-  const provider: TvMazeSearch = () => E.fail({ _tag: "TvMazeNetworkFailure" });
-  const failure = await E.runPromise(search("Girls", provider).pipe(E.catchTag("ShowFailure", E.succeed)));
+  const failure = await E.runPromise(
+    search("Girls", () => E.fail({ _tag: "TvMazeNetworkFailure" })).pipe(E.catchTag("ShowFailure", E.succeed))
+  );
   expect(failure).toEqual(new ShowFailure({ issue: "unavailable" }));
 });
 
 test("maps invalid provider data to an invalid-response show failure", async () => {
-  const provider: TvMazeSearch = () => E.fail({ _tag: "TvMazeDecodeFailure" });
-  const failure = await E.runPromise(search("Girls", provider).pipe(E.catchTag("ShowFailure", E.succeed)));
+  const failure = await E.runPromise(
+    search("Girls", () => E.fail({ _tag: "TvMazeDecodeFailure" })).pipe(E.catchTag("ShowFailure", E.succeed))
+  );
   expect(failure).toEqual(new ShowFailure({ issue: "invalid_response" }));
 });
