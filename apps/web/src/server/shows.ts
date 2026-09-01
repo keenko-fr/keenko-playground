@@ -12,13 +12,19 @@ export const searchShows = createServerFn({ method: "GET" })
     const convexUrl = import.meta.env.VITE_CONVEX_URL;
     if (!convexUrl) return { status: "failure", issue: "unavailable" } as const;
 
-    const args: Ref.Args<typeof refs.shows.search> = data;
-    return HttpClient.HttpClient.pipe(
-      E.flatMap((client) => client.action(refs.shows.search, args)),
-      E.map((shows) => ({ status: "success", shows }) as const),
-      E.catchTag("ShowFailure", ({ issue }) => E.succeed({ status: "failure", issue } as const)),
-      E.catchAll(() => E.succeed({ status: "failure", issue: "unavailable" } as const)),
-      E.provide(HttpClient.layer(convexUrl)),
-      E.runPromise
+    const ref = refs.public.shows.search;
+    const args: Ref.Args<typeof ref> = data;
+    const program = HttpClient.HttpClient.pipe(
+      E.flatMap((client) => client.action(ref, args)),
+      E.match({
+        onFailure: (failure) =>
+          failure._tag === "ShowFailure"
+            ? ({ status: "failure", issue: failure.issue } as const)
+            : ({ status: "failure", issue: "unavailable" } as const),
+        onSuccess: (shows) => ({ status: "success", shows }) as const,
+      }),
+      E.provide(HttpClient.layer(convexUrl))
     );
+
+    return E.runPromise(program);
   });

@@ -15,6 +15,7 @@ export default defineConfig({
       project: "./project.inlang",
       outdir: "./src/paraglide",
       outputStructure: "message-modules",
+      emitTsDeclarations: true,
       strategy: ["baseLocale"],
     }),
     tanstackStart(),
