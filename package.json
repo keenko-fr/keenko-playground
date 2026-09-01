@@ -1,7 +1,10 @@
 {
   "name": "keenko-playground",
   "private": true,
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "type": "module",
   "scripts": {
     "postinstall": "effect-tsgo patch --typescript --oxlint",

@@ -45,7 +45,9 @@ async function snapshot(roots: string[]) {
   for (const root of roots) {
     for (const file of await files(root)) {
       const path = relative(BACKEND, file).replaceAll("\\", "/");
-      const hash = createHash("sha256").update(await readFile(file)).digest("hex");
+      const hash = createHash("sha256")
+        .update(await readFile(file))
+        .digest("hex");
       entries.push([path, hash]);
     }
   }

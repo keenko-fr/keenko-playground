@@ -65,12 +65,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "chore: materialize KEE-9 playbook update"
           git push origin HEAD:${GITHUB_REF_NAME}
-      - name: Print remaining formatter output
-        run: |
-          echo '--- package.json ---'
-          ./node_modules/.bin/oxfmt --stdin-filepath package.json < package.json
-          echo '--- scripts/check-backend-codegen.ts ---'
-          ./node_modules/.bin/oxfmt --stdin-filepath scripts/check-backend-codegen.ts < scripts/check-backend-codegen.ts
-          echo '--- end formatter output ---'
       - name: Check repository
         run: bun run check
