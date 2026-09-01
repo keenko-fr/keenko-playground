@@ -10,8 +10,7 @@ export const searchShows = createServerFn({ method: "GET" })
   .validator(showSearchArgsValidator)
   .handler(({ data }) => {
     const convexUrl = import.meta.env.VITE_CONVEX_URL;
-    if (!convexUrl)
-      return { status: "failure", issue: "unavailable" } satisfies { status: "failure"; issue: "unavailable" };
+    if (!convexUrl) return { status: "failure", issue: "unavailable" } satisfies { status: "failure"; issue: "unavailable" };
 
     const ref = refs.public.shows.search;
     const args: Ref.Args<typeof ref> = data;
