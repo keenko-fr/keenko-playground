@@ -33,9 +33,13 @@ jobs:
   backend:
     name: Backend
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Check out playground
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
       - name: Set up Bun
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6
         with:
@@ -45,15 +49,17 @@ jobs:
       - name: Generate Confect backend
         working-directory: packages/backend
         run: bun run codegen
-      - name: Upload generated dependency state
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
-        with:
-          name: backend-generated-state
-          path: |
-            bun.lock
-            packages/backend/confect/_generated
-            packages/backend/convex
-          retention-days: 1
+      - name: Materialize generated dependency state
+        if: github.event_name == 'push' && github.ref == 'refs/heads/gregorybouteiller/kee-4-playground-bootstrap'
+        run: |
+          git add bun.lock packages/backend/confect/_generated packages/backend/convex
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: materialize backend generated state"
+          git push origin HEAD:${GITHUB_REF_NAME}
       - name: Typecheck backend
         working-directory: packages/backend
         run: bun run typecheck
