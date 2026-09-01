@@ -3,7 +3,7 @@
   "playbookFiles": {
     "config.json": "e488ae4b631c9db1950c96fd9cf4bb999d4110dff61cca7b4ef8cd6812e7f646",
     "docs/conventions/README.md": "af06ac93166bd5088146c8cc9d58d6d67ebe309b7d53d998283e27fad346d3ed",
-    "docs/conventions/backend-architecture.md": "8cfe321d9b87910fbc7c6bf8706f864941cfc4767ab3964f82ef7a6c85782120",
+    "docs/conventions/backend-architecture.md": "56d52cdf590260439e1169dd996dc044a1ee9794682aadf1ce9457bb10214fd0",
     "docs/conventions/backend-file-topology.md": "27612bb54da9f90d18d21d0cd92fdcc3e8f7a171aee5659c09bcbbb3449e33f2",
     "docs/conventions/frontend-file-topology.md": "63356890d7922c9ba6500ce6c9831e0115db35dc3d02fa8e318704e6795adbf2",
     "docs/conventions/frontend.md": "b702a6c3386ba0570587cdef24efd46f19eb2e96932117f542ce5c56016194e7",
