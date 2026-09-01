@@ -6,7 +6,7 @@ const {
   sortImports: _sortImports,
   tabWidth: _tabWidth,
   useTabs: _useTabs,
-  ...ultraciteFormatting,
+  ...ultraciteFormatting
 } = ultracite;
 
 export default defineConfig({
