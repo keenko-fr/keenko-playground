@@ -1,39 +1,43 @@
+import { createHash } from "node:crypto";
 import { cp, mkdtemp, readdir, readFile, rm, stat } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, relative } from "node:path";
-import { createHash } from "node:crypto";
 
-const ROOT = new URL("..", import.meta.url).pathname;
+const ROOT = join(import.meta.dirname, "..");
 const BACKEND = join(ROOT, "packages", "backend");
 const GENERATED = [join(BACKEND, "confect", "_generated"), join(BACKEND, "convex")];
 
 const backupRoot = await mkdtemp(join(tmpdir(), "keenko-codegen-"));
 const before = await snapshot(GENERATED);
+let drifted = false;
 
 try {
   for (const path of GENERATED) {
     await cp(path, join(backupRoot, relative(BACKEND, path)), { recursive: true });
   }
 
-  const process = Bun.spawn(["bun", "run", "codegen"], {
+  const subprocess = Bun.spawn(["bun", "run", "codegen"], {
     cwd: BACKEND,
     stdout: "inherit",
     stderr: "inherit",
   });
-  const exitCode = await process.exited;
-  if (exitCode !== 0) process.exit(exitCode);
-
-  const after = await snapshot(GENERATED);
-  if (JSON.stringify(after) !== JSON.stringify(before)) {
-    console.error("Confect generated output drifted. Run `bun run codegen` and commit the generated changes.");
-    process.exitCode = 1;
+  const exitCode = await subprocess.exited;
+  if (exitCode !== 0) {
+    throw new Error(`Confect codegen exited with code ${exitCode}`);
   }
+
+  drifted = JSON.stringify(await snapshot(GENERATED)) !== JSON.stringify(before);
 } finally {
   for (const path of GENERATED) {
     await rm(path, { recursive: true, force: true });
     await cp(join(backupRoot, relative(BACKEND, path)), path, { recursive: true });
   }
   await rm(backupRoot, { recursive: true, force: true });
+}
+
+if (drifted) {
+  console.error("Confect generated output drifted. Run `bun run codegen` and commit the generated changes.");
+  process.exitCode = 1;
 }
 
 async function snapshot(roots: string[]) {

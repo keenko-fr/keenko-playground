@@ -7,11 +7,6 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "verbatimModuleSyntax": true
   },
-  "include": [
-    "confect/**/*.ts",
-    "schemas/**/*.ts",
-    "features/**/*.ts",
-    "infra/**/*.ts"
-  ],
+  "include": ["confect/**/*.ts", "schemas/**/*.ts", "features/**/*.ts", "infra/**/*.ts"],
   "exclude": ["**/*.test.ts"]
 }

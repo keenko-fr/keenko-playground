@@ -23,15 +23,11 @@ const SHOW = {
 
 test("decodes and normalizes TVMaze search results", async () => {
   const request: TvMazeFetch = async (input) => {
-    expect(String(input)).toBe(
-      "https://api.tvmaze.com/search/shows?q=Girls+%26+Co",
-    );
-
+    expect(String(input)).toBe("https://api.tvmaze.com/search/shows?q=Girls+%26+Co");
     return response([{ score: 0.9, show: { ...SHOW, weight: 98 } }]);
   };
 
   const shows = await E.runPromise(search("Girls & Co", request));
-
   expect(shows).toEqual([
     {
       id: 139,
@@ -50,15 +46,8 @@ test("decodes and normalizes TVMaze search results", async () => {
 });
 
 test("reports non-success responses as request failures", async () => {
-  const request: TvMazeFetch = async () =>
-    new Response("Unavailable", { status: 503 });
-
-  const failure = await E.runPromise(
-    search("Girls", request).pipe(
-      E.catchTag("TvMazeRequestFailure", E.succeed),
-    ),
-  );
-
+  const request: TvMazeFetch = async () => new Response("Unavailable", { status: 503 });
+  const failure = await E.runPromise(search("Girls", request).pipe(E.catchTag("TvMazeRequestFailure", E.succeed)));
   expect(failure).toEqual({
     _tag: "TvMazeRequestFailure",
     status: 503,
@@ -67,26 +56,13 @@ test("reports non-success responses as request failures", async () => {
 
 test("reports invalid provider payloads as decode failures", async () => {
   const request: TvMazeFetch = async () => response({ show: SHOW });
-
-  const failure = await E.runPromise(
-    search("Girls", request).pipe(
-      E.catchTag("TvMazeDecodeFailure", E.succeed),
-    ),
-  );
-
+  const failure = await E.runPromise(search("Girls", request).pipe(E.catchTag("TvMazeDecodeFailure", E.succeed)));
   expect(failure).toEqual({ _tag: "TvMazeDecodeFailure" });
 });
 
 test("rejects provider shows that violate the application Show schema", async () => {
-  const request: TvMazeFetch = async () =>
-    response([{ score: 0.9, show: { ...SHOW, id: 0 } }]);
-
-  const failure = await E.runPromise(
-    search("Girls", request).pipe(
-      E.catchTag("TvMazeDecodeFailure", E.succeed),
-    ),
-  );
-
+  const request: TvMazeFetch = async () => response([{ score: 0.9, show: { ...SHOW, id: 0 } }]);
+  const failure = await E.runPromise(search("Girls", request).pipe(E.catchTag("TvMazeDecodeFailure", E.succeed)));
   expect(failure).toEqual({ _tag: "TvMazeDecodeFailure" });
 });
 
