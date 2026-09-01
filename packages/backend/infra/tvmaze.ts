@@ -26,7 +26,7 @@ export const sShowApiDto = S.Struct({
 });
 
 const sSearchResultApiDto = S.Struct({
-  score: S.Number,
+  score: S.Finite,
   show: sShowApiDto,
 });
 
@@ -34,32 +34,32 @@ const sSearchApiDto = S.Array(sSearchResultApiDto);
 
 // ERRORS ----------------------------------------------------------------------------------------------------------------------------------
 export type TvMazeFailure =
-  | { readonly _tag: "TvMazeRequestFailure"; readonly status: number | null }
+  | { readonly _tag: "TvMazeNetworkFailure" }
+  | { readonly _tag: "TvMazeRequestFailure"; readonly status: number }
   | { readonly _tag: "TvMazeDecodeFailure" };
 
 // SEARCH ----------------------------------------------------------------------------------------------------------------------------------
-export const search = E.fn("tvmaze.infra.search")(function* (query: string, request: TvMazeFetch = globalThis.fetch) {
+export const search = E.fn("tvmaze.infra.search")(function* searchTvMazeEffect(query: string, request: TvMazeFetch = globalThis.fetch) {
   const url = new URL(TVMAZE_API_URL);
   url.searchParams.set("q", query);
 
   const response = yield* E.tryPromise({
-    try: () => request(url, { headers: { accept: "application/json" } }),
+    try: async () => request(url, { headers: { accept: "application/json" } }),
     catch: (): TvMazeFailure => ({
-      _tag: "TvMazeRequestFailure",
-      status: null,
+      _tag: "TvMazeNetworkFailure",
     }),
   }).pipe(
     E.filterOrFail(
-      (response) => response.ok,
-      (response): TvMazeFailure => ({
+      (candidate) => candidate.ok,
+      (candidate): TvMazeFailure => ({
         _tag: "TvMazeRequestFailure",
-        status: response.status,
+        status: candidate.status,
       })
     )
   );
 
-  const body = yield* E.tryPromise({
-    try: () => response.json(),
+  const body: unknown = yield* E.tryPromise({
+    try: async (): Promise<unknown> => (await response.json()) as unknown,
     catch: (): TvMazeFailure => ({ _tag: "TvMazeDecodeFailure" }),
   });
 
@@ -67,8 +67,10 @@ export const search = E.fn("tvmaze.infra.search")(function* (query: string, requ
     E.mapError((): TvMazeFailure => ({ _tag: "TvMazeDecodeFailure" }))
   );
 
-  return yield* E.forEach(results, ({ show }) =>
-    S.decodeUnknownEffect(sShow)(showFrom(show)).pipe(E.mapError((): TvMazeFailure => ({ _tag: "TvMazeDecodeFailure" })))
+  return yield* E.all(
+    results.map(({ show }) =>
+      S.decodeEffect(sShow)(showFrom(show)).pipe(E.mapError((): TvMazeFailure => ({ _tag: "TvMazeDecodeFailure" })))
+    )
   );
 });
 
@@ -92,6 +94,6 @@ function showFrom(show: ShowApiDto) {
 // TYPES -----------------------------------------------------------------------------------------------------------------------------------
 export type ShowApiDto = typeof sShowApiDto.Type;
 
-export type TvMazeSearch = (query: string) => E.Effect<ReadonlyArray<Show>, TvMazeFailure>;
+export type TvMazeSearch = (query: string) => E.Effect<readonly Show[], TvMazeFailure>;
 
 export type TvMazeFetch = (input: string | URL, init?: RequestInit) => Promise<Response>;

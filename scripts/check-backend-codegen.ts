@@ -41,7 +41,7 @@ if (drifted) {
 }
 
 async function snapshot(roots: string[]) {
-  const entries: Array<readonly [string, string]> = [];
+  const entries: (readonly [string, string])[] = [];
   for (const root of roots) {
     for (const file of await files(root)) {
       const path = relative(BACKEND, file).replaceAll("\\", "/");

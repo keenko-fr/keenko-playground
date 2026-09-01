@@ -3,6 +3,8 @@ import { defineConfig } from "oxlint";
 import { recommended as effectRecommended } from "oxlint-plugin-effect/presets/recommended";
 import core from "ultracite/oxlint/core";
 
+const disabledEffectRules = Object.fromEntries(Object.keys(effectRecommended).map((rule) => [rule, "off"]));
+
 export default defineConfig({
   extends: [core, effectTsgoRecommended],
   ignorePatterns: [
@@ -23,6 +25,12 @@ export default defineConfig({
   options: {
     typeAware: true,
   },
+  overrides: [
+    {
+      files: ["oxfmt.config.ts", "oxlint.config.ts", "scripts/**/*.ts", "**/*.test.ts"],
+      rules: disabledEffectRules,
+    },
+  ],
   rules: {
     ...effectRecommended,
     "effect/noTernary": "off",

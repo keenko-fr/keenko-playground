@@ -1,8 +1,13 @@
 import { defineConfig } from "oxfmt";
 import ultracite from "ultracite/oxfmt";
 
-const { endOfLine: _endOfLine, tabWidth: _tabWidth, useTabs: _useTabs, ...ultraciteFormatting } = ultracite;
-const ultraciteSortImports = typeof ultraciteFormatting.sortImports === "object" ? ultraciteFormatting.sortImports : {};
+const {
+  endOfLine: _endOfLine,
+  sortImports: _sortImports,
+  tabWidth: _tabWidth,
+  useTabs: _useTabs,
+  ...ultraciteFormatting
+} = ultracite;
 
 export default defineConfig({
   ...ultraciteFormatting,
@@ -21,7 +26,6 @@ export default defineConfig({
   ],
   printWidth: 140,
   sortImports: {
-    ...ultraciteSortImports,
     groups: [
       ["type-builtin", "type-external", "value-builtin", "value-external"],
       [

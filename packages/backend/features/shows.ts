@@ -7,6 +7,7 @@ import type { TvMazeSearch } from "../infra/tvmaze";
 export const sShowIssue = S.Literals(["unavailable", "invalid_response"]);
 
 // ERRORS ----------------------------------------------------------------------------------------------------------------------------------
+// oxlint-disable-next-line eslint/new-cap -- Schema.TaggedError is an Effect factory, not a constructor.
 export class ShowFailure extends S.TaggedError<ShowFailure>()("ShowFailure", {
   issue: sShowIssue,
 }) {}
@@ -15,6 +16,7 @@ export class ShowFailure extends S.TaggedError<ShowFailure>()("ShowFailure", {
 export const search = E.fn("shows.features.search")((query: string, provider: TvMazeSearch = searchTvMaze) =>
   provider(query).pipe(
     E.catchTags({
+      TvMazeNetworkFailure: () => E.fail(new ShowFailure({ issue: "unavailable" })),
       TvMazeRequestFailure: () => E.fail(new ShowFailure({ issue: "unavailable" })),
       TvMazeDecodeFailure: () => E.fail(new ShowFailure({ issue: "invalid_response" })),
     })
