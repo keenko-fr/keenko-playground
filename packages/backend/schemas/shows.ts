@@ -1,4 +1,4 @@
-import * as S from "effect/Schema";
+import { Schema as S } from "effect";
 
 const sShowImage = S.Struct({
   medium: S.String,

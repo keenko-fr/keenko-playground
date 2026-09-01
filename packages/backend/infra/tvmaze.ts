@@ -1,9 +1,12 @@
-import * as E from "effect/Effect";
-import * as S from "effect/Schema";
+import { Effect as E, Schema as S } from "effect";
 
-import type { Show } from "../show";
+import type { Show } from "../schemas/shows";
+
+// CONSTANTS ----------------------------------------------------------------
 
 const TVMAZE_API_URL = "https://api.tvmaze.com/search/shows";
+
+// SCHEMAS ------------------------------------------------------------------
 
 const sImageApiDto = S.Struct({
   medium: S.String,
@@ -24,8 +27,6 @@ export const sShowApiDto = S.Struct({
   summary: S.NullOr(S.String),
 });
 
-export type ShowApiDto = typeof sShowApiDto.Type;
-
 const sSearchResultApiDto = S.Struct({
   score: S.Number,
   show: sShowApiDto,
@@ -33,18 +34,13 @@ const sSearchResultApiDto = S.Struct({
 
 const sSearchApiDto = S.Array(sSearchResultApiDto);
 
+// ERRORS -------------------------------------------------------------------
+
 export type TvMazeFailure =
   | { readonly _tag: "TvMazeRequestFailure"; readonly status: number | null }
   | { readonly _tag: "TvMazeDecodeFailure" };
 
-export type TvMazeSearch = (
-  query: string,
-) => E.Effect<ReadonlyArray<Show>, TvMazeFailure>;
-
-export type TvMazeFetch = (
-  input: string | URL,
-  init?: RequestInit,
-) => Promise<Response>;
+// SEARCH -------------------------------------------------------------------
 
 export const search = E.fn("tvmaze.infra.search")(function* (
   query: string,
@@ -81,6 +77,8 @@ export const search = E.fn("tvmaze.infra.search")(function* (
   return results.map(({ show }) => showFrom(show));
 });
 
+// INTERNALS ----------------------------------------------------------------
+
 function showFrom(show: ShowApiDto): Show {
   return {
     id: show.id,
@@ -96,3 +94,16 @@ function showFrom(show: ShowApiDto): Show {
     summaryHtml: show.summary,
   };
 }
+
+// TYPES --------------------------------------------------------------------
+
+export type ShowApiDto = typeof sShowApiDto.Type;
+
+export type TvMazeSearch = (
+  query: string,
+) => E.Effect<ReadonlyArray<Show>, TvMazeFailure>;
+
+export type TvMazeFetch = (
+  input: string | URL,
+  init?: RequestInit,
+) => Promise<Response>;

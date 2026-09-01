@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import * as E from "effect/Effect";
+import { Effect as E } from "effect";
 
 import { search } from "./tvmaze";
 import type { TvMazeFetch } from "./tvmaze";

@@ -1,8 +1,8 @@
 import { expect, test } from "bun:test";
-import * as E from "effect/Effect";
+import { Effect as E } from "effect";
 
-import { search, ShowSearchFailure } from "./shows";
 import type { TvMazeSearch } from "../infra/tvmaze";
+import { search, ShowFailure } from "./shows";
 
 const SHOW = {
   id: 139,
@@ -26,28 +26,24 @@ test("returns provider shows unchanged", async () => {
   expect(shows).toEqual([SHOW]);
 });
 
-test("maps provider request failures to an unavailable search failure", async () => {
+test("maps provider request failures to an unavailable show failure", async () => {
   const provider: TvMazeSearch = () =>
     E.fail({ _tag: "TvMazeRequestFailure", status: 503 });
 
   const failure = await E.runPromise(
-    search("Girls", provider).pipe(E.catchTag("ShowSearchFailure", E.succeed)),
+    search("Girls", provider).pipe(E.catchTag("ShowFailure", E.succeed)),
   );
 
-  expect(failure).toEqual(
-    new ShowSearchFailure({ reason: "unavailable" }),
-  );
+  expect(failure).toEqual(new ShowFailure({ issue: "unavailable" }));
 });
 
-test("maps invalid provider data to an invalid-response search failure", async () => {
+test("maps invalid provider data to an invalid-response show failure", async () => {
   const provider: TvMazeSearch = () =>
     E.fail({ _tag: "TvMazeDecodeFailure" });
 
   const failure = await E.runPromise(
-    search("Girls", provider).pipe(E.catchTag("ShowSearchFailure", E.succeed)),
+    search("Girls", provider).pipe(E.catchTag("ShowFailure", E.succeed)),
   );
 
-  expect(failure).toEqual(
-    new ShowSearchFailure({ reason: "invalid_response" }),
-  );
+  expect(failure).toEqual(new ShowFailure({ issue: "invalid_response" }));
 });

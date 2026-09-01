@@ -1,17 +1,23 @@
 import { FunctionSpec, GroupSpec } from "@confect/core";
-import * as S from "effect/Schema";
-import * as ST from "effect/SchemaTransformation";
+import { Schema as S } from "effect";
 
-import { ShowSearchFailure } from "../src/feature/shows";
-import { sShow } from "../src/show";
+import { ShowFailure } from "../features/shows";
+import { sShow } from "../schemas/shows";
 
-const sQuery = S.String.pipe(S.decode(ST.trim())).check(S.isNonEmpty());
+// SPEC ---------------------------------------------------------------------
 
-export default GroupSpec.make().addFunction(
-  FunctionSpec.publicAction({
-    name: "search",
-    args: () => S.Struct({ query: sQuery }),
-    returns: () => S.Array(sShow),
-    error: () => ShowSearchFailure,
-  }),
-);
+export default GroupSpec.make()
+
+  // ACTIONS ---------------------------------------------------------------
+
+  .addFunction(
+    FunctionSpec.publicAction({
+      name: "search",
+      args: () =>
+        S.Struct({
+          query: S.Trim.check(S.isNonEmpty()),
+        }),
+      returns: () => S.Array(sShow),
+      error: () => ShowFailure,
+    }),
+  );
