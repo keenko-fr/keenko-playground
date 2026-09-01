@@ -1,4 +1,4 @@
-import * as Ref from "@confect/core/Ref";
+import type * as Ref from "@confect/core/Ref";
 import { HttpClient } from "@confect/js";
 import refs from "@keenko-playground/backend/refs";
 import { createServerFn } from "@tanstack/react-start";
@@ -10,7 +10,8 @@ export const searchShows = createServerFn({ method: "GET" })
   .validator(showSearchArgsValidator)
   .handler(({ data }) => {
     const convexUrl = import.meta.env.VITE_CONVEX_URL;
-    if (!convexUrl) return { status: "failure", issue: "unavailable" } as const;
+    if (!convexUrl)
+      return { status: "failure", issue: "unavailable" } satisfies { status: "failure"; issue: "unavailable" };
 
     const ref = refs.public.shows.search;
     const args: Ref.Args<typeof ref> = data;
@@ -19,9 +20,9 @@ export const searchShows = createServerFn({ method: "GET" })
       E.match({
         onFailure: (failure) =>
           failure._tag === "ShowFailure"
-            ? ({ status: "failure", issue: failure.issue } as const)
-            : ({ status: "failure", issue: "unavailable" } as const),
-        onSuccess: (shows) => ({ status: "success", shows }) as const,
+            ? ({ status: "failure", issue: failure.issue } satisfies { status: "failure"; issue: typeof failure.issue })
+            : ({ status: "failure", issue: "unavailable" } satisfies { status: "failure"; issue: "unavailable" }),
+        onSuccess: (shows) => ({ status: "success", shows }) satisfies { status: "success"; shows: typeof shows },
       }),
       E.provide(HttpClient.layer(convexUrl))
     );

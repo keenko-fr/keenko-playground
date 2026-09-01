@@ -18,8 +18,7 @@ try {
   const after = await readRouteTree();
   drifted = before !== after;
 } finally {
-  if (before === undefined) await rm(ROUTE_TREE, { force: true });
-  else await writeFile(ROUTE_TREE, before);
+  await (before === undefined ? rm(ROUTE_TREE, { force: true }) : writeFile(ROUTE_TREE, before));
 }
 
 if (drifted) {
@@ -29,9 +28,9 @@ if (drifted) {
 
 async function readRouteTree() {
   try {
-    return await readFile(ROUTE_TREE, "utf8");
+    return await readFile(ROUTE_TREE, "utf-8");
   } catch (error) {
-    if (error instanceof Error && "code" in error && error.code === "ENOENT") return undefined;
+    if (error instanceof Error && "code" in error && error.code === "ENOENT") return;
     throw error;
   }
 }

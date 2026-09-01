@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import type { FormEvent } from "react";
+import type { SubmitEvent } from "react";
 
 import { showSearchQueryOptions } from "../features/shows/search";
 import { showSearchParamsValidator } from "../features/shows/search-params";
@@ -11,9 +11,9 @@ import type { searchShows } from "../server/shows";
 export const Route = createFileRoute("/")({
   validateSearch: showSearchParamsValidator,
   loaderDeps: ({ search }) => ({ query: search.query ?? "" }),
-  loader: ({ context, deps }) => {
+  loader: async ({ context, deps }) => {
     if (!deps.query) return;
-    return context.queryClient.ensureQueryData(showSearchQueryOptions(deps.query));
+    return context.queryClient.query({ ...showSearchQueryOptions(deps.query), staleTime: "static" });
   },
   component: ShowSearchPage,
 });
@@ -30,10 +30,11 @@ function ShowSearchPage() {
   const navigate = Route.useNavigate();
   const result = useQuery(showSearchQueryOptions(query));
 
-  const submitSearch = (event: FormEvent<HTMLFormElement>) => {
+  const submitSearch = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const nextQuery = String(data.get("query") ?? "").trim();
+    const queryValue = data.get("query");
+    const nextQuery = typeof queryValue === "string" ? queryValue.trim() : "";
     void navigate({ search: nextQuery ? { query: nextQuery } : {} });
   };
 
