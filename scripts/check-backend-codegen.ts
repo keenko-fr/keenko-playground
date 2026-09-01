@@ -6,6 +6,7 @@ import { join, relative } from "node:path";
 const ROOT = join(import.meta.dirname, "..");
 const BACKEND = join(ROOT, "packages", "backend");
 const GENERATED = [join(BACKEND, "confect", "_generated"), join(BACKEND, "convex")];
+const GENERATED_EXCEPTIONS = new Set(["convex/convex.config.ts", "convex/tsconfig.json"]);
 
 const backupRoot = await mkdtemp(join(tmpdir(), "keenko-codegen-"));
 const before = await snapshot(GENERATED);
@@ -45,6 +46,7 @@ async function snapshot(roots: string[]) {
   for (const root of roots) {
     for (const file of await files(root)) {
       const path = relative(BACKEND, file).replaceAll("\\", "/");
+      if (GENERATED_EXCEPTIONS.has(path)) continue;
       const hash = createHash("sha256")
         .update(await readFile(file))
         .digest("hex");
