@@ -13,7 +13,7 @@ export const Route = createFileRoute("/")({
   loaderDeps: ({ search }) => ({ query: search.query ?? "" }),
   loader: async ({ context, deps }) => {
     if (!deps.query) return;
-    return context.queryClient.query({ ...showSearchQueryOptions(deps.query), staleTime: "static" });
+    return await context.queryClient.query({ ...showSearchQueryOptions(deps.query), staleTime: "static" });
   },
   component: ShowSearchPage,
 });
