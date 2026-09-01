@@ -15,6 +15,7 @@ export default defineConfig({
     "build/**",
     "coverage/**",
     "dist/**",
+    "apps/web/dist/**",
     "apps/web/.tanstack/**",
     "apps/web/src/paraglide/**",
     "apps/web/src/routeTree.gen.ts",
