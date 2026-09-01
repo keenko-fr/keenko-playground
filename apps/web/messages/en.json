@@ -1,0 +1,17 @@
+{
+  "maple_app_title": "Keenko TV",
+  "harbor_search_title": "Find a TV show",
+  "cedar_search_intro": "Search TVMaze by title and inspect live provider metadata.",
+  "amber_search_label": "Show title",
+  "birch_search_placeholder": "Try Severance or The Office",
+  "coral_search_submit": "Search",
+  "drift_search_prompt": "Enter a title to start searching.",
+  "ember_search_loading": "Searching TVMaze…",
+  "fjord_search_empty": "No shows matched that title.",
+  "grove_search_unavailable": "Show search is temporarily unavailable. Try again shortly.",
+  "hearth_search_invalid": "TVMaze returned data we could not safely display.",
+  "ivory_poster_alt": "Poster for {show}",
+  "juniper_premiered": "Premiered {date}",
+  "lagoon_status": "Status: {status}",
+  "meadow_tvmaze_attribution": "TV data provided by TVMaze"
+}

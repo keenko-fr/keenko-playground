@@ -15,6 +15,9 @@ export default defineConfig({
     "build/**",
     "coverage/**",
     "dist/**",
+    "apps/web/.tanstack/**",
+    "apps/web/src/paraglide/**",
+    "apps/web/src/routeTree.gen.ts",
     "packages/backend/confect/_generated/**",
     "packages/backend/convex/**",
     "vendor/**",
@@ -24,8 +27,8 @@ export default defineConfig({
   },
   overrides: [
     {
-      files: ["packages/backend/**/*.ts"],
-      excludeFiles: ["packages/backend/**/*.test.ts", "packages/backend/confect/_generated/**", "packages/backend/convex/**"],
+      files: ["packages/backend/**/*.ts", "apps/web/src/features/shows/search-params.ts", "apps/web/src/server/**/*.ts"],
+      excludeFiles: ["packages/backend/**/*.test.ts", "packages/backend/confect/_generated/**", "packages/backend/convex/**", "apps/web/src/server/**/*.test.ts"],
       plugins: ["effecttsgo"],
       jsPlugins: ["oxlint-plugin-effect/plugin"],
       rules: {

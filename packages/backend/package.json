@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "exports": {
+    "./refs": "./confect/_generated/refs.ts"
+  },
   "scripts": {
     "codegen": "confect codegen",
     "test": "bun test",

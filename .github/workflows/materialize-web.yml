@@ -1,0 +1,35 @@
+name: Materialize Web Dependencies
+
+on:
+  push:
+    branches:
+      - gregorybouteiller/kee-4-playground-bootstrap
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out playground
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6
+        with:
+          bun-version: 1.4.0
+      - name: Install dependencies
+        run: bun install
+      - name: Generate and typecheck web
+        run: bun run --cwd apps/web typecheck
+      - name: Commit dependency and route generation
+        run: |
+          rm -rf apps/web/src/paraglide apps/web/.output apps/web/.tanstack
+          git add bun.lock apps/web/src/routeTree.gen.ts
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: materialize web dependency state"
+          git push origin HEAD:${{ github.ref_name }}

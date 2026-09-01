@@ -12,10 +12,10 @@
     "format:check": "oxfmt --check .",
     "lint": "oxlint .",
     "lint:fix": "oxlint --fix .",
-    "codegen": "bun run --cwd packages/backend codegen",
-    "codegen:check": "bun scripts/check-backend-codegen.ts",
-    "typecheck": "bun run --cwd packages/backend typecheck",
-    "test": "bun --cwd packages/backend test",
+    "codegen": "bun run --cwd packages/backend codegen && bun run --cwd apps/web build",
+    "codegen:check": "bun scripts/check-backend-codegen.ts && bun scripts/check-web-codegen.ts",
+    "typecheck": "bun run --cwd packages/backend typecheck && bun run --cwd apps/web typecheck",
+    "test": "bun --cwd packages/backend test && bun run --cwd apps/web test",
     "check": "bun run codegen:check && bun run format:check && bun run lint && bun run typecheck && bun run test"
   },
   "devDependencies": {

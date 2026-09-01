@@ -21,8 +21,18 @@ packages/
 
 Shared packages such as `contracts` or `ui` are intentionally absent until real reuse earns those boundaries.
 
+## Web app
+
+`apps/web` is a TanStack Start React app. Its first vertical slice keeps the search term in Router URL state, uses TanStack Query for server state, calls the generated Confect show-search ref from a Start server function, and renders all intentional interface copy through Paraglide.
+
+For local development, copy `apps/web/.env.example` to `apps/web/.env.local` and set `VITE_CONVEX_URL` to the Convex deployment serving `packages/backend`, then run:
+
+```sh
+bun run --cwd apps/web dev
+```
+
 ## Playbook
 
-The repository consumes the `effect-convex-web` preset from Keenko Playbook commit `a0cde4eb4138b0c5621036bdd9b29fe0f0a347a3`.
+The repository consumes the `effect-convex-web` preset from Keenko Playbook commit `acb0665c40a77a9b75926798dfb8dcf63f39c6b0`.
 
 Generated `.playbook`, Codex, and Claude material is checked by CI against that exact source commit. Project-specific facts and architectural decisions live in `CONTEXT.md` and `docs/project/`.
