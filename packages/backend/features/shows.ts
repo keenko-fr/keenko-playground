@@ -17,8 +17,8 @@ export const search = E.fn("shows.features.search")((query: string, provider: Tv
     E.catchTags({
       TvMazeRequestFailure: () => E.fail(new ShowFailure({ issue: "unavailable" })),
       TvMazeDecodeFailure: () => E.fail(new ShowFailure({ issue: "invalid_response" })),
-    }),
-  ),
+    })
+  )
 );
 
 // TYPES -----------------------------------------------------------------------------------------------------------------------------------

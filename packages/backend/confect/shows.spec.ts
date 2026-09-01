@@ -13,5 +13,5 @@ export default GroupSpec.make()
       args: () => S.Struct({ query: S.Trim.check(S.isNonEmpty()) }),
       returns: () => S.Array(sShow),
       error: () => ShowFailure,
-    }),
+    })
   );

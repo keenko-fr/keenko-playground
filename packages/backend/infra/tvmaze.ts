@@ -54,8 +54,8 @@ export const search = E.fn("tvmaze.infra.search")(function* (query: string, requ
       (response): TvMazeFailure => ({
         _tag: "TvMazeRequestFailure",
         status: response.status,
-      }),
-    ),
+      })
+    )
   );
 
   const body = yield* E.tryPromise({
@@ -64,11 +64,11 @@ export const search = E.fn("tvmaze.infra.search")(function* (query: string, requ
   });
 
   const results = yield* S.decodeUnknownEffect(sSearchApiDto)(body).pipe(
-    E.mapError((): TvMazeFailure => ({ _tag: "TvMazeDecodeFailure" })),
+    E.mapError((): TvMazeFailure => ({ _tag: "TvMazeDecodeFailure" }))
   );
 
   return yield* E.forEach(results, ({ show }) =>
-    S.decodeUnknownEffect(sShow)(showFrom(show)).pipe(E.mapError((): TvMazeFailure => ({ _tag: "TvMazeDecodeFailure" }))),
+    S.decodeUnknownEffect(sShow)(showFrom(show)).pipe(E.mapError((): TvMazeFailure => ({ _tag: "TvMazeDecodeFailure" })))
   );
 });
 
