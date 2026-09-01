@@ -1,0 +1,46 @@
+name: Materialize Playbook
+
+on:
+  push:
+    branches:
+      - gregorybouteiller/kee-4-playground-bootstrap
+    paths:
+      - .github/workflows/materialize-playbook.yml
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out playground
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+      - name: Check out pinned playbook
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          repository: keenko-fr/keenko-playbook
+          ref: acb0665c40a77a9b75926798dfb8dcf63f39c6b0
+          path: .bootstrap/playbook
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6
+        with:
+          bun-version: 1.4.0
+      - name: Install playbook dependencies
+        working-directory: .bootstrap/playbook
+        run: bun install --frozen-lockfile
+      - name: Materialize pinned snapshot
+        run: bun .bootstrap/playbook/cli/playbook.ts update --target . --apply
+      - name: Verify materialized snapshot
+        run: bun .bootstrap/playbook/cli/playbook.ts check --target .
+      - name: Commit materialized snapshot
+        run: |
+          rm -rf .bootstrap
+          git add -A
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: materialize KEE-10 playbook update"
+          git push origin HEAD:${{ github.ref_name }}

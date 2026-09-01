@@ -22,7 +22,7 @@ Users can search and inspect TV shows from TVMaze and maintain a small persisted
 
 ## Renderer strategy
 
-- `apps/web` is the canonical React implementation for the v1 playbook dogfood.
+- `apps/web` is the canonical React implementation for the v1 dogfood.
 - Octane will be evaluated later as a sibling app in the same monorepo against the same backend.
 - Renderer-specific UI stays local unless genuine sharing proves valuable.
 
@@ -35,4 +35,4 @@ Users can search and inspect TV shows from TVMaze and maintain a small persisted
 
 ## Playbook source
 
-Initial dogfood source: `keenko-fr/keenko-playbook` commit `a0cde4eb4138b0c5621036bdd9b29fe0f0a347a3`, preset `effect-convex-web`.
+Current dogfood source: `keenko-fr/keenko-playbook` commit `acb0665c40a77a9b75926798dfb8dcf63f39c6b0`, preset `effect-convex-web`.
