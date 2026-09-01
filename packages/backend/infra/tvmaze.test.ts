@@ -64,7 +64,9 @@ test("reports invalid provider payloads as decode failures", async () => {
 
 test("rejects provider shows that violate the application Show schema", async () => {
   const failure = await E.runPromise(
-    search("Girls", async () => Response.json([{ score: 0.9, show: { ...SHOW, id: 0 } }])).pipe(E.catchTag("TvMazeDecodeFailure", E.succeed))
+    search("Girls", async () => Response.json([{ score: 0.9, show: { ...SHOW, id: 0 } }])).pipe(
+      E.catchTag("TvMazeDecodeFailure", E.succeed)
+    )
   );
   expect(failure).toEqual({ _tag: "TvMazeDecodeFailure" });
 });
