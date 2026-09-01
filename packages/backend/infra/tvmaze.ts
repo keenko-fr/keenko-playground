@@ -59,7 +59,7 @@ export const search = E.fn("tvmaze.infra.search")(function* searchTvMazeEffect(q
   );
 
   const body: unknown = yield* E.tryPromise({
-    try: () => response.json().then((value: unknown) => value),
+    try: () => response.json(),
     catch: (): TvMazeFailure => ({ _tag: "TvMazeDecodeFailure" }),
   });
 
