@@ -1,0 +1,31 @@
+name: Check
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  playbook:
+    name: Playbook
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out playground
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Check out pinned playbook
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          repository: keenko-fr/keenko-playbook
+          ref: 4801d0401791000c627018dfca5db1b9a68c868a
+          path: .bootstrap/playbook
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6
+        with:
+          bun-version: 1.4.0
+      - name: Install playbook dependencies
+        working-directory: .bootstrap/playbook
+        run: bun install --frozen-lockfile
+      - name: Check materialized playbook
+        run: bun .bootstrap/playbook/cli/playbook.ts check --target .
