@@ -17,7 +17,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 // LAYOUT ----------------------------------------------------------------------------------------------------------------------------------
 function RootLayout() {
   return (
-    <html lang={getLocale()}>
+    <html lang={getLocale()} className="dark">
       <head>
         <HeadContent />
       </head>

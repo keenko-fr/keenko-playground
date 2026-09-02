@@ -27,6 +27,8 @@ Shared packages such as `contracts` or `ui` are intentionally absent until real 
 
 The watchlist slice persists only Keenko-owned `{ tvmazeId, status }` state through Convex and Confect; TVMaze remains authoritative for show metadata. TanStack Form owns watchlist status editing, TanStack Query owns the persisted server state and invalidation, and TanStack Table renders the operational watchlist view.
 
+The React UI surface uses Tailwind CSS 4 for styling and application-owned shadcn/ui primitives under `apps/web/src/components/ui`. The shadcn baseline is initialized on Base UI, so controls such as the watchlist status select use the Playbook-standard primitive and accessibility foundation without introducing a shared UI package.
+
 For local development, copy `apps/web/.env.example` to `apps/web/.env.local` and set `VITE_CONVEX_URL` to the Convex deployment serving `packages/backend`, then run:
 
 ```sh

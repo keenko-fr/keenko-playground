@@ -1,7 +1,11 @@
 import { sWatchlistFields, type WatchlistStatus } from "@keenko-playground/backend/watchlist";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { cva } from "class-variance-authority";
 import { Schema as S } from "effect";
+
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import { m } from "../../paraglide/messages.js";
 import { setWatchlistStatus } from "../../server/watchlist";
@@ -15,6 +19,16 @@ function isWatchlistStatus(value: string): value is WatchlistStatus {
   if (value === "completed") return true;
   return value === "dropped";
 }
+
+// STYLES ----------------------------------------------------------------------------------------------------------------------------------
+const WATCHLIST_STATUS_FORM_STYLES = {
+  root: cva("grid gap-3"),
+  field: cva("grid gap-1.5"),
+  label: cva("text-sm font-medium text-muted-foreground"),
+  trigger: cva("w-full"),
+  submit: cva("w-full font-semibold"),
+  error: cva("text-sm text-destructive"),
+};
 
 export function WatchlistStatusForm({ tvmazeId }: { tvmazeId: number }) {
   const watchlist = useQuery(watchlistQueryOptions());
@@ -41,10 +55,17 @@ function StatusForm({ tvmazeId, currentStatus }: StatusFormProps) {
   });
   const idleLabel = currentStatus ? m.tide_watchlist_update() : m.ulster_watchlist_add();
   const submitLabel = mutation.isPending ? m.stone_watchlist_saving() : idleLabel;
+  const statusLabelId = `watchlist-status-${tvmazeId}`;
+  const statusItems: Array<{ value: WatchlistStatus; label: string }> = [
+    { value: "planned", label: m.oak_watchlist_planned() },
+    { value: "watching", label: m.pine_watchlist_watching() },
+    { value: "completed", label: m.quartz_watchlist_completed() },
+    { value: "dropped", label: m.river_watchlist_dropped() },
+  ];
 
   return (
     <form
-      className="watchlist-control"
+      className={WATCHLIST_STATUS_FORM_STYLES.root()}
       onSubmit={(event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -53,28 +74,43 @@ function StatusForm({ tvmazeId, currentStatus }: StatusFormProps) {
     >
       <form.Field name="status">
         {(field) => (
-          <label>
-            <span>{m.north_watchlist_status_label()}</span>
-            <select
+          <div className={WATCHLIST_STATUS_FORM_STYLES.field()}>
+            <span id={statusLabelId} className={WATCHLIST_STATUS_FORM_STYLES.label()}>
+              {m.north_watchlist_status_label()}
+            </span>
+            <Select
+              items={statusItems}
               value={field.state.value}
-              onBlur={field.handleBlur}
-              onChange={(event) => {
-                const nextStatus = event.target.value;
-                if (isWatchlistStatus(nextStatus)) field.handleChange(nextStatus);
+              onValueChange={(nextStatus) => {
+                if (typeof nextStatus === "string" && isWatchlistStatus(nextStatus)) field.handleChange(nextStatus);
               }}
             >
-              <option value="planned">{m.oak_watchlist_planned()}</option>
-              <option value="watching">{m.pine_watchlist_watching()}</option>
-              <option value="completed">{m.quartz_watchlist_completed()}</option>
-              <option value="dropped">{m.river_watchlist_dropped()}</option>
-            </select>
-          </label>
+              <SelectTrigger
+                aria-labelledby={statusLabelId}
+                onBlur={field.handleBlur}
+                className={WATCHLIST_STATUS_FORM_STYLES.trigger()}
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {statusItems.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         )}
       </form.Field>
-      <button type="submit" disabled={mutation.isPending}>
+      <Button type="submit" size="lg" disabled={mutation.isPending} className={WATCHLIST_STATUS_FORM_STYLES.submit()}>
         {submitLabel}
-      </button>
-      {mutation.data?.status === "failure" ? <span className="form-error">{m.violet_watchlist_unavailable()}</span> : null}
+      </Button>
+      {mutation.data?.status === "failure" ? (
+        <p role="alert" className={WATCHLIST_STATUS_FORM_STYLES.error()}>
+          {m.violet_watchlist_unavailable()}
+        </p>
+      ) : null}
     </form>
   );
 }

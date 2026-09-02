@@ -8,15 +8,17 @@ No external design artifact is currently authoritative. The implemented React sc
 
 ## Visual direction
 
-Not settled yet. The current implementation uses a dark, content-first presentation for TV discovery and watchlist management, but that styling is not yet a broader durable design-system commitment.
+Not settled yet. The current implementation remains a dark, content-first presentation for TV discovery and watchlist management, but that styling is not yet a broader durable design-system commitment.
 
 ## Semantic tokens and theming intent
 
-Not settled yet. Current theme values remain executable implementation details in `apps/web/src/styles.css`.
+The React application uses the Playbook-standard Tailwind CSS 4 and shadcn/ui token model. Shared theme semantics are expressed through the shadcn CSS variables and Tailwind theme mapping in `apps/web/src/styles.css`; exact values remain executable implementation details. The current product surface opts into the dark token set at the application root.
+
+Do not create a second parallel token system beside these theme variables.
 
 ## Typography and iconography
 
-Not settled yet. The current React app uses a system-oriented font stack and does not establish a durable project icon system.
+The current shadcn Nova baseline provides Geist Variable and Lucide for the React application. Those are executable implementation choices, not yet a broader product-level typography or iconography commitment.
 
 ## Navigation and page-layout model
 
@@ -32,7 +34,7 @@ The product must remain usable on narrow and wide screens. Exact breakpoints and
 
 ## Interaction and feedback conventions
 
-User-triggered watchlist changes remain explicit form submissions with visible pending/failure feedback. Broader interaction conventions are not settled yet.
+User-triggered watchlist changes remain explicit form submissions with visible pending/failure feedback. Standard reusable React controls come from application-owned shadcn/ui components, with Base UI providing primitive accessibility and interaction behavior where applicable.
 
 ## Loading, empty, error, and mutation-state presentation
 
@@ -48,4 +50,4 @@ Not settled yet. No product-level motion requirement has been established.
 
 ## Deliberate deviations from playbook defaults
 
-None currently recorded. The existing small React surface may continue using local bespoke CSS and native elements where the `react-ui` guidance permits them; this is not a project-specific convention fork. Revisit the standard React UI stack when component reuse or a larger UI surface makes that boundary useful.
+None currently recorded. The React application uses the standard `react-ui` baseline: Tailwind CSS 4 for styling, application-owned shadcn/ui components, and Base UI primitives.
