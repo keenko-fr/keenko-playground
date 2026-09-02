@@ -1,4 +1,4 @@
-name: Bootstrap tooling
+name: Bootstrap tooling verification
 
 on:
   push:
