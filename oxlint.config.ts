@@ -90,6 +90,7 @@ export default defineConfig({
     ],
     "func-style": "off",
     "import/consistent-type-specifier-style": "off",
+    "max-classes-per-file": "off",
     "no-use-before-define": [
       "error",
       {
