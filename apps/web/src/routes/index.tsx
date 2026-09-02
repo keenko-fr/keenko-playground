@@ -1,11 +1,7 @@
-import { cva } from "class-variance-authority";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { cva } from "class-variance-authority";
 import type { SubmitEvent } from "react";
-
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 
 import { showSearchQueryOptions } from "../features/shows/search";
 import { showSearchParamsValidator } from "../features/shows/search-params";
@@ -14,6 +10,9 @@ import { WatchlistStatusForm } from "../features/watchlist/status-form";
 import { WatchlistTable } from "../features/watchlist/table";
 import { m } from "../paraglide/messages.js";
 import type { searchShows } from "../server/shows";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 // ROUTE -----------------------------------------------------------------------------------------------------------------------------------
 export const Route = createFileRoute("/")({
@@ -37,15 +36,15 @@ const failureDisplay = {
 const SHOW_SEARCH_PAGE_STYLES = {
   shell: cva("mx-auto w-[min(72rem,calc(100%-2rem))] py-12 sm:py-20"),
   hero: cva("max-w-3xl"),
-  eyebrow: cva("mb-3 text-xs font-bold tracking-[0.14em] text-muted-foreground uppercase"),
+  eyebrow: cva("text-muted-foreground mb-3 text-xs font-bold tracking-[0.14em] uppercase"),
   title: cva("font-heading text-5xl leading-[0.95] font-semibold tracking-[-0.055em] sm:text-7xl lg:text-8xl"),
-  lede: cva("mt-6 mb-8 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg"),
+  lede: cva("text-muted-foreground mt-6 mb-8 max-w-2xl text-base leading-7 sm:text-lg"),
   searchForm: cva("grid gap-2"),
   searchRow: cva("grid gap-2 sm:grid-cols-[1fr_auto]"),
   searchInput: cva("h-10"),
   searchButton: cva("h-10 px-5 font-semibold"),
   results: cva("mt-14 min-h-40"),
-  stateMessage: cva("rounded-xl border bg-card/70 p-5 text-muted-foreground", {
+  stateMessage: cva("bg-card/70 text-muted-foreground rounded-xl border p-5", {
     variants: {
       tone: {
         default: "",
@@ -55,15 +54,15 @@ const SHOW_SEARCH_PAGE_STYLES = {
     defaultVariants: { tone: "default" },
   }),
   showGrid: cva("grid list-none grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-4 p-0"),
-  showCard: cva("h-full bg-card/80"),
+  showCard: cva("bg-card/80 h-full"),
   poster: cva("aspect-[210/295] w-full object-cover"),
-  posterPlaceholder: cva("aspect-[210/295] w-full bg-muted"),
+  posterPlaceholder: cva("bg-muted aspect-[210/295] w-full"),
   showContent: cva("grid gap-4"),
   showTitle: cva("text-xl"),
-  showMetadata: cva("grid gap-1 text-sm leading-6 text-muted-foreground"),
+  showMetadata: cva("text-muted-foreground grid gap-1 text-sm leading-6"),
   watchlistSection: cva("mt-20"),
   sectionTitle: cva("font-heading text-4xl font-semibold tracking-[-0.04em] sm:text-5xl"),
-  footer: cva("mt-10 text-sm text-muted-foreground"),
+  footer: cva("text-muted-foreground mt-10 text-sm"),
 };
 
 // PAGE ------------------------------------------------------------------------------------------------------------------------------------
@@ -138,8 +137,7 @@ function ShowSearchPage() {
 function SearchResults({ query, data, isPending, isError }: SearchResultsProps) {
   if (!query) return <p className={SHOW_SEARCH_PAGE_STYLES.stateMessage()}>{m.drift_search_prompt()}</p>;
   if (isPending) return <p className={SHOW_SEARCH_PAGE_STYLES.stateMessage()}>{m.ember_search_loading()}</p>;
-  if (isError || !data)
-    return <p className={SHOW_SEARCH_PAGE_STYLES.stateMessage({ tone: "error" })}>{m.grove_search_unavailable()}</p>;
+  if (isError || !data) return <p className={SHOW_SEARCH_PAGE_STYLES.stateMessage({ tone: "error" })}>{m.grove_search_unavailable()}</p>;
   if (data.status === "failure")
     return <p className={SHOW_SEARCH_PAGE_STYLES.stateMessage({ tone: "error" })}>{failureDisplay[data.issue]()}</p>;
   if (data.shows.length === 0) return <p className={SHOW_SEARCH_PAGE_STYLES.stateMessage()}>{m.fjord_search_empty()}</p>;

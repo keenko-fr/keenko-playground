@@ -4,12 +4,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { cva } from "class-variance-authority";
 import { Schema as S } from "effect";
 
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
 import { m } from "../../paraglide/messages.js";
 import { setWatchlistStatus } from "../../server/watchlist";
 import { watchlistQueryKey, watchlistQueryOptions } from "./query";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const watchlistFormValidator = S.toStandardSchemaV1(sWatchlistFields);
 
@@ -24,10 +23,10 @@ function isWatchlistStatus(value: string): value is WatchlistStatus {
 const WATCHLIST_STATUS_FORM_STYLES = {
   root: cva("grid gap-3"),
   field: cva("grid gap-1.5"),
-  label: cva("text-sm font-medium text-muted-foreground"),
+  label: cva("text-muted-foreground text-sm font-medium"),
   trigger: cva("w-full"),
   submit: cva("w-full font-semibold"),
-  error: cva("text-sm text-destructive"),
+  error: cva("text-destructive text-sm"),
 };
 
 export function WatchlistStatusForm({ tvmazeId }: { tvmazeId: number }) {
@@ -85,11 +84,7 @@ function StatusForm({ tvmazeId, currentStatus }: StatusFormProps) {
                 if (typeof nextStatus === "string" && isWatchlistStatus(nextStatus)) field.handleChange(nextStatus);
               }}
             >
-              <SelectTrigger
-                aria-labelledby={statusLabelId}
-                onBlur={field.handleBlur}
-                className={WATCHLIST_STATUS_FORM_STYLES.trigger()}
-              >
+              <SelectTrigger aria-labelledby={statusLabelId} onBlur={field.handleBlur} className={WATCHLIST_STATUS_FORM_STYLES.trigger()}>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

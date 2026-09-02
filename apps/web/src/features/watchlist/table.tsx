@@ -3,11 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import { createSortedRowModel, rowSortingFeature, sortFns, tableFeatures, useTable, type ColumnDef } from "@tanstack/react-table";
 import { cva } from "class-variance-authority";
 
-import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-
 import { m } from "../../paraglide/messages.js";
 import { watchlistQueryOptions } from "./query";
+import { Button } from "@/components/ui/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const features = tableFeatures({
   rowSortingFeature,
@@ -37,9 +36,9 @@ const columns: ColumnDef<typeof features, Watchlist>[] = [
 
 // STYLES ----------------------------------------------------------------------------------------------------------------------------------
 const WATCHLIST_TABLE_STYLES = {
-  shell: cva("overflow-hidden rounded-xl border bg-card/70"),
+  shell: cva("bg-card/70 overflow-hidden rounded-xl border"),
   sort: cva("-ml-2 justify-start font-semibold"),
-  state: cva("rounded-xl border bg-card/70 p-5 text-muted-foreground", {
+  state: cva("bg-card/70 text-muted-foreground rounded-xl border p-5", {
     variants: {
       tone: {
         default: "",

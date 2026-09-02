@@ -128,6 +128,6 @@
   }
 
   body {
-    @apply min-h-screen min-w-80 bg-background text-foreground;
+    @apply bg-background text-foreground min-h-screen min-w-80;
   }
 }
