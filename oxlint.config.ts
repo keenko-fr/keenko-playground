@@ -48,9 +48,10 @@ export default defineConfig({
   overrides: [
     {
       files: ["packages/backend/**/*.ts", "packages/backend/**/*.tsx"],
-      extends: [effectTsgoRecommended],
+      plugins: effectTsgoRecommended.plugins,
       jsPlugins: ["oxlint-plugin-effect/plugin"],
       rules: {
+        ...effectTsgoRecommended.rules,
         ...effectRecommended,
         ...keenkoRules,
         "effect/noTernary": "off",
@@ -77,8 +78,8 @@ export default defineConfig({
         "promise/prefer-await-to-callbacks": "off",
         "promise/prefer-await-to-then": "off",
         "typescript/promise-function-async": "off",
-        "typescript/return-await": "off"
-      }
-    }
-  ]
+        "typescript/return-await": "off",
+      },
+    },
+  ],
 });
