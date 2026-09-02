@@ -7,7 +7,7 @@
   ],
   "type": "module",
   "scripts": {
-    "postinstall": "effect-tsgo patch --typescript --oxlint",
+    "postinstall": "effect-tsgo patch --oxlint",
     "format": "oxfmt .",
     "format:check": "oxfmt --check .",
     "lint": "oxlint .",

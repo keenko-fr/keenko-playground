@@ -1,7 +1,8 @@
 import { defineConfig } from "oxfmt";
 import ultracite from "ultracite/oxfmt";
 
-const { endOfLine: _endOfLine, sortImports: _sortImports, tabWidth: _tabWidth, useTabs: _useTabs, ...ultraciteFormatting } = ultracite;
+const ultraciteFormatting = stripEditorConfigFields(ultracite);
+const ultraciteSortImports = typeof ultraciteFormatting.sortImports === "object" ? ultraciteFormatting.sortImports : {};
 
 export default defineConfig({
   ...ultraciteFormatting,
@@ -11,6 +12,7 @@ export default defineConfig({
     ".claude/skills/**",
     ".playbook/**",
     ".bootstrap/**",
+    ".tmp/**",
     ".output/**",
     "build/**",
     "coverage/**",
@@ -20,9 +22,11 @@ export default defineConfig({
     "apps/web/src/routeTree.gen.ts",
     "packages/backend/confect/_generated/**",
     "packages/backend/convex/**",
+    "vendor/**",
   ],
   printWidth: 140,
   sortImports: {
+    ...ultraciteSortImports,
     groups: [
       ["type-builtin", "type-external", "value-builtin", "value-external"],
       [
@@ -40,9 +44,10 @@ export default defineConfig({
         "unknown",
       ],
     ],
-    ignoreCase: true,
-    newlinesBetween: true,
-    order: "asc",
     sortSideEffects: false,
   },
 });
+
+function stripEditorConfigFields({ endOfLine: _endOfLine, tabWidth: _tabWidth, useTabs: _useTabs, ...formatting }: typeof ultracite) {
+  return formatting;
+}
