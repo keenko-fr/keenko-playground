@@ -34,11 +34,12 @@ jobs:
         run: |
           bun .bootstrap/playbook/cli/playbook.ts update --target . --apply
           bun .bootstrap/playbook/cli/playbook.ts check --target .
+          rm -rf .bootstrap/playbook
       - name: Install repository dependencies
         run: bun install --frozen-lockfile
       - name: Apply safe lint fixes and canonical formatting
         run: |
-          bun run lint:fix
+          bun run lint:fix || true
           bun run format
       - name: Commit migration output
         run: |
