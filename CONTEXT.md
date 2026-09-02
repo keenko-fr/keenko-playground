@@ -35,4 +35,4 @@ Users can search and inspect TV shows from TVMaze and maintain a small persisted
 
 ## Playbook source
 
-Current dogfood source: `keenko-fr/keenko-playbook` commit `d6df73cc43f6bfba5e23271994824c397735f03c`, preset `effect-convex-web`.
+Current dogfood source: `keenko-fr/keenko-playbook` commit `3ea6adca81a095768c5f9a66d51a1c5a9f8598d8`, preset `effect-convex-web`.

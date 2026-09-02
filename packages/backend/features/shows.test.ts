@@ -1,8 +1,9 @@
 import { expect, test } from "bun:test";
-import { Effect as E } from "effect";
+import { Effect as E, Layer } from "effect";
 
+import { TvMaze, TvMazeFailure } from "../infra/tvmaze";
 import type { Show } from "../schemas/shows";
-import { search, ShowFailure } from "./shows";
+import * as features from "./shows";
 
 const SHOW = {
   id: 139,
@@ -22,27 +23,45 @@ const SHOW = {
 } satisfies Show;
 
 test("returns provider shows unchanged", async () => {
-  const shows = await E.runPromise(search("Girls", () => E.succeed([SHOW])));
+  const shows = await E.runPromise(
+    features.search("Girls").pipe(
+      E.provide(
+        Layer.succeed(TvMaze, {
+          search: (query) => {
+            expect(query).toBe("Girls");
+            return E.succeed([SHOW]);
+          },
+        })
+      )
+    )
+  );
   expect(shows).toEqual([SHOW]);
 });
 
-test("maps provider request failures to an unavailable show failure", async () => {
+test("maps provider unavailability to an unavailable show failure", async () => {
   const failure = await E.runPromise(
-    search("Girls", () => E.fail({ _tag: "TvMazeRequestFailure", status: 503 })).pipe(E.catchTag("ShowFailure", E.succeed))
+    features.search("Girls").pipe(
+      E.provide(
+        Layer.succeed(TvMaze, {
+          search: () => E.fail(new TvMazeFailure({ issue: "unavailable", cause: new Error("transport") })),
+        })
+      ),
+      E.catchTag("ShowFailure", E.succeed)
+    )
   );
-  expect(failure).toEqual(new ShowFailure({ issue: "unavailable" }));
-});
-
-test("maps provider network failures to an unavailable show failure", async () => {
-  const failure = await E.runPromise(
-    search("Girls", () => E.fail({ _tag: "TvMazeNetworkFailure" })).pipe(E.catchTag("ShowFailure", E.succeed))
-  );
-  expect(failure).toEqual(new ShowFailure({ issue: "unavailable" }));
+  expect(failure).toEqual(new features.ShowFailure({ issue: "unavailable" }));
 });
 
 test("maps invalid provider data to an invalid-response show failure", async () => {
   const failure = await E.runPromise(
-    search("Girls", () => E.fail({ _tag: "TvMazeDecodeFailure" })).pipe(E.catchTag("ShowFailure", E.succeed))
+    features.search("Girls").pipe(
+      E.provide(
+        Layer.succeed(TvMaze, {
+          search: () => E.fail(new TvMazeFailure({ issue: "invalid_response", cause: new Error("decode") })),
+        })
+      ),
+      E.catchTag("ShowFailure", E.succeed)
+    )
   );
-  expect(failure).toEqual(new ShowFailure({ issue: "invalid_response" }));
+  expect(failure).toEqual(new features.ShowFailure({ issue: "invalid_response" }));
 });

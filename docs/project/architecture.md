@@ -27,9 +27,9 @@ Responsibilities:
 
 Owns the backend boundary and reusable provider integration.
 
-It follows the canonical Playbook backend ownership topology in `.playbook/docs/conventions/backend-architecture.md` and `.playbook/docs/conventions/backend-file-topology.md`. The current slice has real `confect/`, `schemas/`, `features/`, and `infra/` owners; `data/` remains absent until persistence operations require it.
+It follows the canonical Playbook backend ownership topology in `.playbook/docs/conventions/backend-architecture.md` and `.playbook/docs/conventions/backend-file-topology.md`. The current slice has real `confect/`, `schemas/`, `features/`, `data/`, and `infra/` owners. `data/watchlist.ts` owns the indexed persistence operations required by the persisted watchlist slice.
 
-TVMaze provider payloads are adapter-owned `*ApiDto` values. The application `Show` representation is backend-shared because the current Confect, feature, and provider layers consume it. Convex owns Keenko watchlist state, not canonical TVMaze metadata.
+TVMaze provider wire schemas live under `schemas/tvmaze/`; `infra/tvmaze.ts` owns the Effect service that converts decoded provider values into the application `Show` representation. The service leaves its HTTP transport requirement open for outer runtime composition. Convex owns Keenko watchlist state, not canonical TVMaze metadata.
 
 ## Deferred boundaries
 

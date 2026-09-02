@@ -1,78 +1,53 @@
-import { Effect as E, Schema as S } from "effect";
+import { Context, Effect as E, Layer, Schema as S } from "effect";
+import { HttpClient, HttpClientResponse } from "effect/unstable/http";
 
-import { sShow, type Show } from "../schemas/shows";
+import { sShow } from "../schemas/shows";
+import { sSearchResponseApiDto, type ShowApiDto } from "../schemas/tvmaze/shows";
 
 // CONSTANTS -------------------------------------------------------------------------------------------------------------------------------
 const TVMAZE_API_URL = "https://api.tvmaze.com/search/shows";
 
-// SCHEMAS ---------------------------------------------------------------------------------------------------------------------------------
-const sImageApiDto = S.Struct({
-  medium: S.String,
-  original: S.String,
-});
-
-export const sShowApiDto = S.Struct({
-  id: S.Int,
-  url: S.String,
-  name: S.String,
-  type: S.String,
-  language: S.NullOr(S.String),
-  genres: S.Array(S.String),
-  status: S.String,
-  premiered: S.NullOr(S.String),
-  ended: S.NullOr(S.String),
-  image: S.NullOr(sImageApiDto),
-  summary: S.NullOr(S.String),
-});
-
-const sSearchResultApiDto = S.Struct({
-  score: S.Finite,
-  show: sShowApiDto,
-});
-
-const sSearchApiDto = S.Array(sSearchResultApiDto);
-
 // ERRORS ----------------------------------------------------------------------------------------------------------------------------------
-export type TvMazeFailure =
-  | { readonly _tag: "TvMazeNetworkFailure" }
-  | { readonly _tag: "TvMazeRequestFailure"; readonly status: number }
-  | { readonly _tag: "TvMazeDecodeFailure" };
+export const sTvMazeIssue = S.Literals(["unavailable", "invalid_response"]);
+export type TvMazeIssue = typeof sTvMazeIssue.Type;
 
-// SEARCH ----------------------------------------------------------------------------------------------------------------------------------
-export const search = E.fn("tvmaze.infra.search")(function* searchTvMazeEffect(query: string, request: TvMazeFetch = globalThis.fetch) {
-  const url = new URL(TVMAZE_API_URL);
-  url.searchParams.set("q", query);
+// oxlint-disable-next-line unicorn/throw-new-error -- Schema.TaggedError is an Effect factory, not a constructor.
+export class TvMazeFailure extends S.TaggedError<TvMazeFailure>()("TvMazeFailure", {
+  issue: sTvMazeIssue,
+  cause: S.optional(S.Defect()),
+}) {}
 
-  const response = yield* E.tryPromise({
-    try: () => request(url, { headers: { accept: "application/json" } }),
-    catch: (): TvMazeFailure => ({
-      _tag: "TvMazeNetworkFailure",
-    }),
-  }).pipe(
-    E.filterOrFail(
-      (candidate) => candidate.ok,
-      (candidate): TvMazeFailure => ({
-        _tag: "TvMazeRequestFailure",
-        status: candidate.status,
+// SERVICE ---------------------------------------------------------------------------------------------------------------------------------
+const make = E.gen(function* () {
+  const client = yield* HttpClient.HttpClient;
+
+  const search = E.fn("tvmaze.infra.search")(function* (query: string) {
+    const response = yield* client
+      .get(TVMAZE_API_URL, {
+        urlParams: { q: query },
+        acceptJson: true,
       })
-    )
-  );
+      .pipe(
+        E.flatMap(HttpClientResponse.filterStatusOk),
+        E.mapError((cause) => new TvMazeFailure({ issue: "unavailable", cause }))
+      );
 
-  const body: unknown = yield* E.tryPromise({
-    try: () => response.json(),
-    catch: (): TvMazeFailure => ({ _tag: "TvMazeDecodeFailure" }),
+    const results = yield* HttpClientResponse.schemaBodyJson(sSearchResponseApiDto)(response).pipe(
+      E.mapError((cause) => new TvMazeFailure({ issue: "invalid_response", cause }))
+    );
+    const shows = results.map(({ show }) => showFrom(show));
+
+    return yield* S.decodeUnknownEffect(S.Array(sShow))(shows).pipe(
+      E.mapError((cause) => new TvMazeFailure({ issue: "invalid_response", cause }))
+    );
   });
 
-  const results = yield* S.decodeUnknownEffect(sSearchApiDto)(body).pipe(
-    E.mapError((): TvMazeFailure => ({ _tag: "TvMazeDecodeFailure" }))
-  );
-
-  return yield* E.all(
-    results.map(({ show }) =>
-      S.decodeEffect(sShow)(showFrom(show)).pipe(E.mapError((): TvMazeFailure => ({ _tag: "TvMazeDecodeFailure" })))
-    )
-  );
+  return { search };
 });
+
+export class TvMaze extends Context.Service<TvMaze, E.Success<typeof make>>()("TvMaze") {
+  static readonly layer = Layer.effect(this, make);
+}
 
 // INTERNALS -------------------------------------------------------------------------------------------------------------------------------
 function showFrom(show: ShowApiDto) {
@@ -90,10 +65,3 @@ function showFrom(show: ShowApiDto) {
     summaryHtml: show.summary,
   };
 }
-
-// TYPES -----------------------------------------------------------------------------------------------------------------------------------
-export type ShowApiDto = typeof sShowApiDto.Type;
-
-export type TvMazeSearch = (query: string) => E.Effect<readonly Show[], TvMazeFailure>;
-
-export type TvMazeFetch = (input: string | URL, init?: RequestInit) => Promise<Response>;

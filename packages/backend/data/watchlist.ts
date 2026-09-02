@@ -1,7 +1,11 @@
-import { Effect as E } from "effect";
+import { Effect as E, Struct } from "effect";
 
 import { DatabaseReader, DatabaseWriter } from "../confect/_generated/services";
-import type { WatchlistDoc, WatchlistFields, WatchlistStatus } from "../schemas/watchlist";
+import { sWatchlistFields, type WatchlistDoc, type WatchlistInsert } from "../schemas/watchlist";
+
+// SCHEMAS ---------------------------------------------------------------------------------------------------------------------------------
+const sWatchlistStatusPatch = sWatchlistFields.mapFields(Struct.pick(["status"]));
+type WatchlistStatusPatch = typeof sWatchlistStatusPatch.Type;
 
 // FIND -------------------------------------------------------------------------------------------------------------------------------------
 export const findByTvmazeId = E.fn("watchlist.data.findByTvmazeId")((tvmazeId: number) =>
@@ -23,17 +27,17 @@ export const list = DatabaseReader.pipe(
 );
 
 // INSERT -----------------------------------------------------------------------------------------------------------------------------------
-export const insert = E.fn("watchlist.data.insert")((fields: WatchlistFields) =>
+export const insert = E.fn("watchlist.data.insert")((input: WatchlistInsert) =>
   DatabaseWriter.pipe(
-    E.flatMap((writer) => writer.table("watchlist").insert(fields)),
+    E.flatMap((writer) => writer.table("watchlist").insert(input)),
     E.orDie
   )
 );
 
 // PATCH ------------------------------------------------------------------------------------------------------------------------------------
-export const patchStatus = E.fn("watchlist.data.patchStatus")((id: WatchlistDoc["_id"], status: WatchlistStatus) =>
+export const patchStatus = E.fn("watchlist.data.patchStatus")((id: WatchlistDoc["_id"], patch: WatchlistStatusPatch) =>
   DatabaseWriter.pipe(
-    E.flatMap((writer) => writer.table("watchlist").patch(id, { status })),
+    E.flatMap((writer) => writer.table("watchlist").patch(id, patch)),
     E.orDie
   )
 );

@@ -1,4 +1,4 @@
-import { sWatchlistFields, type WatchlistStatus } from "@keenko-playground/backend/watchlist";
+import { sWatchlist, type WatchlistStatus } from "@keenko-playground/backend/watchlist";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { cva } from "class-variance-authority";
@@ -10,7 +10,7 @@ import { watchlistQueryKey, watchlistQueryOptions } from "./query";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-const watchlistFormValidator = S.toStandardSchemaV1(sWatchlistFields);
+const watchlistFormValidator = S.toStandardSchemaV1(sWatchlist);
 
 function isWatchlistStatus(value: string): value is WatchlistStatus {
   if (value === "planned") return true;
@@ -40,13 +40,13 @@ export function WatchlistStatusForm({ tvmazeId }: { tvmazeId: number }) {
 function StatusForm({ tvmazeId, currentStatus }: StatusFormProps) {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: async (value: typeof sWatchlistFields.Type) => await setWatchlistStatus({ data: value }),
+    mutationFn: async (value: typeof sWatchlist.Type) => await setWatchlistStatus({ data: value }),
     onSuccess: async (result) => {
       if (result.status === "success") await queryClient.invalidateQueries({ queryKey: watchlistQueryKey });
     },
   });
   const form = useForm({
-    defaultValues: { tvmazeId, status: currentStatus ?? "planned" } satisfies typeof sWatchlistFields.Type,
+    defaultValues: { tvmazeId, status: currentStatus ?? "planned" } satisfies typeof sWatchlist.Type,
     validators: { onSubmit: watchlistFormValidator },
     onSubmit: async ({ value }) => {
       await mutation.mutateAsync(value);

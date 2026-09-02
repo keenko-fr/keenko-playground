@@ -1,7 +1,8 @@
 import { expect, test } from "bun:test";
 import { Effect as E } from "effect";
+import { FetchHttpClient } from "effect/unstable/http";
 
-import { search } from "./tvmaze";
+import { TvMaze } from "./tvmaze";
 
 const SHOW = {
   id: 139,
@@ -22,8 +23,9 @@ const SHOW = {
 
 test("decodes and normalizes TVMaze search results", async () => {
   const shows = await E.runPromise(
-    search("Girls & Co", async (input) => {
+    search("Girls & Co", async (input, init) => {
       expect(String(input)).toBe("https://api.tvmaze.com/search/shows?q=Girls+%26+Co");
+      expect(new Headers(init?.headers).get("accept")).toBe("application/json");
       return Response.json([{ score: 0.9, show: { ...SHOW, weight: 98 } }]);
     })
   );
@@ -45,37 +47,39 @@ test("decodes and normalizes TVMaze search results", async () => {
   ]);
 });
 
-test("reports non-success responses as request failures", async () => {
+test("reports non-success responses as unavailable", async () => {
   const failure = await E.runPromise(
-    search("Girls", async () => new Response("Unavailable", { status: 503 })).pipe(E.catchTag("TvMazeRequestFailure", E.succeed))
+    search("Girls", async () => new Response("Unavailable", { status: 503 })).pipe(E.catchTag("TvMazeFailure", E.succeed))
   );
-  expect(failure).toEqual({
-    _tag: "TvMazeRequestFailure",
-    status: 503,
-  });
+  expect(failure).toEqual(expect.objectContaining({ _tag: "TvMazeFailure", issue: "unavailable" }));
 });
 
-test("reports invalid provider payloads as decode failures", async () => {
+test("reports invalid provider payloads as invalid responses", async () => {
   const failure = await E.runPromise(
-    search("Girls", async () => Response.json({ show: SHOW })).pipe(E.catchTag("TvMazeDecodeFailure", E.succeed))
+    search("Girls", async () => Response.json({ show: SHOW })).pipe(E.catchTag("TvMazeFailure", E.succeed))
   );
-  expect(failure).toEqual({ _tag: "TvMazeDecodeFailure" });
+  expect(failure).toEqual(expect.objectContaining({ _tag: "TvMazeFailure", issue: "invalid_response" }));
 });
 
 test("rejects provider shows that violate the application Show schema", async () => {
   const failure = await E.runPromise(
-    search("Girls", async () => Response.json([{ score: 0.9, show: { ...SHOW, id: 0 } }])).pipe(
-      E.catchTag("TvMazeDecodeFailure", E.succeed)
-    )
+    search("Girls", async () => Response.json([{ score: 0.9, show: { ...SHOW, id: 0 } }])).pipe(E.catchTag("TvMazeFailure", E.succeed))
   );
-  expect(failure).toEqual({ _tag: "TvMazeDecodeFailure" });
+  expect(failure).toEqual(expect.objectContaining({ _tag: "TvMazeFailure", issue: "invalid_response" }));
 });
 
-test("reports transport failures separately from HTTP failures", async () => {
+test("reports transport failures as unavailable", async () => {
   const failure = await E.runPromise(
     search("Girls", async () => {
       throw new Error("network unavailable");
-    }).pipe(E.catchTag("TvMazeNetworkFailure", E.succeed))
+    }).pipe(E.catchTag("TvMazeFailure", E.succeed))
   );
-  expect(failure).toEqual({ _tag: "TvMazeNetworkFailure" });
+  expect(failure).toEqual(expect.objectContaining({ _tag: "TvMazeFailure", issue: "unavailable" }));
 });
+
+function search(query: string, request: typeof globalThis.fetch) {
+  return E.gen(function* () {
+    const tvMaze = yield* TvMaze;
+    return yield* tvMaze.search(query);
+  }).pipe(E.provide(TvMaze.layer), E.provide(FetchHttpClient.layer), E.provideService(FetchHttpClient.Fetch, request));
+}

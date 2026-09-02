@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           repository: keenko-fr/keenko-playbook
-          ref: d6df73cc43f6bfba5e23271994824c397735f03c
+          ref: 3ea6adca81a095768c5f9a66d51a1c5a9f8598d8
           path: .bootstrap/playbook
       - name: Set up Bun
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6

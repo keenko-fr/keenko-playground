@@ -37,6 +37,6 @@ bun run --cwd apps/web dev
 
 ## Playbook
 
-The repository consumes the `effect-convex-web` preset from Keenko Playbook commit `d6df73cc43f6bfba5e23271994824c397735f03c`.
+The repository consumes the `effect-convex-web` preset from Keenko Playbook commit `3ea6adca81a095768c5f9a66d51a1c5a9f8598d8`.
 
 Generated `.playbook`, Codex, and Claude material is checked by CI against that exact source commit. Project-specific facts and architectural decisions live in `CONTEXT.md` and `docs/project/`.

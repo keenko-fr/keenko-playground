@@ -1,7 +1,7 @@
 import { FunctionSpec, GroupSpec } from "@confect/core";
 import { Schema as S } from "effect";
 
-import { ShowFailure } from "../features/shows";
+import * as features from "../features/shows";
 import { sShow } from "../schemas/shows";
 
 // SPEC ------------------------------------------------------------------------------------------------------------------------------------
@@ -12,6 +12,6 @@ export default GroupSpec.make()
       name: "search",
       args: () => S.Struct({ query: S.Trim.check(S.isNonEmpty()) }),
       returns: () => S.Array(sShow),
-      error: () => ShowFailure,
+      error: () => features.ShowFailure,
     })
   );
