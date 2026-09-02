@@ -1,53 +1,51 @@
 # Project UI
 
-Record durable project-specific visual and interaction decisions here. This document owns intent, meaning, and references. Linear owns feature/product scope and acceptance decisions. Code and configuration own executable implementations and exact values such as theme tokens, CSS values, and component code.
-
-Sections may explicitly say `Not settled yet.` Do not invent a durable choice merely to fill the template.
+This document records durable project-specific visual and interaction decisions. Linear remains authoritative for feature/product scope; executable theme values and component code remain in code/config.
 
 ## Design sources and references
 
-List relevant design sources. State explicitly when an external artifact such as Figma is authoritative, and name the scope of that delegation. A link alone does not delegate authority.
+No external design artifact is currently authoritative. The implemented React screens under `apps/web` are the current product reference, not a separate design specification.
 
 ## Visual direction
 
-Record the durable visual character and product-level visual constraints.
+Not settled yet. The current implementation uses a dark, content-first presentation for TV discovery and watchlist management, but that styling is not yet a broader durable design-system commitment.
 
 ## Semantic tokens and theming intent
 
-Record token meanings, theme relationships, and ownership. Link the executable theme source instead of copying exact values here.
+Not settled yet. Current theme values remain executable implementation details in `apps/web/src/styles.css`.
 
 ## Typography and iconography
 
-Record the chosen families, roles, and usage intent. Keep executable setup in code/config.
+Not settled yet. The current React app uses a system-oriented font stack and does not establish a durable project icon system.
 
 ## Navigation and page-layout model
 
-Record the durable navigation model, page hierarchy, and layout decisions.
+The current dogfood slice keeps TV discovery and watchlist management together in the canonical React application. A broader navigation or page hierarchy has not been settled.
 
 ## Density
 
-Record the project's density intent where it has been settled.
+Not settled yet.
 
 ## Responsive behavior
 
-Record product-level responsive intent and durable behavior decisions. Keep exact breakpoints and implementation values in code/config.
+The product must remain usable on narrow and wide screens. Exact breakpoints and layout mechanics remain implementation details.
 
 ## Interaction and feedback conventions
 
-Record settled interaction and feedback behavior that should remain consistent across the product.
+User-triggered watchlist changes remain explicit form submissions with visible pending/failure feedback. Broader interaction conventions are not settled yet.
 
 ## Loading, empty, error, and mutation-state presentation
 
-Record how the project intends to present these states when decisions have been settled.
+The current slices expose loading, empty, provider-error, and watchlist-mutation states in context rather than hiding them. A broader visual treatment for those states is not settled yet.
 
 ## Destructive-action conventions
 
-Record settled product behavior for destructive actions.
+Not settled yet. The current product slice has no destructive watchlist action.
 
 ## Motion principles
 
-Record the purpose and constraints of motion. Keep exact durations and implementation values in code/config.
+Not settled yet. No product-level motion requirement has been established.
 
 ## Deliberate deviations from playbook defaults
 
-Record intentional project-level UI deviations and the reason for each one. Use `docs/project/overrides.md` as required by the project's general override policy when the deviation changes a broader Keenko convention.
+None currently recorded. The existing small React surface may continue using local bespoke CSS and native elements where the `react-ui` guidance permits them; this is not a project-specific convention fork. Revisit the standard React UI stack when component reuse or a larger UI surface makes that boundary useful.
