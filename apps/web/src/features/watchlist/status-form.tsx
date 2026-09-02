@@ -52,7 +52,15 @@ function StatusForm({ tvmazeId, currentStatus }: StatusFormProps) {
               value={field.state.value}
               onBlur={field.handleBlur}
               onChange={(event) => {
-                field.handleChange(event.target.value as WatchlistStatus);
+                const nextStatus = event.target.value;
+                if (
+                  nextStatus === "planned" ||
+                  nextStatus === "watching" ||
+                  nextStatus === "completed" ||
+                  nextStatus === "dropped"
+                ) {
+                  field.handleChange(nextStatus);
+                }
               }}
             >
               <option value="planned">{m.oak_watchlist_planned()}</option>
