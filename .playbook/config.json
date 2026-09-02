@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "version": "0.1.0",
+  "preset": "effect-convex-web",
+  "modules": [
+    "typescript",
+    "react",
+    "effect",
+    "convex",
+    "confect",
+    "tanstack-router",
+    "tanstack-start",
+    "tanstack-query",
+    "tanstack-form",
+    "tanstack-table",
+    "paraglide",
+    "ui",
+    "testing"
+  ],
+  "skills": [
+    "ask-matt",
+    "code-review",
+    "codebase-design",
+    "confect",
+    "convex",
+    "diagnosing-bugs",
+    "domain-modeling",
+    "effect-ts",
+    "grill-with-docs",
+    "grilling",
+    "handoff",
+    "implement",
+    "improve-codebase-architecture",
+    "prototype",
+    "resolving-merge-conflicts",
+    "tdd",
+    "to-spec",
+    "to-tickets",
+    "unslop",
+    "wizard"
+  ],
+  "externalSkills": {},
+  "integrations": {
+    "tanstackIntent": true
+  }
+}

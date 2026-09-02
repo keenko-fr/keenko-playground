@@ -1,0 +1,8 @@
+{
+  "name": "tanstack-table",
+  "requires": [
+    "react"
+  ],
+  "skills": [],
+  "incompatibleWith": []
+}

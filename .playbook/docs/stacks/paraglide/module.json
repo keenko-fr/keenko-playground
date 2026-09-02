@@ -1,0 +1,8 @@
+{
+  "name": "paraglide",
+  "requires": [
+    "typescript"
+  ],
+  "skills": [],
+  "incompatibleWith": []
+}
