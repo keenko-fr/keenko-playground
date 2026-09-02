@@ -2,15 +2,15 @@
   "schemaVersion": 1,
   "sources": [
     {
-      "id": "convex",
-      "repository": "get-convex/agent-skills",
-      "upstreamRef": "main",
       "commit": "cbca615354d9bd457c2cf31186e2bca048ce2fd8",
-      "tree": "32112dcac99d94619fe84f760173f37c93d0b06b",
-      "rootPath": "",
-      "mode": "external",
+      "id": "convex",
+      "includes": [],
       "license": null,
-      "includes": []
+      "mode": "external",
+      "repository": "get-convex/agent-skills",
+      "rootPath": "",
+      "tree": "32112dcac99d94619fe84f760173f37c93d0b06b",
+      "upstreamRef": "main"
     }
   ]
 }

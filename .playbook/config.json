@@ -1,7 +1,8 @@
 {
-  "schemaVersion": 1,
-  "version": "0.1.0",
-  "preset": "effect-convex-web",
+  "externalSkills": {},
+  "integrations": {
+    "tanstackIntent": true
+  },
   "modules": [
     "typescript",
     "react",
@@ -17,6 +18,8 @@
     "react-ui",
     "testing"
   ],
+  "preset": "effect-convex-web",
+  "schemaVersion": 1,
   "skills": [
     "ask-matt",
     "code-review",
@@ -39,8 +42,5 @@
     "unslop",
     "wizard"
   ],
-  "externalSkills": {},
-  "integrations": {
-    "tanstackIntent": true
-  }
+  "version": "0.1.0"
 }
