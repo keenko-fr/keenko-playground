@@ -3,31 +3,6 @@ import { defineConfig } from "oxlint";
 import { recommended as effectRecommended } from "oxlint-plugin-effect/presets/recommended";
 import core from "ultracite/oxlint/core";
 
-const keenkoRules = {
-  "eslint/no-plusplus": "off",
-  "eslint/no-unused-vars": [
-    "error",
-    {
-      args: "all",
-      argsIgnorePattern: "^_",
-      caughtErrors: "all",
-      fix: {
-        imports: "safe-fix",
-        variables: "off",
-      },
-    },
-  ],
-  "func-style": "off",
-  "import/consistent-type-specifier-style": ["error", "prefer-top-level-if-only-type-imports"],
-  "no-use-before-define": [
-    "error",
-    {
-      functions: false,
-      typedefs: false,
-    },
-  ],
-} as const;
-
 export default defineConfig({
   extends: [core],
   ignorePatterns: [
@@ -52,7 +27,6 @@ export default defineConfig({
       rules: {
         ...effectTsgoRecommended.rules,
         ...effectRecommended,
-        ...keenkoRules,
         "effect/noTernary": "off",
         "effecttsgo/async-function": "off",
         "effecttsgo/crypto-random-uuid": "off",
@@ -73,7 +47,29 @@ export default defineConfig({
         "effecttsgo/process-env": "off",
         "effecttsgo/process-env-in-effect": "off",
         "effecttsgo/try-catch-in-effect-gen": "off",
+        "eslint/no-plusplus": "off",
+        "eslint/no-unused-vars": [
+          "error",
+          {
+            args: "all",
+            argsIgnorePattern: "^_",
+            caughtErrors: "all",
+            fix: {
+              imports: "safe-fix",
+              variables: "off",
+            },
+          },
+        ],
         "eslint/require-await": "off",
+        "func-style": "off",
+        "import/consistent-type-specifier-style": ["error", "prefer-top-level-if-only-type-imports"],
+        "no-use-before-define": [
+          "error",
+          {
+            functions: false,
+            typedefs: false,
+          },
+        ],
         "promise/prefer-await-to-callbacks": "off",
         "promise/prefer-await-to-then": "off",
         "typescript/promise-function-async": "off",
@@ -81,5 +77,28 @@ export default defineConfig({
       },
     },
   ],
-  rules: keenkoRules,
+  rules: {
+    "eslint/no-plusplus": "off",
+    "eslint/no-unused-vars": [
+      "error",
+      {
+        args: "all",
+        argsIgnorePattern: "^_",
+        caughtErrors: "all",
+        fix: {
+          imports: "safe-fix",
+          variables: "off",
+        },
+      },
+    ],
+    "func-style": "off",
+    "import/consistent-type-specifier-style": ["error", "prefer-top-level-if-only-type-imports"],
+    "no-use-before-define": [
+      "error",
+      {
+        functions: false,
+        typedefs: false,
+      },
+    ],
+  },
 });
