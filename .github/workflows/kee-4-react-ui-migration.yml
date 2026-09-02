@@ -23,38 +23,12 @@ jobs:
           bun-version: 1.4.0
       - name: Install dependencies
         run: bun install --frozen-lockfile
-      - name: Configure Tailwind and aliases
-        run: |
-          python3 <<'PY'
-          import json
-          from pathlib import Path
-
-          tsconfig_path = Path("apps/web/tsconfig.json")
-          tsconfig = json.loads(tsconfig_path.read_text())
-          compiler_options = tsconfig["compilerOptions"]
-          compiler_options["baseUrl"] = "."
-          compiler_options["paths"] = {"@/*": ["./src/*"]}
-          tsconfig_path.write_text(json.dumps(tsconfig, indent=2) + "\n")
-
-          vite_path = Path("apps/web/vite.config.ts")
-          vite = vite_path.read_text()
-          vite = vite.replace(
-              'import { tanstackStart } from "@tanstack/react-start/plugin/vite";\n',
-              'import { tanstackStart } from "@tanstack/react-start/plugin/vite";\nimport tailwindcss from "@tailwindcss/vite";\n',
-          )
-          vite = vite.replace(
-              '  plugins: [\n',
-              '  plugins: [\n    tailwindcss(),\n',
-          )
-          vite_path.write_text(vite)
-          PY
-      - name: Install React UI baseline
+      - name: Initialize shadcn Base UI primitives
         working-directory: apps/web
         run: |
-          bun add -D tailwindcss @tailwindcss/vite
-          bunx shadcn@latest init --base base --yes
+          bunx shadcn@latest init --preset base-nova --yes
           bunx shadcn@latest add button card input select table --yes
-      - name: Format generated application-owned source
+      - name: Format application-owned source
         run: bun run format
       - name: Commit migration baseline
         run: |
@@ -62,5 +36,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add apps/web bun.lock
           git diff --cached --stat
-          git commit -m "chore: adopt react ui baseline"
+          git commit -m "chore: initialize shadcn base ui"
           git push
