@@ -61,9 +61,7 @@ test("reports invalid provider payloads as invalid responses", async () => {
 });
 
 test("rejects provider shows that violate the application Show schema", async () => {
-  const failure = await E.runPromise(
-    E.flip(search("Girls", async () => Response.json([{ score: 0.9, show: { ...SHOW, id: 0 } }])))
-  );
+  const failure = await E.runPromise(E.flip(search("Girls", async () => Response.json([{ score: 0.9, show: { ...SHOW, id: 0 } }]))));
   expect(failure.issue).toBe("invalid_response");
   expect(failure.cause).toBeDefined();
 });
