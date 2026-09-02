@@ -28,15 +28,15 @@ export default defineConfig({
   },
   overrides: [
     {
-      files: ["packages/backend/**/*.ts", "apps/web/src/features/shows/search-params.ts", "apps/web/src/server/**/*.ts"],
       excludeFiles: [
         "packages/backend/**/*.test.ts",
         "packages/backend/confect/_generated/**",
         "packages/backend/convex/**",
         "apps/web/src/server/**/*.test.ts",
       ],
-      plugins: ["effecttsgo"],
+      files: ["packages/backend/**/*.ts", "apps/web/src/features/shows/search-params.ts", "apps/web/src/server/**/*.ts"],
       jsPlugins: ["oxlint-plugin-effect/plugin"],
+      plugins: ["effecttsgo"],
       rules: {
         ...effectTsgoRecommended.rules,
         ...effectRecommended,

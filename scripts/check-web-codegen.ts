@@ -10,11 +10,13 @@ let drifted = false;
 try {
   const subprocess = Bun.spawn(["bun", "run", "build"], {
     cwd: WEB,
-    stdout: "inherit",
     stderr: "inherit",
+    stdout: "inherit",
   });
   const exitCode = await subprocess.exited;
-  if (exitCode !== 0) throw new Error(`Web codegen/build exited with code ${exitCode}`);
+  if (exitCode !== 0) {
+    throw new Error(`Web codegen/build exited with code ${exitCode}`);
+  }
   const after = await readRouteTree();
   drifted = before !== after;
 } finally {
@@ -30,7 +32,9 @@ async function readRouteTree() {
   try {
     return await readFile(ROUTE_TREE, "utf-8");
   } catch (error) {
-    if (error instanceof Error && "code" in error && error.code === "ENOENT") return;
+    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
+      return;
+    }
     throw error;
   }
 }

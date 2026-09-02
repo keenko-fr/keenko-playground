@@ -6,17 +6,17 @@ const sImageApiDto = S.Struct({
 });
 
 export const sShowApiDto = S.Struct({
-  id: S.Int,
-  url: S.String,
-  name: S.String,
-  type: S.String,
-  language: S.NullOr(S.String),
-  genres: S.Array(S.String),
-  status: S.String,
-  premiered: S.NullOr(S.String),
   ended: S.NullOr(S.String),
+  genres: S.Array(S.String),
+  id: S.Int,
   image: S.NullOr(sImageApiDto),
+  language: S.NullOr(S.String),
+  name: S.String,
+  premiered: S.NullOr(S.String),
+  status: S.String,
   summary: S.NullOr(S.String),
+  type: S.String,
+  url: S.String,
 });
 export type ShowApiDto = typeof sShowApiDto.Type;
 

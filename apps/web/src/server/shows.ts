@@ -10,7 +10,9 @@ export const searchShows = createServerFn({ method: "GET" })
   .validator(showSearchArgsValidator)
   .handler(({ data }) => {
     const convexUrl = import.meta.env.VITE_CONVEX_URL;
-    if (!convexUrl) return { status: "failure", issue: "unavailable" } satisfies { status: "failure"; issue: "unavailable" };
+    if (!convexUrl) {
+      return { status: "failure", issue: "unavailable" } satisfies { status: "failure"; issue: "unavailable" };
+    }
 
     const ref = refs.public.shows.search;
     const args: Ref.Args<typeof ref> = data;
@@ -19,9 +21,9 @@ export const searchShows = createServerFn({ method: "GET" })
       E.match({
         onFailure: (failure) =>
           failure._tag === "ShowFailure"
-            ? ({ status: "failure", issue: failure.issue } satisfies { status: "failure"; issue: typeof failure.issue })
-            : ({ status: "failure", issue: "unavailable" } satisfies { status: "failure"; issue: "unavailable" }),
-        onSuccess: (shows) => ({ status: "success", shows }) satisfies { status: "success"; shows: typeof shows },
+            ? ({ issue: failure.issue, status: "failure" } satisfies { status: "failure"; issue: typeof failure.issue })
+            : ({ issue: "unavailable", status: "failure" } satisfies { status: "failure"; issue: "unavailable" }),
+        onSuccess: (shows) => ({ shows, status: "success" }) satisfies { status: "success"; shows: typeof shows },
       }),
       E.provide(HttpClient.layer(convexUrl))
     );

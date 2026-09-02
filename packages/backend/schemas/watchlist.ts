@@ -8,8 +8,8 @@ export type WatchlistStatus = typeof sWatchlistStatus.Type;
 
 // FIELDS ----------------------------------------------------------------------------------------------------------------------------------
 export const sWatchlistFields = S.Struct({
-  tvmazeId: sTvmazeId,
   status: sWatchlistStatus,
+  tvmazeId: sTvmazeId,
 });
 export type WatchlistFields = typeof sWatchlistFields.Type;
 

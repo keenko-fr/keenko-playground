@@ -6,8 +6,8 @@ export const watchlistQueryKey = ["watchlist"] as const;
 
 export function watchlistQueryOptions() {
   return queryOptions({
-    queryKey: watchlistQueryKey,
     queryFn: async () => await listWatchlist(),
+    queryKey: watchlistQueryKey,
     staleTime: 10_000,
   });
 }

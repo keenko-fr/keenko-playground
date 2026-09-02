@@ -8,16 +8,16 @@ export default GroupSpec.make()
   // QUERIES -------------------------------------------------------------------------------------------------------------------------------
   .addFunction(
     FunctionSpec.publicQuery({
-      name: "list",
       args: () => S.Struct({}),
+      name: "list",
       returns: () => S.Array(sWatchlist),
     })
   )
   // MUTATIONS -----------------------------------------------------------------------------------------------------------------------------
   .addFunction(
     FunctionSpec.publicMutation({
-      name: "setStatus",
       args: () => S.Struct({ tvmazeId: sTvmazeId, status: sWatchlistStatus }),
+      name: "setStatus",
       returns: () => sWatchlist,
     })
   );

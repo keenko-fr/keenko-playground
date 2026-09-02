@@ -9,9 +9,9 @@ export default GroupSpec.make()
   // ACTIONS -------------------------------------------------------------------------------------------------------------------------------
   .addFunction(
     FunctionSpec.publicAction({
-      name: "search",
       args: () => S.Struct({ query: S.Trim.check(S.isNonEmpty()) }),
-      returns: () => S.Array(sShow),
       error: () => features.ShowFailure,
+      name: "search",
+      returns: () => S.Array(sShow),
     })
   );

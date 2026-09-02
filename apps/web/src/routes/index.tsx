@@ -20,7 +20,9 @@ export const Route = createFileRoute("/")({
   loaderDeps: ({ search }) => ({ query: search.query ?? "" }),
   loader: async ({ context, deps }) => {
     await context.queryClient.query({ ...watchlistQueryOptions(), staleTime: "static" });
-    if (!deps.query) return;
+    if (!deps.query) {
+      return;
+    }
     return await context.queryClient.query({ ...showSearchQueryOptions(deps.query), staleTime: "static" });
   },
   component: ShowSearchPage,
@@ -135,12 +137,21 @@ function ShowSearchPage() {
 
 // COMPONENTS ------------------------------------------------------------------------------------------------------------------------------
 function SearchResults({ query, data, isPending, isError }: SearchResultsProps) {
-  if (!query) return <p className={SHOW_SEARCH_PAGE_STYLES.stateMessage()}>{m.drift_search_prompt()}</p>;
-  if (isPending) return <p className={SHOW_SEARCH_PAGE_STYLES.stateMessage()}>{m.ember_search_loading()}</p>;
-  if (isError || !data) return <p className={SHOW_SEARCH_PAGE_STYLES.stateMessage({ tone: "error" })}>{m.grove_search_unavailable()}</p>;
-  if (data.status === "failure")
+  if (!query) {
+    return <p className={SHOW_SEARCH_PAGE_STYLES.stateMessage()}>{m.drift_search_prompt()}</p>;
+  }
+  if (isPending) {
+    return <p className={SHOW_SEARCH_PAGE_STYLES.stateMessage()}>{m.ember_search_loading()}</p>;
+  }
+  if (isError || !data) {
+    return <p className={SHOW_SEARCH_PAGE_STYLES.stateMessage({ tone: "error" })}>{m.grove_search_unavailable()}</p>;
+  }
+  if (data.status === "failure") {
     return <p className={SHOW_SEARCH_PAGE_STYLES.stateMessage({ tone: "error" })}>{failureDisplay[data.issue]()}</p>;
-  if (data.shows.length === 0) return <p className={SHOW_SEARCH_PAGE_STYLES.stateMessage()}>{m.fjord_search_empty()}</p>;
+  }
+  if (data.shows.length === 0) {
+    return <p className={SHOW_SEARCH_PAGE_STYLES.stateMessage()}>{m.fjord_search_empty()}</p>;
+  }
 
   return (
     <ul className={SHOW_SEARCH_PAGE_STYLES.showGrid()}>
@@ -172,9 +183,9 @@ function SearchResults({ query, data, isPending, isError }: SearchResultsProps) 
   );
 }
 
-type SearchResultsProps = {
+interface SearchResultsProps {
   query: string;
   data: Awaited<ReturnType<typeof searchShows>> | undefined;
   isPending: boolean;
   isError: boolean;
-};
+}

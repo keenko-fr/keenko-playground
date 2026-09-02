@@ -10,16 +10,16 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 
 const features = tableFeatures({
   rowSortingFeature,
-  sortedRowModel: createSortedRowModel(),
   sortFns,
+  sortedRowModel: createSortedRowModel(),
 });
 
 // DISPLAY ---------------------------------------------------------------------------------------------------------------------------------
 const statusDisplay = {
-  planned: m.oak_watchlist_planned,
-  watching: m.pine_watchlist_watching,
   completed: m.quartz_watchlist_completed,
   dropped: m.river_watchlist_dropped,
+  planned: m.oak_watchlist_planned,
+  watching: m.pine_watchlist_watching,
 } satisfies Record<WatchlistStatus, () => string>;
 
 const columns: ColumnDef<typeof features, Watchlist>[] = [
@@ -29,8 +29,8 @@ const columns: ColumnDef<typeof features, Watchlist>[] = [
   },
   {
     accessorKey: "status",
-    header: m.xenia_watchlist_status,
     cell: (info) => statusDisplay[info.getValue<WatchlistStatus>()](),
+    header: m.xenia_watchlist_status,
   },
 ];
 
@@ -39,25 +39,30 @@ const WATCHLIST_TABLE_STYLES = {
   shell: cva("bg-card/70 overflow-hidden rounded-xl border"),
   sort: cva("-ml-2 justify-start font-semibold"),
   state: cva("bg-card/70 text-muted-foreground rounded-xl border p-5", {
+    defaultVariants: { tone: "default" },
     variants: {
       tone: {
         default: "",
         error: "border-destructive/40 text-destructive",
       },
     },
-    defaultVariants: { tone: "default" },
   }),
 };
 
 export function WatchlistTable() {
   const result = useQuery(watchlistQueryOptions());
   const data = result.data?.status === "success" ? result.data.watchlist : [];
-  const table = useTable({ features, columns, data });
+  const table = useTable({ columns, data, features });
 
-  if (result.isPending) return <p className={WATCHLIST_TABLE_STYLES.state()}>{m.zinc_watchlist_loading()}</p>;
-  if (result.isError || result.data?.status === "failure")
+  if (result.isPending) {
+    return <p className={WATCHLIST_TABLE_STYLES.state()}>{m.zinc_watchlist_loading()}</p>;
+  }
+  if (result.isError || result.data?.status === "failure") {
     return <p className={WATCHLIST_TABLE_STYLES.state({ tone: "error" })}>{m.violet_watchlist_unavailable()}</p>;
-  if (data.length === 0) return <p className={WATCHLIST_TABLE_STYLES.state()}>{m.aurora_watchlist_empty()}</p>;
+  }
+  if (data.length === 0) {
+    return <p className={WATCHLIST_TABLE_STYLES.state()}>{m.aurora_watchlist_empty()}</p>;
+  }
 
   return (
     <div className={WATCHLIST_TABLE_STYLES.shell()}>
@@ -104,13 +109,21 @@ export function WatchlistTable() {
 }
 
 function sortIndicator(sort: false | "asc" | "desc") {
-  if (sort === "asc") return " ↑";
-  if (sort === "desc") return " ↓";
+  if (sort === "asc") {
+    return " ↑";
+  }
+  if (sort === "desc") {
+    return " ↓";
+  }
   return "";
 }
 
 function sortAriaValue(sort: false | "asc" | "desc"): "ascending" | "descending" | "none" {
-  if (sort === "asc") return "ascending";
-  if (sort === "desc") return "descending";
+  if (sort === "asc") {
+    return "ascending";
+  }
+  if (sort === "desc") {
+    return "descending";
+  }
   return "none";
 }

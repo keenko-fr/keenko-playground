@@ -7,13 +7,13 @@ import { routeTree } from "./routeTree.gen";
 export function getRouter() {
   const queryClient = new QueryClient();
   const router = createRouter({
-    routeTree,
     context: { queryClient },
     defaultPreload: "intent",
+    routeTree,
     scrollRestoration: true,
   });
 
-  setupRouterSsrQueryIntegration({ router, queryClient });
+  setupRouterSsrQueryIntegration({ queryClient, router });
   return router;
 }
 

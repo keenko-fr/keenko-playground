@@ -8,13 +8,15 @@ import { watchlistSetStatusArgsValidator } from "./watchlist-input";
 
 export const listWatchlist = createServerFn({ method: "GET" }).handler(() => {
   const convexUrl = import.meta.env.VITE_CONVEX_URL;
-  if (!convexUrl) return { status: "failure", issue: "unavailable" } satisfies { status: "failure"; issue: "unavailable" };
+  if (!convexUrl) {
+    return { status: "failure", issue: "unavailable" } satisfies { status: "failure"; issue: "unavailable" };
+  }
 
   const ref = refs.public.watchlist.list;
   const program = HttpClient.HttpClient.pipe(
     E.flatMap((client) => client.query(ref)),
     E.match({
-      onFailure: () => ({ status: "failure", issue: "unavailable" }) satisfies { status: "failure"; issue: "unavailable" },
+      onFailure: () => ({ issue: "unavailable", status: "failure" }) satisfies { status: "failure"; issue: "unavailable" },
       onSuccess: (watchlist) => ({ status: "success", watchlist }) satisfies { status: "success"; watchlist: typeof watchlist },
     }),
     E.provide(HttpClient.layer(convexUrl))
@@ -27,14 +29,16 @@ export const setWatchlistStatus = createServerFn({ method: "POST" })
   .validator(watchlistSetStatusArgsValidator)
   .handler(({ data }) => {
     const convexUrl = import.meta.env.VITE_CONVEX_URL;
-    if (!convexUrl) return { status: "failure", issue: "unavailable" } satisfies { status: "failure"; issue: "unavailable" };
+    if (!convexUrl) {
+      return { status: "failure", issue: "unavailable" } satisfies { status: "failure"; issue: "unavailable" };
+    }
 
     const ref = refs.public.watchlist.setStatus;
     const args: Ref.Args<typeof ref> = data;
     const program = HttpClient.HttpClient.pipe(
       E.flatMap((client) => client.mutation(ref, args)),
       E.match({
-        onFailure: () => ({ status: "failure", issue: "unavailable" }) satisfies { status: "failure"; issue: "unavailable" },
+        onFailure: () => ({ issue: "unavailable", status: "failure" }) satisfies { status: "failure"; issue: "unavailable" },
         onSuccess: (watchlist) => ({ status: "success", watchlist }) satisfies { status: "success"; watchlist: typeof watchlist },
       }),
       E.provide(HttpClient.layer(convexUrl))

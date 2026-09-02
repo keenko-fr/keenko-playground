@@ -13,8 +13,8 @@ export type TvMazeIssue = typeof sTvMazeIssue.Type;
 
 // oxlint-disable-next-line unicorn/throw-new-error -- Schema.TaggedError is an Effect factory, not a constructor.
 export class TvMazeFailure extends S.TaggedError<TvMazeFailure>()("TvMazeFailure", {
-  issue: sTvMazeIssue,
   cause: S.optional(S.Defect()),
+  issue: sTvMazeIssue,
 }) {}
 
 // SERVICE ---------------------------------------------------------------------------------------------------------------------------------
@@ -26,21 +26,21 @@ const make = E.gen(function* () {
   const search = E.fn("tvmaze.infra.search")(function* (query: string) {
     const response = yield* client
       .get(TVMAZE_API_URL, {
-        urlParams: { q: query },
         acceptJson: true,
+        urlParams: { q: query },
       })
       .pipe(
         E.flatMap(HttpClientResponse.filterStatusOk),
-        E.mapError((cause) => new TvMazeFailure({ issue: "unavailable", cause }))
+        E.mapError((cause) => new TvMazeFailure({ cause, issue: "unavailable" }))
       );
 
     const results = yield* HttpClientResponse.schemaBodyJson(sSearchResponseApiDto)(response).pipe(
-      E.mapError((cause) => new TvMazeFailure({ issue: "invalid_response", cause }))
+      E.mapError((cause) => new TvMazeFailure({ cause, issue: "invalid_response" }))
     );
     const shows = results.map(({ show }) => showFrom(show));
 
     return yield* S.decodeEffect(S.Array(sShow))(shows).pipe(
-      E.mapError((cause) => new TvMazeFailure({ issue: "invalid_response", cause }))
+      E.mapError((cause) => new TvMazeFailure({ cause, issue: "invalid_response" }))
     );
   });
 
@@ -54,16 +54,16 @@ export class TvMaze extends Context.Service<TvMaze, E.Success<typeof make>>()("T
 // INTERNALS -------------------------------------------------------------------------------------------------------------------------------
 function showFrom(show: ShowApiDto) {
   return {
-    id: show.id,
-    url: show.url,
-    name: show.name,
-    type: show.type,
-    language: show.language,
-    genres: show.genres,
-    status: show.status,
-    premiered: show.premiered,
     ended: show.ended,
+    genres: show.genres,
+    id: show.id,
     image: show.image,
+    language: show.language,
+    name: show.name,
+    premiered: show.premiered,
+    status: show.status,
     summaryHtml: show.summary,
+    type: show.type,
+    url: show.url,
   };
 }

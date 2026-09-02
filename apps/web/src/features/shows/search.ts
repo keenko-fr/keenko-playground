@@ -4,9 +4,9 @@ import { searchShows } from "../../server/shows";
 
 export function showSearchQueryOptions(query: string) {
   return queryOptions({
-    queryKey: ["shows", "search", query] as const,
-    queryFn: async () => await searchShows({ data: { query } }),
     enabled: query.length > 0,
+    queryFn: async () => await searchShows({ data: { query } }),
+    queryKey: ["shows", "search", query] as const,
     staleTime: 60_000,
   });
 }

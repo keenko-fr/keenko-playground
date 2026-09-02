@@ -19,8 +19,8 @@ try {
 
   const subprocess = Bun.spawn(["bun", "run", "codegen"], {
     cwd: BACKEND,
-    stdout: "inherit",
     stderr: "inherit",
+    stdout: "inherit",
   });
   const exitCode = await subprocess.exited;
   if (exitCode !== 0) {
@@ -30,10 +30,10 @@ try {
   drifted = JSON.stringify(await snapshot(GENERATED)) !== JSON.stringify(before);
 } finally {
   for (const path of GENERATED) {
-    await rm(path, { recursive: true, force: true });
+    await rm(path, { force: true, recursive: true });
     await cp(join(backupRoot, relative(BACKEND, path)), path, { recursive: true });
   }
-  await rm(backupRoot, { recursive: true, force: true });
+  await rm(backupRoot, { force: true, recursive: true });
 }
 
 if (drifted) {
@@ -46,7 +46,9 @@ async function snapshot(roots: string[]) {
   for (const root of roots) {
     for (const file of await files(root)) {
       const path = relative(BACKEND, file).replaceAll("\\", "/");
-      if (GENERATED_EXCEPTIONS.has(path)) continue;
+      if (GENERATED_EXCEPTIONS.has(path)) {
+        continue;
+      }
       const hash = createHash("sha256")
         .update(await readFile(file))
         .digest("hex");
@@ -58,11 +60,16 @@ async function snapshot(roots: string[]) {
 
 async function files(root: string): Promise<string[]> {
   const out: string[] = [];
-  if (!(await exists(root))) return out;
+  if (!(await exists(root))) {
+    return out;
+  }
   for (const entry of await readdir(root, { withFileTypes: true })) {
     const path = join(root, entry.name);
-    if (entry.isDirectory()) out.push(...(await files(path)));
-    else if (entry.isFile()) out.push(path);
+    if (entry.isDirectory()) {
+      out.push(...(await files(path)));
+    } else if (entry.isFile()) {
+      out.push(path);
+    }
   }
   return out.sort();
 }

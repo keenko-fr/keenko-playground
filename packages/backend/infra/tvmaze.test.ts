@@ -6,20 +6,20 @@ import type { Show } from "../schemas/shows";
 import { TvMaze, type TvMazeFailure } from "./tvmaze";
 
 const SHOW = {
-  id: 139,
-  url: "https://www.tvmaze.com/shows/139/girls",
-  name: "Girls",
-  type: "Scripted",
-  language: "English",
-  genres: ["Drama", "Romance"],
-  status: "Ended",
-  premiered: "2012-04-15",
   ended: "2017-04-16",
+  genres: ["Drama", "Romance"],
+  id: 139,
   image: {
     medium: "https://static.tvmaze.com/uploads/images/medium_portrait/31/78286.jpg",
     original: "https://static.tvmaze.com/uploads/images/original_untouched/31/78286.jpg",
   },
+  language: "English",
+  name: "Girls",
+  premiered: "2012-04-15",
+  status: "Ended",
   summary: "<p>A comedy about the experiences of a group of girls.</p>",
+  type: "Scripted",
+  url: "https://www.tvmaze.com/shows/139/girls",
 };
 
 test("decodes and normalizes TVMaze search results", async () => {
@@ -33,17 +33,17 @@ test("decodes and normalizes TVMaze search results", async () => {
 
   expect(shows).toEqual([
     {
-      id: 139,
-      url: SHOW.url,
-      name: "Girls",
-      type: "Scripted",
-      language: "English",
-      genres: ["Drama", "Romance"],
-      status: "Ended",
-      premiered: "2012-04-15",
       ended: "2017-04-16",
+      genres: ["Drama", "Romance"],
+      id: 139,
       image: SHOW.image,
+      language: "English",
+      name: "Girls",
+      premiered: "2012-04-15",
+      status: "Ended",
       summaryHtml: SHOW.summary,
+      type: "Scripted",
+      url: SHOW.url,
     },
   ]);
 });
@@ -86,7 +86,11 @@ function search(query: string, request: typeof globalThis.fetch): E.Effect<reado
 }
 
 function fetchUrl(input: Parameters<typeof globalThis.fetch>[0]): string {
-  if (typeof input === "string") return input;
-  if (input instanceof URL) return input.toString();
+  if (typeof input === "string") {
+    return input;
+  }
+  if (input instanceof URL) {
+    return input.toString();
+  }
   return input.url;
 }

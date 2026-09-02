@@ -13,20 +13,26 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 const watchlistFormValidator = S.toStandardSchemaV1(sWatchlist);
 
 function isWatchlistStatus(value: string): value is WatchlistStatus {
-  if (value === "planned") return true;
-  if (value === "watching") return true;
-  if (value === "completed") return true;
+  if (value === "planned") {
+    return true;
+  }
+  if (value === "watching") {
+    return true;
+  }
+  if (value === "completed") {
+    return true;
+  }
   return value === "dropped";
 }
 
 // STYLES ----------------------------------------------------------------------------------------------------------------------------------
 const WATCHLIST_STATUS_FORM_STYLES = {
-  root: cva("grid gap-3"),
+  error: cva("text-destructive text-sm"),
   field: cva("grid gap-1.5"),
   label: cva("text-muted-foreground text-sm font-medium"),
-  trigger: cva("w-full"),
+  root: cva("grid gap-3"),
   submit: cva("w-full font-semibold"),
-  error: cva("text-destructive text-sm"),
+  trigger: cva("w-full"),
 };
 
 export function WatchlistStatusForm({ tvmazeId }: { tvmazeId: number }) {
@@ -42,24 +48,26 @@ function StatusForm({ tvmazeId, currentStatus }: StatusFormProps) {
   const mutation = useMutation({
     mutationFn: async (value: typeof sWatchlist.Type) => await setWatchlistStatus({ data: value }),
     onSuccess: async (result) => {
-      if (result.status === "success") await queryClient.invalidateQueries({ queryKey: watchlistQueryKey });
+      if (result.status === "success") {
+        await queryClient.invalidateQueries({ queryKey: watchlistQueryKey });
+      }
     },
   });
   const form = useForm({
     defaultValues: { tvmazeId, status: currentStatus ?? "planned" } satisfies typeof sWatchlist.Type,
-    validators: { onSubmit: watchlistFormValidator },
     onSubmit: async ({ value }) => {
       await mutation.mutateAsync(value);
     },
+    validators: { onSubmit: watchlistFormValidator },
   });
   const idleLabel = currentStatus ? m.tide_watchlist_update() : m.ulster_watchlist_add();
   const submitLabel = mutation.isPending ? m.stone_watchlist_saving() : idleLabel;
   const statusLabelId = `watchlist-status-${tvmazeId}`;
   const statusItems: { value: WatchlistStatus; label: string }[] = [
-    { value: "planned", label: m.oak_watchlist_planned() },
-    { value: "watching", label: m.pine_watchlist_watching() },
-    { value: "completed", label: m.quartz_watchlist_completed() },
-    { value: "dropped", label: m.river_watchlist_dropped() },
+    { label: m.oak_watchlist_planned(), value: "planned" },
+    { label: m.pine_watchlist_watching(), value: "watching" },
+    { label: m.quartz_watchlist_completed(), value: "completed" },
+    { label: m.river_watchlist_dropped(), value: "dropped" },
   ];
 
   return (
@@ -81,7 +89,9 @@ function StatusForm({ tvmazeId, currentStatus }: StatusFormProps) {
               items={statusItems}
               value={field.state.value}
               onValueChange={(nextStatus) => {
-                if (typeof nextStatus === "string" && isWatchlistStatus(nextStatus)) field.handleChange(nextStatus);
+                if (typeof nextStatus === "string" && isWatchlistStatus(nextStatus)) {
+                  field.handleChange(nextStatus);
+                }
               }}
             >
               <SelectTrigger aria-labelledby={statusLabelId} onBlur={field.handleBlur} className={WATCHLIST_STATUS_FORM_STYLES.trigger()}>
@@ -110,7 +120,7 @@ function StatusForm({ tvmazeId, currentStatus }: StatusFormProps) {
   );
 }
 
-type StatusFormProps = {
+interface StatusFormProps {
   tvmazeId: number;
   currentStatus: WatchlistStatus | undefined;
-};
+}
