@@ -1,13 +1,6 @@
 import type { Watchlist, WatchlistStatus } from "@keenko-playground/backend/watchlist";
 import { useQuery } from "@tanstack/react-query";
-import {
-  createSortedRowModel,
-  rowSortingFeature,
-  sortFns,
-  tableFeatures,
-  useTable,
-  type ColumnDef,
-} from "@tanstack/react-table";
+import { createSortedRowModel, rowSortingFeature, sortFns, tableFeatures, useTable, type ColumnDef } from "@tanstack/react-table";
 
 import { m } from "../../paraglide/messages.js";
 import { watchlistQueryOptions } from "./query";
