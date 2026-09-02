@@ -48,6 +48,10 @@ jobs:
         run: |
           bun .bootstrap/playbook/cli/playbook.ts update --target . --apply
           git diff --exit-code -- .playbook .agents .claude AGENTS.md CLAUDE.md
+      - name: Check materialized Playbook
+        run: bun .bootstrap/playbook/cli/playbook.ts check --target .
+      - name: Remove Playbook checkout
+        run: rm -rf .bootstrap
       - name: Check formatting
         run: bun run format:check
       - name: Lint
@@ -56,13 +60,21 @@ jobs:
         run: bun run typecheck
       - name: Run canonical check
         run: bun run check
-      - name: Check materialized Playbook
-        run: bun .bootstrap/playbook/cli/playbook.ts check --target .
+      - name: Audit bootstrap baseline
+        run: |
+          grep -F '"packageManager": "bun@1.4.0"' package.json
+          grep -F 'bun-version: 1.4.0' .github/workflows/check.yml
+          grep -F 'Use Bun `>=1.4.0 <2`' README.md
+          test -f apps/web/package.json
+          test -f packages/backend/package.json
+          test "$(find apps/web packages/backend -type f | wc -l)" -eq 2
+          if grep -R -F '4801d0401791000c627018dfca5db1b9a68c868a' --exclude-dir=.git --exclude-dir=node_modules .; then
+            exit 1
+          fi
       - name: Commit rematerialized snapshot
         env:
           BRANCH: gregorybouteiller/kee-4-dogfood-playbook-in-keenko-playground-with-codex-and-claude
         run: |
-          rm -rf .bootstrap
           rm -f .github/workflows/repin-playbook.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
