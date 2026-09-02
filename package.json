@@ -1,13 +1,14 @@
 {
   "name": "keenko-playground",
   "private": true,
+  "type": "module",
   "packageManager": "bun@1.4.0",
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
   "scripts": {
-    "postinstall": "effect-tsgo patch --oxlint",
+    "prepare": "effect-tsgo patch --oxlint",
     "format": "oxfmt .",
     "format:check": "oxfmt --check .",
     "lint": "oxlint .",
