@@ -2,10 +2,11 @@
 
 Canonical reusable conventions that cut across stack modules:
 
-- `backend-architecture.md`: backend layers, deep modules, package boundaries;
-- `schema-types.md`: Effect Schema representation/persistence/transport vocabulary;
-- `validation.md`: stable issue codes and typed failure vocabulary;
-- `frontend.md`: component ownership, DISPLAY/STYLES, React state/effects, accessibility;
+- `backend-architecture.md`: backend layers, representation/package ownership, external capability boundaries, deep modules, package boundaries;
+- `backend-file-topology.md`: canonical backend and Confect file section grammar and schema/type adjacency routing;
+- `schema-types.md`: Effect Schema representation/persistence/provider vocabulary, persisted-resource grammar, derivation, Patch/transform ownership;
+- `validation.md`: stable Issue vocabularies, Schema-tagged Failure conventions, diagnostic causes, and cross-layer translation;
+- `frontend.md`: renderer-neutral component ownership, DISPLAY, accessibility, UI completeness, and project UI decision ownership;
 - `frontend-file-topology.md`: canonical React file section order;
 - `i18n.md`: Paraglide/Sherlock message ownership and identity;
 - `migrations.md`: expand → migrate → contract and safe backfills.
