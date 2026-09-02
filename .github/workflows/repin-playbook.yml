@@ -1,0 +1,71 @@
+name: Repin Playbook
+
+on:
+  push:
+    branches:
+      - gregorybouteiller/kee-4-dogfood-playbook-in-keenko-playground-with-codex-and-claude
+    paths:
+      - .github/workflows/repin-playbook.yml
+
+permissions:
+  contents: write
+
+jobs:
+  repin:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out playground
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6
+        with:
+          bun-version: 1.4.0
+      - name: Record Bun runtime
+        run: bun --version
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Verify lockfile format
+        run: grep -F '"lockfileVersion": 2' bun.lock
+      - name: Check out pinned Playbook
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          repository: keenko-fr/keenko-playbook
+          ref: 3e4aef2ed2f01b0296fc1360e4f628a14f9880fc
+          path: .bootstrap/playbook
+      - name: Install Playbook dependencies
+        working-directory: .bootstrap/playbook
+        run: bun install --frozen-lockfile
+      - name: Materialize pinned Playbook
+        run: |
+          bun .bootstrap/playbook/cli/playbook.ts update --target . --apply
+          git diff --name-status
+          git diff -- .playbook/docs/core/dependencies.md .playbook/docs/core/tooling.md .playbook/lock.json
+          git add .playbook .agents .claude AGENTS.md CLAUDE.md
+      - name: Verify second materialization is idempotent
+        run: |
+          bun .bootstrap/playbook/cli/playbook.ts update --target . --apply
+          git diff --exit-code -- .playbook .agents .claude AGENTS.md CLAUDE.md
+      - name: Check formatting
+        run: bun run format:check
+      - name: Lint
+        run: bun run lint
+      - name: Typecheck
+        run: bun run typecheck
+      - name: Run canonical check
+        run: bun run check
+      - name: Check materialized Playbook
+        run: bun .bootstrap/playbook/cli/playbook.ts check --target .
+      - name: Commit rematerialized snapshot
+        env:
+          BRANCH: gregorybouteiller/kee-4-dogfood-playbook-in-keenko-playground-with-codex-and-claude
+        run: |
+          rm -rf .bootstrap
+          rm -f .github/workflows/repin-playbook.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git status --short
+          git commit -m "chore: rematerialize Playbook 3e4aef2"
+          git push origin "HEAD:${BRANCH}"
