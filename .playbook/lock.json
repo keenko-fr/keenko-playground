@@ -1,21 +1,21 @@
 {
   "schemaVersion": 1,
   "playbookFiles": {
-    "config.json": "e488ae4b631c9db1950c96fd9cf4bb999d4110dff61cca7b4ef8cd6812e7f646",
+    "config.json": "4009e1c034a05dc2b33ef3e2e648504e0f34473ae959ee63762b96b95ab4a7cf",
     "docs/conventions/backend-architecture.md": "56d52cdf590260439e1169dd996dc044a1ee9794682aadf1ce9457bb10214fd0",
     "docs/conventions/backend-file-topology.md": "62b8457dcb63552c07dbba7b521bb4da3ff37bc2939e579b4a698e13cef218f5",
     "docs/conventions/frontend-file-topology.md": "4bc7552f3860e239ae547997b4e548e79276f2362a9761e8320149461fecd718",
-    "docs/conventions/frontend.md": "b702a6c3386ba0570587cdef24efd46f19eb2e96932117f542ce5c56016194e7",
+    "docs/conventions/frontend.md": "bb6e2be2bd9f8d9d7832160ebfefe9a71f62eff8f572bd4d76c8728400cd83f6",
     "docs/conventions/i18n.md": "9988ac8f26c2596d0cc1f674a3e80b83a5e12704100e9d716991af341a50ca7f",
     "docs/conventions/migrations.md": "dd3c8f045513888aa5fd68ce29fb2dcea149806f42669cb7a4ea2b8e64c46360",
-    "docs/conventions/README.md": "af06ac93166bd5088146c8cc9d58d6d67ebe309b7d53d998283e27fad346d3ed",
+    "docs/conventions/README.md": "c70cc865b9d9f1d336c79c2175fde1e7e7e2958964c89017ac3545bfdaa42d5d",
     "docs/conventions/schema-types.md": "6b2c4ef497205bfbfbc16e45085a602b8db3869aa456f22cb35ec5fc57740e1d",
     "docs/conventions/validation.md": "9921957ceb73febb787d89f60d0f00959f6ec56b93345e36990a5a2748ccfabd",
     "docs/core/agent-behavior.md": "2f53692bcf41ba9548fc68774fe54d53f420818f35e1779bb2eabae556ff8551",
     "docs/core/code-style.md": "3e530ec2df63ab990f9639fef6f965bf791670ad7f2dda68d2f708e6b77d3bf2",
     "docs/core/collaboration.md": "bd0bd447f29d2b5717896c727e031b6dc9e866ada74cffea8563e5a8d3bfc6b0",
     "docs/core/dependencies.md": "75a3034d1953af458b6653f745bf7175fff30cf1fbf8c5449e53d9107152c335",
-    "docs/core/documentation.md": "7fbd09e72c1bd45e8dfc2f05031a2eed60ae8ebd61329057f63467c0c5b7c49d",
+    "docs/core/documentation.md": "aff0812d4d5b05d9d2a2cdfc4ab4b9a604c894ed79c56ad21db98cd7a16c90f9",
     "docs/core/generated-code.md": "6026ac45479498372c6d0ad66a52b907dec7310f664ec02733491090ebcb6cbb",
     "docs/core/git.md": "71c377bf012d4f200b89db9758b12669555559dcef6ba1d96f93c3ca53efd61c",
     "docs/core/security.md": "6c64b8f4c3b73a27136b1a460a09400073c12be23d4c66dcc4049290fa411430",
@@ -29,8 +29,10 @@
     "docs/stacks/effect/README.md": "d1c515445e12c4d6575fd0d86560005bc337b74c552030fc10f8196dcf9890fd",
     "docs/stacks/paraglide/module.json": "a6bf294eb7cf7b926a9f955741e1980b32faf3fd1162f8f833eb466117802049",
     "docs/stacks/paraglide/README.md": "38f27b77c0647a7716700323ffd23ec462a051cf63f6aeed5b145e5bdef55ecc",
+    "docs/stacks/react-ui/module.json": "0d2ca931efb753653ea91ed13bbfddda74ee51dbfe9671a0455c83d129b0d51d",
+    "docs/stacks/react-ui/README.md": "3eb62263915ac598f69481bc60b8d602da519081d5756c7566e18172c432b907",
     "docs/stacks/react/module.json": "df92fe0137b9759c7737a94e725902b9901764dca13674d5de13b1f0a3b16e7b",
-    "docs/stacks/react/README.md": "18a630b5a0a1d314657252ed26bac86631779c1f7ffda2c4fc6bf3e1bb7b8d5c",
+    "docs/stacks/react/README.md": "c2a2df59c3c5bbeb180de526897dfa8d39800e37432ca3fe88ee55b91508571c",
     "docs/stacks/tanstack-form/module.json": "2f592a12cb26fac15f265e5bac298eb7cbf4281a808722cc595fe1e6a031af77",
     "docs/stacks/tanstack-form/README.md": "0e323b1a7a852a25df0a8a16b0ac58ff6e3b461dc881cc26698604c733f1ff51",
     "docs/stacks/tanstack-query/module.json": "8e05c83dea767f95c0f87fe6a2dd33dc2ccf1a383f89e2076d355671ddf5e74a",
@@ -45,8 +47,6 @@
     "docs/stacks/testing/README.md": "2957b87f16ea08614ae5f87848137018e746af7036302fd535d30daf63e635fa",
     "docs/stacks/typescript/module.json": "5a3448902d16c0a8c293027b8dc0433069a1f44d850557f7dc5d7b80a769eb46",
     "docs/stacks/typescript/README.md": "d8f62f28e3a5b418ff141d514ad9fd91d7af3a4ea238b1e99eb0020f8a06bb93",
-    "docs/stacks/ui/module.json": "38793bd3a6feee4ea65891c61a6786990ecf6ae73268c5746344aa0aedc5b6d8",
-    "docs/stacks/ui/README.md": "e4169257062a6ffaf02ae6868bbbf72287de6d22938b46baf48804001cd73e4b",
     "external-sources.json": "e726a36d6d53203fdc4e2b52cb269899c3a507005ddfb3f97d7b9ff28d8415ce",
     "skills/ask-matt/references/upstream/agents/openai.yaml": "bdffbc5a0a99ed1b6ef3253d251d755fd18162b9845972e380007f844b09b05c",
     "skills/ask-matt/references/upstream/PHASE-BOUNDARIES.md": "a8aa20158609ef39e2b308b6ba0660c91066838d07a867202e63a7744a88a3ed",
@@ -174,7 +174,7 @@
     "wizard"
   ],
   "managedBlocks": {
-    "AGENTS.md": "b37dd4a50b82a54fc0be98b68ee4bf6dc27ecc2f3258ea791b063d261d2194ea",
-    "CLAUDE.md": "8a5ca97e69009f516c7bbd7de20caa24872339ae7380b5c771fffbb1982bae2b"
+    "AGENTS.md": "3a65f957cd179794274aa4ccb8a10fa807a6713a933d0a737fc78dc9b3914d1a",
+    "CLAUDE.md": "aeb7029b6c76693530e460ac52b5d61759ab95b1b5a8ceb66b2a5a87de94305b"
   }
 }

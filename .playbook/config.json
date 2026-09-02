@@ -14,7 +14,7 @@
     "tanstack-form",
     "tanstack-table",
     "paraglide",
-    "ui",
+    "react-ui",
     "testing"
   ],
   "skills": [
