@@ -50,8 +50,10 @@ jobs:
           git diff --exit-code -- .playbook .agents .claude AGENTS.md CLAUDE.md
       - name: Check materialized Playbook
         run: bun .bootstrap/playbook/cli/playbook.ts check --target .
-      - name: Remove Playbook checkout
-        run: rm -rf .bootstrap
+      - name: Remove temporary verification files
+        run: |
+          rm -rf .bootstrap
+          rm -f .github/workflows/repin-playbook.yml
       - name: Check formatting
         run: bun run format:check
       - name: Lint
@@ -75,7 +77,6 @@ jobs:
         env:
           BRANCH: gregorybouteiller/kee-4-dogfood-playbook-in-keenko-playground-with-codex-and-claude
         run: |
-          rm -f .github/workflows/repin-playbook.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
