@@ -37,6 +37,7 @@ jobs:
         run: bun .bootstrap/playbook/cli/playbook.ts check --target .
       - name: Verify repository
         run: |
+          rm -rf .bootstrap
           bun install --frozen-lockfile
           bun run check
       - name: Commit materialized update
