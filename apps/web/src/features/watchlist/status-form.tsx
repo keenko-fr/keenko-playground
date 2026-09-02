@@ -9,6 +9,13 @@ import { watchlistQueryKey, watchlistQueryOptions } from "./query";
 
 const watchlistFormValidator = S.toStandardSchemaV1(sWatchlistFields);
 
+function isWatchlistStatus(value: string): value is WatchlistStatus {
+  if (value === "planned") return true;
+  if (value === "watching") return true;
+  if (value === "completed") return true;
+  return value === "dropped";
+}
+
 export function WatchlistStatusForm({ tvmazeId }: { tvmazeId: number }) {
   const watchlist = useQuery(watchlistQueryOptions());
   const currentStatus =
@@ -53,14 +60,7 @@ function StatusForm({ tvmazeId, currentStatus }: StatusFormProps) {
               onBlur={field.handleBlur}
               onChange={(event) => {
                 const nextStatus = event.target.value;
-                if (
-                  nextStatus === "planned" ||
-                  nextStatus === "watching" ||
-                  nextStatus === "completed" ||
-                  nextStatus === "dropped"
-                ) {
-                  field.handleChange(nextStatus);
-                }
+                if (isWatchlistStatus(nextStatus)) field.handleChange(nextStatus);
               }}
             >
               <option value="planned">{m.oak_watchlist_planned()}</option>
