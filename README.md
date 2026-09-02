@@ -23,7 +23,9 @@ Shared packages such as `contracts` or `ui` are intentionally absent until real 
 
 ## Web app
 
-`apps/web` is a TanStack Start React app. Its first vertical slice keeps the search term in Router URL state, uses TanStack Query for server state, calls the generated Confect show-search ref from a Start server function, and renders all intentional interface copy through Paraglide.
+`apps/web` is a TanStack Start React app. Show discovery keeps the search term in Router URL state, uses TanStack Query for server state, calls the generated Confect show-search ref from a Start server function, and renders all intentional interface copy through Paraglide.
+
+The watchlist slice persists only Keenko-owned `{ tvmazeId, status }` state through Convex and Confect; TVMaze remains authoritative for show metadata. TanStack Form owns watchlist status editing, TanStack Query owns the persisted server state and invalidation, and TanStack Table renders the operational watchlist view.
 
 For local development, copy `apps/web/.env.example` to `apps/web/.env.local` and set `VITE_CONVEX_URL` to the Convex deployment serving `packages/backend`, then run:
 
