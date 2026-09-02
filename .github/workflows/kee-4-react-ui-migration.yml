@@ -26,7 +26,7 @@ jobs:
       - name: Initialize shadcn Base UI primitives
         working-directory: apps/web
         run: |
-          bunx shadcn@latest init --preset base-nova --yes
+          bunx shadcn@latest init --preset nova --base base --yes
           bunx shadcn@latest add button card input select table --yes
       - name: Format application-owned source
         run: bun run format
