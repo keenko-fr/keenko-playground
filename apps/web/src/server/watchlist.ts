@@ -35,7 +35,7 @@ export const setWatchlistStatus = createServerFn({ method: "POST" })
       E.flatMap((client) => client.mutation(ref, args)),
       E.match({
         onFailure: () => ({ status: "failure", issue: "unavailable" }) satisfies { status: "failure"; issue: "unavailable" },
-        onSuccess: () => ({ status: "success" }) satisfies { status: "success" },
+        onSuccess: (watchlist) => ({ status: "success", watchlist }) satisfies { status: "success"; watchlist: typeof watchlist },
       }),
       E.provide(HttpClient.layer(convexUrl))
     );

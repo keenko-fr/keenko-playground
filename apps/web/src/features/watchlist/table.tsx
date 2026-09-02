@@ -18,7 +18,7 @@ const features = tableFeatures({
   sortFns,
 });
 
-const columns: Array<ColumnDef<typeof features, Watchlist>> = [
+const columns: ColumnDef<typeof features, Watchlist>[] = [
   {
     accessorKey: "tvmazeId",
     header: m.willow_watchlist_show,
@@ -27,11 +27,6 @@ const columns: Array<ColumnDef<typeof features, Watchlist>> = [
     accessorKey: "status",
     header: m.xenia_watchlist_status,
     cell: (info) => statusLabel(info.getValue<WatchlistStatus>()),
-  },
-  {
-    accessorKey: "addedAt",
-    header: m.yarrow_watchlist_added,
-    cell: (info) => new Date(info.getValue<number>()).toISOString().slice(0, 10),
   },
 ];
 
@@ -80,16 +75,10 @@ export function WatchlistTable() {
 }
 
 function statusLabel(status: WatchlistStatus) {
-  switch (status) {
-    case "planned":
-      return m.oak_watchlist_planned();
-    case "watching":
-      return m.pine_watchlist_watching();
-    case "completed":
-      return m.quartz_watchlist_completed();
-    case "dropped":
-      return m.river_watchlist_dropped();
-  }
+  if (status === "planned") return m.oak_watchlist_planned();
+  if (status === "watching") return m.pine_watchlist_watching();
+  if (status === "completed") return m.quartz_watchlist_completed();
+  return m.river_watchlist_dropped();
 }
 
 function sortIndicator(sort: false | "asc" | "desc") {

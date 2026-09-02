@@ -14,7 +14,6 @@ export const sWatchlistDoc = SystemFields.extendWithSystemFields("watchlist", sW
 export const sWatchlist = S.Struct({
   tvmazeId: sTvmazeId,
   status: sWatchlistStatus,
-  addedAt: S.Number,
 });
 
 export type WatchlistStatus = typeof sWatchlistStatus.Type;
@@ -26,6 +25,5 @@ export function watchlistFrom(doc: WatchlistDoc): Watchlist {
   return {
     tvmazeId: doc.tvmazeId,
     status: doc.status,
-    addedAt: doc._creationTime,
   };
 }

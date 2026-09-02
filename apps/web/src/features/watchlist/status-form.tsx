@@ -32,6 +32,8 @@ function StatusForm({ tvmazeId, currentStatus }: StatusFormProps) {
       await mutation.mutateAsync(value);
     },
   });
+  const idleLabel = currentStatus ? m.tide_watchlist_update() : m.ulster_watchlist_add();
+  const submitLabel = mutation.isPending ? m.stone_watchlist_saving() : idleLabel;
 
   return (
     <form
@@ -46,7 +48,13 @@ function StatusForm({ tvmazeId, currentStatus }: StatusFormProps) {
         {(field) => (
           <label>
             <span>{m.north_watchlist_status_label()}</span>
-            <select value={field.state.value} onBlur={field.handleBlur} onChange={(event) => field.handleChange(event.target.value as WatchlistStatus)}>
+            <select
+              value={field.state.value}
+              onBlur={field.handleBlur}
+              onChange={(event) => {
+                field.handleChange(event.target.value as WatchlistStatus);
+              }}
+            >
               <option value="planned">{m.oak_watchlist_planned()}</option>
               <option value="watching">{m.pine_watchlist_watching()}</option>
               <option value="completed">{m.quartz_watchlist_completed()}</option>
@@ -56,7 +64,7 @@ function StatusForm({ tvmazeId, currentStatus }: StatusFormProps) {
         )}
       </form.Field>
       <button type="submit" disabled={mutation.isPending}>
-        {mutation.isPending ? m.stone_watchlist_saving() : currentStatus ? m.tide_watchlist_update() : m.ulster_watchlist_add()}
+        {submitLabel}
       </button>
       {mutation.data?.status === "failure" ? <span className="form-error">{m.violet_watchlist_unavailable()}</span> : null}
     </form>

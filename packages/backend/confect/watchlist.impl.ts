@@ -6,7 +6,7 @@ import databaseSchema from "./_generated/schema";
 import watchlist from "./watchlist.spec";
 
 // QUERIES ---------------------------------------------------------------------------------------------------------------------------------
-const listImpl = FunctionImpl.make(databaseSchema, watchlist, "list", () => list());
+const listImpl = FunctionImpl.make(databaseSchema, watchlist, "list", () => list);
 
 // MUTATIONS -------------------------------------------------------------------------------------------------------------------------------
 const setStatusImpl = FunctionImpl.make(databaseSchema, watchlist, "setStatus", (fields) => setStatus(fields));

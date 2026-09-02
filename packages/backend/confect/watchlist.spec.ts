@@ -18,6 +18,6 @@ export default GroupSpec.make()
     FunctionSpec.publicMutation({
       name: "setStatus",
       args: () => S.Struct({ tvmazeId: sTvmazeId, status: sWatchlistStatus }),
-      returns: () => S.Null,
+      returns: () => sWatchlist,
     })
   );
