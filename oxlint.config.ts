@@ -44,12 +44,11 @@ export default defineConfig({
   options: {
     typeAware: true,
   },
-  rules: keenkoRules,
   overrides: [
     {
       files: ["packages/backend/**/*.ts", "packages/backend/**/*.tsx"],
-      plugins: effectTsgoRecommended.plugins,
       jsPlugins: ["oxlint-plugin-effect/plugin"],
+      plugins: effectTsgoRecommended.plugins,
       rules: {
         ...effectTsgoRecommended.rules,
         ...effectRecommended,
@@ -82,4 +81,5 @@ export default defineConfig({
       },
     },
   ],
+  rules: keenkoRules,
 });
