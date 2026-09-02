@@ -24,7 +24,7 @@ The initial product is Keenko TV.
 
 Preset: `effect-convex-web`.
 
-Pinned source: `keenko-fr/keenko-playbook` commit `4801d0401791000c627018dfca5db1b9a68c868a`.
+Pinned source: `keenko-fr/keenko-playbook` commit `3e4aef2ed2f01b0296fc1360e4f628a14f9880fc`.
 
 ## References
 
