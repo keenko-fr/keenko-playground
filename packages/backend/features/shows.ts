@@ -13,6 +13,7 @@ export class ShowFailure extends S.TaggedError<ShowFailure>()("ShowFailure", {
 }) {}
 
 // SEARCH ----------------------------------------------------------------------------------------------------------------------------------
+// oxlint-disable-next-line func-names -- KEE-12 assigns operation identity through the E.fn tracing name, not the callback.
 export const search = E.fn("shows.features.search")(function* (query: string) {
   const tvMaze = yield* TvMaze;
   return yield* tvMaze.search(query).pipe(
@@ -26,9 +27,11 @@ export const search = E.fn("shows.features.search")(function* (query: string) {
 });
 
 // INTERNALS -------------------------------------------------------------------------------------------------------------------------------
-const showIssueFrom = Match.type<TvMazeIssue>().pipe(
-  Match.withReturnType<ShowIssue>(),
-  Match.when("unavailable", () => "unavailable"),
-  Match.when("invalid_response", () => "invalid_response"),
-  Match.exhaustive
-);
+function showIssueFrom(issue: TvMazeIssue): ShowIssue {
+  return Match.value(issue).pipe(
+    Match.withReturnType<ShowIssue>(),
+    Match.when("unavailable", () => "unavailable"),
+    Match.when("invalid_response", () => "invalid_response"),
+    Match.exhaustive
+  );
+}
