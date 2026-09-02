@@ -4,6 +4,9 @@ import type { SubmitEvent } from "react";
 
 import { showSearchQueryOptions } from "../features/shows/search";
 import { showSearchParamsValidator } from "../features/shows/search-params";
+import { watchlistQueryOptions } from "../features/watchlist/query";
+import { WatchlistStatusForm } from "../features/watchlist/status-form";
+import { WatchlistTable } from "../features/watchlist/table";
 import { m } from "../paraglide/messages.js";
 import type { searchShows } from "../server/shows";
 
@@ -12,6 +15,7 @@ export const Route = createFileRoute("/")({
   validateSearch: showSearchParamsValidator,
   loaderDeps: ({ search }) => ({ query: search.query ?? "" }),
   loader: async ({ context, deps }) => {
+    await context.queryClient.query({ ...watchlistQueryOptions(), staleTime: "static" });
     if (!deps.query) return;
     return await context.queryClient.query({ ...showSearchQueryOptions(deps.query), staleTime: "static" });
   },
@@ -67,6 +71,13 @@ function ShowSearchPage() {
         <SearchResults query={query} data={result.data} isPending={result.isPending} isError={result.isError} />
       </section>
 
+      <section className="watchlist-section" aria-labelledby="watchlist-title">
+        <p className="eyebrow">{m.maple_app_title()}</p>
+        <h2 id="watchlist-title">{m.brook_watchlist_title()}</h2>
+        <p className="lede">{m.canyon_watchlist_intro()}</p>
+        <WatchlistTable />
+      </section>
+
       <footer>
         <a href="https://www.tvmaze.com" rel="noreferrer">
           {m.meadow_tvmaze_attribution()}
@@ -99,6 +110,7 @@ function SearchResults({ query, data, isPending, isError }: SearchResultsProps) 
               <p>{m.lagoon_status({ status: show.status })}</p>
               {show.premiered ? <p>{m.juniper_premiered({ date: show.premiered })}</p> : null}
               {show.genres.length > 0 ? <p>{show.genres.join(" · ")}</p> : null}
+              <WatchlistStatusForm tvmazeId={show.id} />
             </div>
           </article>
         </li>

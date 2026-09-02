@@ -13,5 +13,21 @@
   "ivory_poster_alt": "Poster for {show}",
   "juniper_premiered": "Premiered {date}",
   "lagoon_status": "Status: {status}",
-  "meadow_tvmaze_attribution": "TV data provided by TVMaze"
+  "meadow_tvmaze_attribution": "TV data provided by TVMaze",
+  "north_watchlist_status_label": "Watchlist status",
+  "oak_watchlist_planned": "Planned",
+  "pine_watchlist_watching": "Watching",
+  "quartz_watchlist_completed": "Completed",
+  "river_watchlist_dropped": "Dropped",
+  "stone_watchlist_saving": "Saving…",
+  "tide_watchlist_update": "Update watchlist",
+  "ulster_watchlist_add": "Add to watchlist",
+  "violet_watchlist_unavailable": "Watchlist is temporarily unavailable.",
+  "willow_watchlist_show": "TVMaze ID",
+  "xenia_watchlist_status": "Status",
+  "yarrow_watchlist_added": "Added",
+  "zinc_watchlist_loading": "Loading watchlist…",
+  "aurora_watchlist_empty": "Your watchlist is empty. Add a show from the search results.",
+  "brook_watchlist_title": "Watchlist",
+  "canyon_watchlist_intro": "Keenko stores only your watch state and TVMaze identifier; show metadata stays with TVMaze."
 }
