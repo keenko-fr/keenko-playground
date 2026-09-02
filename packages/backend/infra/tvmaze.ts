@@ -1,4 +1,3 @@
-// oxlint-disable max-classes -- KEE-12 requires the capability Failure and Context.Service to share the infra owner.
 import { Context, Effect as E, Layer, Schema as S } from "effect";
 import { HttpClient, HttpClientResponse } from "effect/unstable/http";
 
@@ -51,7 +50,6 @@ const make = E.gen(function* () {
 export class TvMaze extends Context.Service<TvMaze, E.Success<typeof make>>()("TvMaze") {
   static readonly layer = Layer.effect(this, make);
 }
-// oxlint-enable max-classes
 
 // INTERNALS -------------------------------------------------------------------------------------------------------------------------------
 function showFrom(show: ShowApiDto) {
