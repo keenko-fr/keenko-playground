@@ -55,7 +55,7 @@ function StatusForm({ tvmazeId, currentStatus }: StatusFormProps) {
   const idleLabel = currentStatus ? m.tide_watchlist_update() : m.ulster_watchlist_add();
   const submitLabel = mutation.isPending ? m.stone_watchlist_saving() : idleLabel;
   const statusLabelId = `watchlist-status-${tvmazeId}`;
-  const statusItems: Array<{ value: WatchlistStatus; label: string }> = [
+  const statusItems: { value: WatchlistStatus; label: string }[] = [
     { value: "planned", label: m.oak_watchlist_planned() },
     { value: "watching", label: m.pine_watchlist_watching() },
     { value: "completed", label: m.quartz_watchlist_completed() },
