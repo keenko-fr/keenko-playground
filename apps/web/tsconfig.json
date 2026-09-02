@@ -8,7 +8,11 @@
     "jsx": "react-jsx",
     "verbatimModuleSyntax": true,
     "exactOptionalPropertyTypes": true,
-    "types": ["bun", "vite/client"]
+    "types": ["bun", "vite/client"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "vite.config.ts"]
 }
