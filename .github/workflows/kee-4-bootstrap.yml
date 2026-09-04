@@ -269,6 +269,7 @@ jobs:
           rm -f bun.lock
           bun install
           bun run format
+          bun run codegen
           sha256sum --check vendor/keenko/SHA256SUMS
           grep -F '"lockfileVersion": 2' bun.lock
           test ! -e .playbook
