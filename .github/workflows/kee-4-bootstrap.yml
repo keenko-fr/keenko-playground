@@ -1,0 +1,53 @@
+name: KEE-4 bootstrap
+
+on:
+  push:
+    branches:
+      - gregorybouteiller/kee-4-keenko-create-restart
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Playground
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+
+      - name: Probe registry and exact git source
+        shell: bash
+        run: |
+          set -euxo pipefail
+          node --version
+          bun --revision
+          if npm view keenko@0.1.0 version; then
+            echo "REGISTRY_AVAILABLE=yes"
+          else
+            echo "REGISTRY_AVAILABLE=no"
+          fi
+          runner="${RUNNER_TEMP}/git-runner"
+          mkdir -p "$runner"
+          cat > "$runner/package.json" <<'JSON'
+          {
+            "private": true,
+            "dependencies": {
+              "keenko": "github:keenko-fr/keenko-playbook#3b1a2a778b40b7b0259c6950f1dc9199d2a8e8c0"
+            }
+          }
+          JSON
+          cd "$runner"
+          bun install
+          cat node_modules/keenko/package.json
+          test -f node_modules/keenko/dist/cli/keenko.js
+          node node_modules/keenko/dist/cli/keenko.js --help
