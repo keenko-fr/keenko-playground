@@ -86,10 +86,12 @@ jobs:
           set -euxo pipefail
           target="${RUNNER_TEMP}/keenko-playground"
           artifact="keenko-0.1.0-3b1a2a7.tgz"
-          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
-          rsync -a --exclude=.git --exclude=node_modules --exclude=.nx "$target/" ./
 
-          mkdir -p vendor/keenko .github/workflows
+          cmp "$target/.github/workflows/ci.yml" .github/workflows/ci.yml
+          find . -mindepth 1 -maxdepth 1 ! -name .git ! -name .github -exec rm -rf {} +
+          rsync -a --exclude=.git --exclude=.github --exclude=node_modules --exclude=.nx "$target/" ./
+
+          mkdir -p vendor/keenko
           cp "$TARBALL" "vendor/keenko/$artifact"
           hash="$(sha256sum "vendor/keenko/$artifact" | awk '{print $1}')"
           printf '%s  %s\n' "$hash" "vendor/keenko/$artifact" > vendor/keenko/SHA256SUMS
@@ -111,11 +113,11 @@ jobs:
 
           This restart was created through `keenko create` from Keenko `0.1.0` packed from [`keenko-fr/keenko-playbook` commit `3b1a2a778b40b7b0259c6950f1dc9199d2a8e8c0`](https://github.com/keenko-fr/keenko-playbook/commit/3b1a2a778b40b7b0259c6950f1dc9199d2a8e8c0), the merge commit for KEE-14 / PR #9.
 
-          Keenko `0.1.0` is not published to npm yet. `vendor/keenko/keenko-0.1.0-3b1a2a7.tgz` is therefore the immutable installation artifact for this baseline. `vendor/keenko/SHA256SUMS` and CI verify that the artifact reproduces from the exact source commit. The tarball is an installation artifact, not a second convention source.
+          Keenko `0.1.0` is not published to npm yet. `vendor/keenko/keenko-0.1.0-3b1a2a7.tgz` is therefore the immutable installation artifact for this baseline. `vendor/keenko/SHA256SUMS` records its integrity, and bootstrap verification reproduces it byte-for-byte from the exact source commit. The tarball is an installation artifact, not a second convention source.
 
           ## Development
 
-          Follow the generated canonical guidance in [`.keenko/`](.keenko/README.md), including [runtime and dependency requirements](.keenko/docs/core/dependencies.md) and [verification](.keenko/docs/core/verification.md).
+          Follow the generated canonical guidance, especially [dependency and runtime requirements](.keenko/docs/core/dependencies.md), [verification](.keenko/docs/core/verification.md), and the [convention index](.keenko/docs/conventions/README.md).
 
           ```sh
           bun install --frozen-lockfile
@@ -143,7 +145,7 @@ jobs:
           ## Durable facts and constraints
 
           - The current bootstrap baseline is Keenko `0.1.0`, packed from Playbook merge commit `3b1a2a778b40b7b0259c6950f1dc9199d2a8e8c0`.
-          - Because that version is not yet published, the exact package artifact is retained under `vendor/keenko/` and verified against its source in CI.
+          - Because that version is not yet published, the exact package artifact is retained under `vendor/keenko/`; its source provenance and SHA-256 are recorded alongside it.
           - Reusable conventions are generated under `.keenko/`. Project-owned files may point to them but must not restate them as local policy.
           - Scored TVMaze feature work starts only after this bootstrap baseline is independently reviewed and frozen.
 
@@ -188,83 +190,6 @@ jobs:
 
           This tarball was produced with \`npm pack\` from the exact source commit after a frozen Playbook install under the KEE-14 reference runtimes. It is retained only because \`keenko@0.1.0\` is not yet published. Do not edit the archive.
           EOF
-
-          cat > .github/workflows/check.yml <<'YAML'
-          name: Check
-
-          on:
-            pull_request:
-            push:
-              branches:
-                - main
-
-          permissions:
-            contents: read
-
-          jobs:
-            check:
-              runs-on: ubuntu-latest
-              steps:
-                - name: Check out Playground
-                  uses: actions/checkout@v4
-
-                - name: Set up Node
-                  uses: actions/setup-node@v4
-                  with:
-                    node-version: 24
-
-                - name: Set up Bun
-                  uses: oven-sh/setup-bun@v2
-                  with:
-                    bun-version: 1.4.0
-
-                - name: Verify bootstrap artifact integrity
-                  run: sha256sum --check vendor/keenko/SHA256SUMS
-
-                - name: Install dependencies
-                  run: bun install --frozen-lockfile
-
-                - name: Run canonical check
-                  run: bun run check
-
-                - name: Verify code generation is idempotent
-                  run: |
-                    bun run codegen
-                    git diff --exit-code
-
-            source-pin:
-              runs-on: ubuntu-latest
-              steps:
-                - name: Check out Playground
-                  uses: actions/checkout@v4
-
-                - name: Check out exact Keenko source
-                  uses: actions/checkout@v4
-                  with:
-                    repository: keenko-fr/keenko-playbook
-                    ref: 3b1a2a778b40b7b0259c6950f1dc9199d2a8e8c0
-                    path: .bootstrap/playbook
-
-                - name: Set up Node
-                  uses: actions/setup-node@v4
-                  with:
-                    node-version: 24
-
-                - name: Set up Bun
-                  uses: oven-sh/setup-bun@v2
-                  with:
-                    bun-version: 1.4.0
-
-                - name: Reproduce exact bootstrap package
-                  shell: bash
-                  run: |
-                    set -euo pipefail
-                    test "$(git -C .bootstrap/playbook rev-parse HEAD)" = "3b1a2a778b40b7b0259c6950f1dc9199d2a8e8c0"
-                    bun install --cwd .bootstrap/playbook --frozen-lockfile
-                    mkdir -p "${RUNNER_TEMP}/pack"
-                    packed_name="$(cd .bootstrap/playbook && npm pack --pack-destination "${RUNNER_TEMP}/pack" --silent | tail -n 1)"
-                    cmp "${RUNNER_TEMP}/pack/${packed_name}" vendor/keenko/keenko-0.1.0-3b1a2a7.tgz
-          YAML
 
           rm -f bun.lock
           bun install
