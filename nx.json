@@ -1,0 +1,18 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "defaultBase": "main",
+  "neverConnectToCloud": true,
+  "sync": {
+    "globalGenerators": ["keenko:sync"]
+  },
+  "targetDefaults": {
+    "build": {
+      "cache": true,
+      "dependsOn": ["^build"]
+    },
+    "typecheck": {
+      "cache": true,
+      "dependsOn": ["^typecheck"]
+    }
+  }
+}

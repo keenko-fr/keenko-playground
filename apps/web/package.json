@@ -1,0 +1,65 @@
+{
+  "name": "@keenko-playground/web",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#/*": "./src/*",
+    "#components/*": "./src/components/*.tsx",
+    "#hooks/*": "./src/hooks/*.ts",
+    "#lib/*": "./src/lib/*.ts"
+  },
+  "scripts": {
+    "dev": "vite dev --port 3000",
+    "generate-routes": "tsr generate",
+    "build": "vite build",
+    "preview": "vite preview",
+    "codegen": "paraglide-js compile --project ./project.inlang --outdir ./src/paraglide --no-emit-readme && tsr generate",
+    "typecheck": "node ../../node_modules/@typescript/native/bin/tsc --noEmit"
+  },
+  "dependencies": {
+    "@confect/react": "10.0.0-next.21",
+    "@faker-js/faker": "10.3.0",
+    "@keenko-playground/backend": "workspace:*",
+    "@keenko-playground/shared": "workspace:*",
+    "@keenko-playground/ui": "workspace:*",
+    "@tailwindcss/vite": "4.3.3",
+    "@tanstack/match-sorter-utils": "9.1.2",
+    "@tanstack/react-devtools": "0.10.12",
+    "@tanstack/react-form": "1.33.5",
+    "@tanstack/react-query": "5.102.8",
+    "@tanstack/react-query-devtools": "5.102.8",
+    "@tanstack/react-router": "1.170.32",
+    "@tanstack/react-router-devtools": "1.167.1",
+    "@tanstack/react-router-ssr-query": "1.167.2",
+    "@tanstack/react-start": "1.168.49",
+    "@tanstack/react-table": "9.2.4",
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "lucide-react": "0.577.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "tailwind-merge": "3.0.2",
+    "tailwindcss": "4.3.3",
+    "tw-animate-css": "1.3.6",
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "@inlang/paraglide-js": "2.25.0",
+    "@tailwindcss/typography": "0.5.16",
+    "@tanstack/devtools-vite": "0.8.5",
+    "@tanstack/router-cli": "1.167.33",
+    "@types/node": "22.10.2",
+    "@types/react": "19.2.0",
+    "@types/react-dom": "19.2.0",
+    "@typescript/native": "npm:typescript@7.0.2",
+    "@vitejs/plugin-react": "6.0.1",
+    "typescript": "6.0.2",
+    "vite": "8.0.0"
+  },
+  "nx": {
+    "tags": [
+      "type:app",
+      "scope:web"
+    ]
+  }
+}
