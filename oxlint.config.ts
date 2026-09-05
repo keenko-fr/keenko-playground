@@ -1,0 +1,63 @@
+import { recommended as effectTsgoRecommended } from "@effect/tsgo/oxlint-presets";
+import { defineConfig } from "oxlint";
+import { recommended as effectRecommended } from "oxlint-plugin-effect/presets/recommended";
+import core from "ultracite/oxlint/core";
+
+export default defineConfig({
+  extends: [core],
+  ignorePatterns: [
+    ".keenko/**",
+    ".agents/skills/**",
+    ".claude/skills/**",
+    "**/_generated/**",
+    "**/routeTree.gen.ts",
+    "packages/backend/confect/**",
+    "packages/backend/convex/**",
+    "!packages/backend/convex/tsconfig.json",
+    "!packages/backend/convex/convex.config.ts",
+  ],
+  jsPlugins: ["@nx/oxlint/boundaries-plugin", "oxlint-plugin-effect/plugin"],
+  options: { typeAware: true },
+  overrides: [
+    {
+      files: ["apps/web/**/*"],
+      rules: {
+        "eslint/no-empty-function": "off",
+        "eslint/no-use-before-define": "off",
+        "eslint/require-await": "off",
+        "eslint/sort-keys": "off",
+      },
+    },
+    {
+      files: ["packages/ui/**/*"],
+      rules: { "eslint/sort-keys": "off" },
+    },
+    {
+      files: ["packages/backend/**/*.ts"],
+      rules: {
+        ...effectTsgoRecommended.rules,
+        ...effectRecommended,
+        "effect/noTernary": "off",
+      },
+    },
+  ],
+  plugins: ["effecttsgo"],
+  rules: {
+    "@nx/enforce-module-boundaries": [
+      "error",
+      {
+        allow: [],
+        allowCircularSelfDependency: true,
+        depConstraints: [
+          { onlyDependOnLibsWithTags: ["scope:backend", "scope:ui", "scope:shared"], sourceTag: "scope:web" },
+          { onlyDependOnLibsWithTags: ["scope:shared"], sourceTag: "scope:backend" },
+          { onlyDependOnLibsWithTags: ["scope:shared"], sourceTag: "scope:ui" },
+          { onlyDependOnLibsWithTags: [], sourceTag: "scope:shared" },
+        ],
+      },
+    ],
+    "eslint/no-plusplus": "off",
+    "func-style": "off",
+    "import/consistent-type-specifier-style": ["error", "prefer-top-level-if-only-type-imports"],
+  },
+});

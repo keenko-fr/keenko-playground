@@ -1,0 +1,36 @@
+{
+  "name": "@keenko-playground/backend",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#lib/*": "./src/lib/*.ts"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "node ../../node_modules/@typescript/native/bin/tsc --noEmit",
+    "codegen": "confect codegen",
+    "typecheck": "node ../../node_modules/@typescript/native/bin/tsc --noEmit"
+  },
+  "dependencies": {
+    "@confect/core": "10.0.0-next.21",
+    "@confect/server": "10.0.0-next.21",
+    "@effect/platform-node": "4.0.0-rc.112",
+    "@keenko-playground/shared": "workspace:*",
+    "convex": "1.45.0",
+    "effect": "4.0.0-rc.112"
+  },
+  "devDependencies": {
+    "@confect/cli": "10.0.0-next.21",
+    "@typescript/native": "npm:typescript@7.0.2",
+    "typescript": "6.0.2"
+  },
+  "nx": {
+    "tags": [
+      "type:lib",
+      "scope:backend"
+    ]
+  }
+}
