@@ -1,0 +1,75 @@
+{
+  "name": "@keenko-playground/web",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#/*": "./src/*",
+    "#components/*": "./src/components/*.tsx",
+    "#hooks/*": "./src/hooks/*.ts",
+    "#lib/*": "./src/lib/*.ts"
+  },
+  "scripts": {
+    "dev": "vite dev --port 3000",
+    "generate-routes": "tsr generate",
+    "build": "vite build",
+    "preview": "vite preview",
+    "codegen": "paraglide-js compile --project ./project.inlang --outdir ./src/paraglide --strategy url baseLocale --no-emit-readme && tsr generate"
+  },
+  "dependencies": {
+    "@convex-dev/react-query": "0.1.0",
+    "@faker-js/faker": "^10.3.0",
+    "@keenko-playground/shared": "workspace:*",
+    "@keenko-playground/ui": "workspace:*",
+    "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/match-sorter-utils": "latest",
+    "@tanstack/react-devtools": "latest",
+    "@tanstack/react-form": "latest",
+    "@tanstack/react-query": "latest",
+    "@tanstack/react-query-devtools": "latest",
+    "@tanstack/react-router": "latest",
+    "@tanstack/react-router-devtools": "latest",
+    "@tanstack/react-router-ssr-query": "latest",
+    "@tanstack/react-start": "latest",
+    "@tanstack/react-table": "latest",
+    "convex": "1.45.0",
+    "effect": "4.0.0-rc.112",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tailwindcss": "^4.1.18",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@inlang/paraglide-js": "2.25.0",
+    "@tanstack/devtools-vite": "latest",
+    "@tanstack/router-cli": "1.167.34",
+    "@testing-library/dom": "10.4.1",
+    "@testing-library/react": "16.3.3",
+    "@types/node": "24.13.3",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^6.0.1",
+    "jsdom": "27.4.0",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "lightningcss"
+    ]
+  },
+  "nx": {
+    "tags": [
+      "type:app",
+      "scope:web"
+    ],
+    "targets": {
+      "typecheck": {
+        "command": "node ../../node_modules/@typescript/native/bin/tsc --noEmit -p tsconfig.json",
+        "options": {
+          "cwd": "{projectRoot}"
+        }
+      }
+    }
+  }
+}

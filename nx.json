@@ -1,0 +1,29 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "analytics": false,
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "production": ["default"],
+    "sharedGlobals": []
+  },
+  "cli": {
+    "packageManager": "bun"
+  },
+  "migrate": {
+    "agentic": false,
+    "createCommits": false
+  },
+  "plugins": [
+    {
+      "exclude": ["apps/web/vite.config.ts"],
+      "options": {
+        "testMode": "run",
+        "testTargetName": "test"
+      },
+      "plugin": "@nx/vitest"
+    }
+  ],
+  "sync": {
+    "globalGenerators": ["keenko:sync"]
+  }
+}
