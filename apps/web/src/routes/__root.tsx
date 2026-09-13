@@ -1,0 +1,55 @@
+import type { ConvexQueryClient } from "@convex-dev/react-query";
+import { TanStackDevtools } from "@tanstack/react-devtools";
+import type { QueryClient } from "@tanstack/react-query";
+import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
+import { HeadContent, Scripts, createRootRouteWithContext } from "@tanstack/react-router";
+import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import type { ConvexReactClient } from "convex/react";
+
+import { ThemeProvider } from "#/infra/theme/provider";
+import * as m from "#/paraglide/messages";
+import { getLocale } from "#/paraglide/runtime";
+
+import { SiteHeader } from "./-site-header";
+
+import appCss from "#/styles.css?url";
+
+// ROUTE -----------------------------------------------------------------------------------------------------------------------------------
+export const Route = createRootRouteWithContext<RootRouteContext>()({
+  head: () => ({
+    links: [{ href: appCss, rel: "stylesheet" }],
+    meta: [{ charSet: "utf-8" }, { content: "width=device-width, initial-scale=1", name: "viewport" }, { title: m.calm_green_otter() }],
+  }),
+  notFoundComponent: () => <h1 className="text-3xl font-bold">{m.plain_dark_angelfish_scoop()}</h1>,
+  shellComponent: RootDocument,
+});
+interface RootRouteContext {
+  convexClient: ConvexReactClient;
+  convexQueryClient: ConvexQueryClient;
+  queryClient: QueryClient;
+  token: string | undefined;
+}
+
+// DOCUMENT --------------------------------------------------------------------------------------------------------------------------------
+function RootDocument({ children }: React.PropsWithChildren) {
+  return (
+    <html lang={getLocale()} suppressHydrationWarning>
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        <ThemeProvider defaultTheme="system" storageKey="theme">
+          <SiteHeader />
+          <main className="p-4">{children}</main>
+          <TanStackDevtools
+            plugins={[
+              { name: "Tanstack Router", render: <TanStackRouterDevtoolsPanel /> },
+              { name: "Tanstack Query", render: <ReactQueryDevtoolsPanel /> },
+            ]}
+          />
+          <Scripts />
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}

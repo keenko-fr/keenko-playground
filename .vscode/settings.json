@@ -1,0 +1,42 @@
+{
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": false,
+  "editor.codeActionsOnSave": {
+    "source.format.oxc": "always",
+    "source.fixAll.oxc": "always"
+  },
+  "js/ts.tsdk.additionalLocations": ["./node_modules/typescript/bin"],
+  "js/ts.tsdk.promptToUseWorkspaceVersion": true,
+  "js/ts.tsdk.path": "./node_modules/typescript/bin",
+  "js/ts.experimental.useTsgo": true,
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#cfbf5d",
+    "activityBar.activeBorder": "#15202b",
+    "activityBar.background": "#cfbf5d",
+    "activityBar.foreground": "#15202b",
+    "activityBar.inactiveForeground": "#15202b99",
+    "activityBarBadge.background": "#247b6f",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "activityBarTop.activeBackground": "#cfbf5d",
+    "activityBarTop.activeBorder": "#15202b",
+    "activityBarTop.background": "#cfbf5d",
+    "activityBarTop.foreground": "#15202b",
+    "activityBarTop.inactiveForeground": "#15202b99",
+    "commandCenter.border": "#15202b99",
+    "commandCenter.foreground": "#15202b",
+    "sash.hoverBorder": "#cfbf5d",
+    "statusBar.background": "#c0ad39",
+    "statusBar.debuggingBackground": "#c0ad39",
+    "statusBar.debuggingForeground": "#15202b",
+    "statusBar.foreground": "#15202b",
+    "statusBarItem.hoverBackground": "#998a2d",
+    "statusBarItem.remoteBackground": "#e6f8f5",
+    "statusBarItem.remoteForeground": "#15202b",
+    "titleBar.activeBackground": "#c0ad39",
+    "titleBar.activeForeground": "#15202b",
+    "titleBar.inactiveBackground": "#c0ad3999",
+    "titleBar.inactiveForeground": "#15202b99"
+  },
+  "peacock.color": "#c0ad39"
+}

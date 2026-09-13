@@ -1,0 +1,4 @@
+@import "@keenko-playground/ui/globals.css";
+
+@source "./**/*.{ts,tsx}";
+@source "../../../packages/ui/src/components/**/*.{ts,tsx}";
