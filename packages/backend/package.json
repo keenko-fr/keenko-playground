@@ -1,0 +1,46 @@
+{
+  "name": "@keenko-playground/backend",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./confect/_generated/refs": "./confect/_generated/refs.js",
+    "./convex/_generated/api": {
+      "types": "./convex/_generated/api.d.ts",
+      "default": "./convex/_generated/api.js"
+    }
+  },
+  "scripts": {
+    "codegen": "confect codegen",
+    "dev": "confect dev"
+  },
+  "dependencies": {
+    "@confect/core": "10.0.0-next.21",
+    "@confect/server": "10.0.0-next.21",
+    "@convex-dev/workos-authkit": "0.2.9",
+    "@workos-inc/authkit-react": "0.16.2",
+    "@workos-inc/node": "10.13.0",
+    "convex": "1.45.0",
+    "effect": "4.0.0-rc.113"
+  },
+  "devDependencies": {
+    "@confect/cli": "10.0.0-next.21",
+    "@edge-runtime/vm": "5.0.0",
+    "@typescript/native": "npm:typescript@7.0.2",
+    "convex-test": "0.0.56",
+    "typescript": "6.0.2"
+  },
+  "nx": {
+    "tags": [
+      "type:package",
+      "scope:backend"
+    ],
+    "targets": {
+      "typecheck": {
+        "command": "node ../../node_modules/@typescript/native/bin/tsc --noEmit -p tsconfig.json",
+        "options": {
+          "cwd": "{projectRoot}"
+        }
+      }
+    }
+  }
+}

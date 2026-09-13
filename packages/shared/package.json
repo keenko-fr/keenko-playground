@@ -1,0 +1,26 @@
+{
+  "name": "@keenko-playground/shared",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "dependencies": {
+    "effect": "4.0.0-rc.113"
+  },
+  "devDependencies": {},
+  "nx": {
+    "tags": [
+      "type:package",
+      "scope:shared"
+    ],
+    "targets": {
+      "typecheck": {
+        "command": "node ../../node_modules/@typescript/native/bin/tsc --noEmit -p tsconfig.json",
+        "options": {
+          "cwd": "{projectRoot}"
+        }
+      }
+    }
+  }
+}
