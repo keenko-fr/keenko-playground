@@ -1,5 +1,7 @@
 # Project architecture
 
-Document project-specific architecture here. Describe what this project is, its main boundaries, and decisions that are not reusable Keenko defaults.
+Playground is the ShowMe v2 reference application and a consumer of the current Keenko architecture.
 
-Do not copy the shared playbook into this document.
+TVMaze is authoritative for show names, summaries, status, dates, genres, ratings, images, and channel information. The backend decodes TVMaze DTOs inside the provider adapter and normalizes them into the application `Show` representation before returning them.
+
+Convex persists only shared application preferences keyed by TVMaze ID. A stored row contains `tvMazeId` and either `favorite` or `ignored`; absence represents the external `unset` state. Favorite views read the favorite IDs from Convex and hydrate current show metadata from TVMaze instead of keeping provider snapshots.

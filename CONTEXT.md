@@ -4,16 +4,22 @@ Keep this file concise and durable. Record only information that future humans a
 
 ## Product / domain
 
-Describe the product and its stable constraints in a few lines.
+Keenko Playground is evolving into ShowMe v2, a TV-show discovery and preference application built as the public Keenko reference consumer.
+
+TVMaze owns descriptive show metadata. Convex owns application state only. The current demo has no per-user ownership, so preferences are shared across visitors.
 
 ## Canonical vocabulary
 
-Define important domain terms. Prefer one canonical term per concept and link ADRs when a term depends on an architectural decision.
+- **Show**: normalized current TV metadata resolved from TVMaze by its stable TVMaze ID.
+- **Show preference**: the application-owned value `favorite | ignored | unset`. `unset` means no persisted preference row.
 
 ## Durable facts and constraints
 
-Record stable facts that materially affect implementation. Do not put ticket status, transcripts, temporary investigation notes, or duplicated playbook conventions here.
+- Never persist TVMaze descriptive metadata merely to render application views.
+- Authentication does not scope preferences yet. They remain shared demo state until a later product decision changes ownership.
 
 ## References
 
-Link the most relevant architecture docs and ADRs.
+- [Project architecture](docs/project/architecture.md)
+- [Project UI](docs/project/ui.md)
+- [KEE-4](https://linear.app/keenko/issue/KEE-4/dogfood-playbook-in-keenko-playground-with-codex-and-claude)

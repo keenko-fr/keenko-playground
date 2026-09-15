@@ -6,7 +6,7 @@ Sections may explicitly say `Not settled yet.` Do not invent a durable choice me
 
 ## Design sources and references
 
-List relevant design sources. State explicitly when an external artifact such as Figma is authoritative, and name the scope of that delegation. A link alone does not delegate authority.
+The historical [`niama-fr/showme`](https://github.com/niama-fr/showme) repository is a product reference for show cards, detail navigation, explicit preferences, and a dedicated favorites view. It does not own architecture or exact styling.
 
 ## Visual direction
 
@@ -22,7 +22,7 @@ Record the chosen families, roles, and usage intent. Keep executable setup in co
 
 ## Navigation and page-layout model
 
-Record the durable navigation model, page hierarchy, and layout decisions.
+Primary navigation exposes Discover and Favorite Shows. Discovery uses a search-led card grid. A show card opens a focused detail page, where the preference control sits beside current provider metadata.
 
 ## Density
 
@@ -30,15 +30,15 @@ Record the project's density intent where it has been settled.
 
 ## Responsive behavior
 
-Record product-level responsive intent and durable behavior decisions. Keep exact breakpoints and implementation values in code/config.
+Show grids collapse to one column on small screens. Detail pages stack the poster above content on small screens and use a poster-and-content layout when space permits.
 
 ## Interaction and feedback conventions
 
-Record settled interaction and feedback behavior that should remain consistent across the product.
+Preference choices are three explicit controls: Favorite, Ignored, and Unset. The active value remains visible and uses pressed-button semantics.
 
 ## Loading, empty, error, and mutation-state presentation
 
-Record how the project intends to present these states when decisions have been settled.
+Remote reads and preference writes show plain inline status or error feedback. Empty favorites explain how to add the first show and link back to discovery.
 
 ## Destructive-action conventions
 
