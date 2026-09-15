@@ -1,5 +1,5 @@
 # Project architecture
 
-Document project-specific architecture here. Describe what this project is, its main boundaries, and decisions that are not reusable Keenko defaults.
+The first reference slice has one public, no-auth watchlist shared across the Playground deployment. Convex stores one membership record per TVMaze identifier. TVMaze remains authoritative for names, images, genres, premiere dates, and summaries, which the backend resolves when the application needs to display them.
 
-Do not copy the shared playbook into this document.
+The browser calls the generated Convex API. Search and watchlist metadata resolution run through the TVMaze-backed application feature. Watchlist add, list, and remove operations remain authoritative in the Convex application backend.

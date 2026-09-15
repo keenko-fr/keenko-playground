@@ -4,16 +4,18 @@ Keep this file concise and durable. Record only information that future humans a
 
 ## Product / domain
 
-Describe the product and its stable constraints in a few lines.
+Keenko Playground is a public TV-show reference application and a real consumer of the generated Keenko distribution. TVMaze owns show metadata. The initial watchlist is shared by every visitor and does not require authentication.
 
 ## Canonical vocabulary
 
-Define important domain terms. Prefer one canonical term per concept and link ADRs when a term depends on an architectural decision.
+- `Show`: provider-independent application representation of a TV show.
+- `ShowDto`: foreign TVMaze representation at the provider boundary.
+- `watchlist`: shared application-owned membership state keyed by a TVMaze identifier.
 
 ## Durable facts and constraints
 
-Record stable facts that materially affect implementation. Do not put ticket status, transcripts, temporary investigation notes, or duplicated playbook conventions here.
+Convex persists watchlist membership and the TVMaze identifier only. Rendering resolves current show metadata from TVMaze instead of storing provider records.
 
 ## References
 
-Link the most relevant architecture docs and ADRs.
+- [Project architecture](docs/project/architecture.md)

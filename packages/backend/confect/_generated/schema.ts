@@ -1,5 +1,11 @@
 import { DatabaseSchema as $DatabaseSchema } from "@confect/server";
 
-const databaseSchema: $DatabaseSchema.DatabaseSchema = $DatabaseSchema.make({});
+import watchlist from "./tables/watchlist";
+
+const databaseSchema: $DatabaseSchema.DatabaseSchema<
+  typeof watchlist
+> = $DatabaseSchema.make({
+  watchlist,
+});
 
 export default databaseSchema;
