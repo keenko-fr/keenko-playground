@@ -2,6 +2,8 @@
 
 Confect is the default Effect/Convex application-function layer in Keenko, but it does not own every Convex boundary.
 
+Use [`application-authority.md`](../../conventions/application-authority.md) to place application authority and web-runtime responsibilities.
+
 ## Application functions
 
 Ordinary application-owned Convex functions prefer Confect `FunctionSpec`/`GroupSpec`, implementations, generated refs, and codec-aware callers. Endpoint args belong to the spec and independently validate/normalize the backend trust boundary even when a frontend already validated similar input.
@@ -20,6 +22,20 @@ args: () =>
 Do not extract a schema solely to name a one-use endpoint field. Prefer Effect Schema built-ins such as `S.Trim` when they already express the required semantics rather than reconstructing equivalent behavior through lower-level transformations. Extract only when the schema is reusable, sufficiently complex, or represents an actual semantic primitive.
 
 Generated Confect services/context are used directly; do not wrap them merely to rename or re-expose them.
+
+### No-value returns
+
+For a Confect function that semantically returns no value, use the shared `sVoid` schema as the function's `returns` schema.
+
+`sVoid` represents `void` in application code and encodes it as `null` at the Convex boundary. Implementations therefore return `void`; Confect encodes that result to `null` before returning it to Convex.
+
+Do not use raw `S.Void` as a Confect return schema. Its encoded representation is not a valid Convex value. Do not make implementations return `null` merely to satisfy Convex either; `null` is the wire representation, while `void` is the application representation.
+
+```ts
+returns: () => sVoid;
+```
+
+Effect/Confect callers decode the result as `void`. Callers using the generated native Convex API observe the encoded `null` value.
 
 ## Persisted document system fields
 
@@ -74,7 +90,7 @@ Native Convex remains appropriate where required/materially better for component
 
 Browser calls use generated Convex `api` by default; do not force Effect execution or Confect decoding into React for symmetry. TanStack Query owns browser server-state lifecycle around the native Convex reference while the backend function may remain Confect-specified and implemented.
 
-TanStack Start ServerFns do not proxy ordinary Convex CRUD. Call Convex directly from the browser for ordinary query/mutation flows. A ServerFn may use Effect and Confect `refs` when the Start server performs genuine work: server-only authentication or validation, secret access, orchestration across multiple backend/provider calls, or explicit retry, timeout, concurrency, and failure policy. Run the Effect once at that server-function boundary. Direct server-side Confect calls derive args from the actual ref (`Ref.Args<...>`) and use the codec-aware runner/client path rather than reconstructing types from a form/domain schema.
+TanStack Start ServerFns do not proxy ordinary Convex CRUD. Call Convex directly from the browser for ordinary query/mutation flows. A ServerFn may use Effect and Confect `refs` for web-owned work such as server-only authentication or validation, secret access, presentation composition across backend/provider calls, or HTTP-facing timeout, concurrency, and failure adaptation. If call order, conditions, compensations, collective success, retries, or idempotency are required for a business use case to be correct, the workflow belongs in the backend. Run the Effect once at the server-function boundary for the web-owned program. Direct server-side Confect calls derive args from the actual ref (`Ref.Args<...>`) and use the codec-aware runner/client path rather than reconstructing types from a form/domain schema.
 
 Keep these trust boundaries distinct:
 

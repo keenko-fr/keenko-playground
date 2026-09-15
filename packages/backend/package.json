@@ -14,19 +14,19 @@
     "dev": "confect dev"
   },
   "dependencies": {
-    "@confect/core": "10.0.0-next.21",
-    "@confect/server": "10.0.0-next.21",
+    "@confect/core": "10.0.0-next.22",
+    "@confect/server": "10.0.0-next.22",
     "@convex-dev/workos-authkit": "0.2.9",
     "@workos-inc/authkit-react": "0.16.2",
     "@workos-inc/node": "10.13.0",
     "convex": "1.45.0",
-    "effect": "4.0.0-rc.113"
+    "effect": "4.0.0-rc.115"
   },
   "devDependencies": {
-    "@confect/cli": "10.0.0-next.21",
+    "@confect/cli": "10.0.0-next.22",
     "@edge-runtime/vm": "5.0.0",
     "@typescript/native": "npm:typescript@7.0.2",
-    "convex-test": "0.0.56",
+    "convex-test": "0.0.58",
     "typescript": "6.0.2"
   },
   "nx": {

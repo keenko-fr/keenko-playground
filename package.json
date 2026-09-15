@@ -23,14 +23,15 @@
     "typecheck": "nx run-many -t typecheck"
   },
   "dependencies": {
-    "keenko": "0.6.2"
+    "keenko": "0.8.0"
   },
   "devDependencies": {
-    "@effect/tsgo": "0.43.0",
+    "@effect/tsgo": "0.45.0",
     "@nx/oxlint": "23.2.0",
-    "@nx/vitest": "23.2.0",
+    "@nx/vitest": "23.2.1",
     "@nx/workspace": "23.2.0",
-    "@tanstack/react-start": "1.168.51",
+    "@tanstack/intent": "0.4.0",
+    "@tanstack/react-start": "1.168.53",
     "@typescript/native": "npm:typescript@7.0.2",
     "convex": "1.45.0",
     "nx": "23.2.0",
@@ -39,14 +40,19 @@
     "oxlint-plugin-effect": "0.12.1",
     "oxlint-tsgolint": "7.0.2001",
     "typescript": "6.0.2",
-    "ultracite": "7.11.0",
+    "ultracite": "7.11.1",
     "vitest": "4.0.18"
   },
   "engines": {
     "bun": ">=1.4.0 <2",
-    "node": ">=24 <25"
+    "node": ">=24.15 <25"
   },
   "packageManager": "bun@1.4.2",
+  "intent": {
+    "skills": [
+      "@tanstack/*"
+    ]
+  },
   "nx": {
     "includedScripts": []
   }
