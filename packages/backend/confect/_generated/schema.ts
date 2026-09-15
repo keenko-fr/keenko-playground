@@ -1,5 +1,11 @@
 import { DatabaseSchema as $DatabaseSchema } from "@confect/server";
 
-const databaseSchema: $DatabaseSchema.DatabaseSchema = $DatabaseSchema.make({});
+import showPreferences from "./tables/showPreferences";
+
+const databaseSchema: $DatabaseSchema.DatabaseSchema<
+  typeof showPreferences
+> = $DatabaseSchema.make({
+  showPreferences,
+});
 
 export default databaseSchema;
