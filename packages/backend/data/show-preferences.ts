@@ -3,6 +3,7 @@ import { Effect as E } from "effect";
 import { DatabaseReader, DatabaseWriter } from "../confect/_generated/services";
 import type { ShowPreferenceDoc, ShowPreferenceInsert, StoredShowPreference } from "../schemas/show-preferences";
 import type { TvMazeId } from "../schemas/shows";
+import { dieOnDecodeError, dieOnEncodeError, dieOnPatchError } from "./confect";
 
 // FIND ------------------------------------------------------------------------------------------------------------------------------------
 export const findByTvMazeId = E.fn("showPreferences.data.findByTvMazeId")(function* (tvMazeId: TvMazeId) {
@@ -10,7 +11,8 @@ export const findByTvMazeId = E.fn("showPreferences.data.findByTvMazeId")(functi
   return yield* database
     .table("showPreferences")
     .index("by_tvmaze_id", (query) => query.eq("tvMazeId", tvMazeId))
-    .first();
+    .first()
+    .pipe(dieOnDecodeError);
 });
 
 // LIST ------------------------------------------------------------------------------------------------------------------------------------
@@ -19,19 +21,20 @@ export const listFavorites = E.fn("showPreferences.data.listFavorites")(function
   return yield* database
     .table("showPreferences")
     .index("by_preference_and_tvmaze_id", (query) => query.eq("preference", "favorite"))
-    .collect();
+    .collect()
+    .pipe(dieOnDecodeError);
 });
 
 // INSERT ----------------------------------------------------------------------------------------------------------------------------------
 export const insert = E.fn("showPreferences.data.insert")(function* (preference: ShowPreferenceInsert) {
   const database = yield* DatabaseWriter;
-  return yield* database.table("showPreferences").insert(preference);
+  return yield* database.table("showPreferences").insert(preference).pipe(dieOnEncodeError);
 });
 
 // PATCH -----------------------------------------------------------------------------------------------------------------------------------
 export const update = E.fn("showPreferences.data.update")(function* (id: ShowPreferenceDoc["_id"], preference: StoredShowPreference) {
   const database = yield* DatabaseWriter;
-  yield* database.table("showPreferences").patch(id, { preference });
+  yield* database.table("showPreferences").patch(id, { preference }).pipe(dieOnPatchError);
 });
 
 // REMOVE ----------------------------------------------------------------------------------------------------------------------------------
