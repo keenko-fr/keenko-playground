@@ -35,11 +35,7 @@
     "@typescript/native": "npm:typescript@7.0.2",
     "convex": "1.45.0",
     "nx": "23.2.1",
-<<<<<<< Updated upstream
-    "oxfmt": "0.67.0",
-=======
     "oxfmt": "0.68.0",
->>>>>>> Stashed changes
     "oxlint": "1.82.0",
     "oxlint-plugin-effect": "0.12.1",
     "oxlint-tsgolint": "7.0.2001",
