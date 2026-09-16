@@ -23,24 +23,24 @@
     "typecheck": "nx run-many -t typecheck"
   },
   "dependencies": {
-    "keenko": "0.9.0"
+    "keenko": "1.0.0-rc.0"
   },
   "devDependencies": {
     "@effect/tsgo": "0.45.0",
-    "@nx/oxlint": "23.2.0",
+    "@nx/oxlint": "23.2.1",
     "@nx/vitest": "23.2.1",
     "@nx/workspace": "23.2.1",
     "@tanstack/intent": "0.4.0",
-    "@tanstack/react-start": "1.168.53",
+    "@tanstack/react-start": "1.168.54",
     "@typescript/native": "npm:typescript@7.0.2",
     "convex": "1.45.0",
     "nx": "23.2.1",
-    "oxfmt": "0.67.0",
+    "oxfmt": "0.68.0",
     "oxlint": "1.82.0",
     "oxlint-plugin-effect": "0.12.1",
     "oxlint-tsgolint": "7.0.2001",
     "typescript": "6.0.2",
-    "ultracite": "7.11.1",
+    "ultracite": "7.12.0",
     "vitest": "4.0.18"
   },
   "engines": {
