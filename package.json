@@ -23,7 +23,7 @@
     "typecheck": "nx run-many -t typecheck"
   },
   "dependencies": {
-    "keenko": "1.0.0-rc.1"
+    "keenko": "1.0.0"
   },
   "devDependencies": {
     "@effect/tsgo": "0.45.0",
@@ -31,9 +31,9 @@
     "@nx/vitest": "23.2.1",
     "@nx/workspace": "23.2.1",
     "@tanstack/intent": "0.4.0",
-    "@tanstack/react-start": "1.168.54",
+    "@tanstack/react-start": "1.168.56",
     "@typescript/native": "npm:typescript@7.0.2",
-    "convex": "1.45.0",
+    "convex": "1.46.0",
     "nx": "23.2.1",
     "oxfmt": "0.68.0",
     "oxlint": "1.82.0",
