@@ -22,7 +22,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   identity: typeof identity;
   workos: typeof workos;
-}>;
+}>; 
 
 /**
  * A utility for referencing Convex functions in your app's public API.
