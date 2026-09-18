@@ -74,6 +74,7 @@
         "@confect/core": "10.0.0-next.22",
         "@confect/server": "10.0.0-next.22",
         "@convex-dev/workos-authkit": "0.2.9",
+        "@keenko-playground/shared": "workspace:*",
         "@workos-inc/authkit-react": "0.16.2",
         "@workos-inc/node": "10.13.0",
         "convex": "1.46.0",

@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MonEspaceRouteImport } from './routes/mon-espace'
+import { Route as ShowsShowIdRouteImport } from './routes/shows.$showId'
+import { Route as ShowsFavoritesRouteImport } from './routes/shows.favorites'
 import { Route as ApiAuthCallbackRouteImport } from './routes/api/auth/callback'
 import { Route as ApiAuthSignInRouteImport } from './routes/api/auth/sign-in'
 
@@ -22,6 +24,16 @@ const IndexRoute = IndexRouteImport.update({
 const MonEspaceRoute = MonEspaceRouteImport.update({
   id: '/mon-espace',
   path: '/mon-espace',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShowsShowIdRoute = ShowsShowIdRouteImport.update({
+  id: '/shows/$showId',
+  path: '/shows/$showId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShowsFavoritesRoute = ShowsFavoritesRouteImport.update({
+  id: '/shows/favorites',
+  path: '/shows/favorites',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAuthCallbackRoute = ApiAuthCallbackRouteImport.update({
@@ -38,12 +50,16 @@ const ApiAuthSignInRoute = ApiAuthSignInRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/mon-espace': typeof MonEspaceRoute
+  '/shows/$showId': typeof ShowsShowIdRoute
+  '/shows/favorites': typeof ShowsFavoritesRoute
   '/api/auth/callback': typeof ApiAuthCallbackRoute
   '/api/auth/sign-in': typeof ApiAuthSignInRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/mon-espace': typeof MonEspaceRoute
+  '/shows/$showId': typeof ShowsShowIdRoute
+  '/shows/favorites': typeof ShowsFavoritesRoute
   '/api/auth/callback': typeof ApiAuthCallbackRoute
   '/api/auth/sign-in': typeof ApiAuthSignInRoute
 }
@@ -51,18 +67,34 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/mon-espace': typeof MonEspaceRoute
+  '/shows/$showId': typeof ShowsShowIdRoute
+  '/shows/favorites': typeof ShowsFavoritesRoute
   '/api/auth/callback': typeof ApiAuthCallbackRoute
   '/api/auth/sign-in': typeof ApiAuthSignInRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/mon-espace' | '/api/auth/callback' | '/api/auth/sign-in'
+  fullPaths:
+    | '/'
+    | '/mon-espace'
+    | '/shows/$showId'
+    | '/shows/favorites'
+    | '/api/auth/callback'
+    | '/api/auth/sign-in'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/mon-espace' | '/api/auth/callback' | '/api/auth/sign-in'
+  to:
+    | '/'
+    | '/mon-espace'
+    | '/shows/$showId'
+    | '/shows/favorites'
+    | '/api/auth/callback'
+    | '/api/auth/sign-in'
   id:
     | '__root__'
     | '/'
     | '/mon-espace'
+    | '/shows/$showId'
+    | '/shows/favorites'
     | '/api/auth/callback'
     | '/api/auth/sign-in'
   fileRoutesById: FileRoutesById
@@ -70,6 +102,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MonEspaceRoute: typeof MonEspaceRoute
+  ShowsShowIdRoute: typeof ShowsShowIdRoute
+  ShowsFavoritesRoute: typeof ShowsFavoritesRoute
   ApiAuthCallbackRoute: typeof ApiAuthCallbackRoute
   ApiAuthSignInRoute: typeof ApiAuthSignInRoute
 }
@@ -88,6 +122,20 @@ declare module '@tanstack/react-router' {
       path: '/mon-espace'
       fullPath: '/mon-espace'
       preLoaderRoute: typeof MonEspaceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shows/$showId': {
+      id: '/shows/$showId'
+      path: '/shows/$showId'
+      fullPath: '/shows/$showId'
+      preLoaderRoute: typeof ShowsShowIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shows/favorites': {
+      id: '/shows/favorites'
+      path: '/shows/favorites'
+      fullPath: '/shows/favorites'
+      preLoaderRoute: typeof ShowsFavoritesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/auth/callback': {
@@ -110,6 +158,8 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MonEspaceRoute: MonEspaceRoute,
+  ShowsShowIdRoute: ShowsShowIdRoute,
+  ShowsFavoritesRoute: ShowsFavoritesRoute,
   ApiAuthCallbackRoute: ApiAuthCallbackRoute,
   ApiAuthSignInRoute: ApiAuthSignInRoute,
 }

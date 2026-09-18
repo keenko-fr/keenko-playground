@@ -4,16 +4,21 @@ Keep this file concise and durable. Record only information that future humans a
 
 ## Product / domain
 
-Describe the product and its stable constraints in a few lines.
+The Playground is evolving into ShowMe v2, a TV-show discovery and preference application.
 
 ## Canonical vocabulary
 
-Define important domain terms. Prefer one canonical term per concept and link ADRs when a term depends on an architectural decision.
+- **Show**: the current normalized application representation of TVMaze-owned metadata.
+- **Show preference**: shared demo state with the semantic values `favorite`, `ignored`, or `unset`.
+- **Favorite Shows**: shows whose stored preference is `favorite`, hydrated with current TVMaze metadata.
 
 ## Durable facts and constraints
 
-Record stable facts that materially affect implementation. Do not put ticket status, transcripts, temporary investigation notes, or duplicated playbook conventions here.
+- TVMaze IDs are stable provider identities.
+- TVMaze owns descriptive show metadata. Convex stores only ShowMe-owned state.
+- Show preferences are shared demo state. They are not partitioned by authenticated user.
 
 ## References
 
-Link the most relevant architecture docs and ADRs.
+- [Project architecture](docs/project/architecture.md)
+- [Project UI](docs/project/ui.md)
