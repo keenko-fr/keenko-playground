@@ -87,7 +87,7 @@ export function UnavailableFavorite({ error, onRemove, pending, tvMazeId }: Unav
       >
         {m.stale_noisy_parakeet_cherish()}
       </Button>
-      {error && <p className="text-destructive text-sm">{m.stale_noisy_parakeet_cherish_error()}</p>}
+      {error && <p className="text-destructive text-sm">{m.muddy_major_orangutan_ascend()}</p>}
     </article>
   );
 }
