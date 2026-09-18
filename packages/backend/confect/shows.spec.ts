@@ -2,7 +2,7 @@ import { FunctionSpec, GroupSpec } from "@confect/core";
 import { sVoid } from "@keenko-playground/shared/schemas/void";
 import { Schema as S } from "effect";
 
-import { ShowFailure } from "../features/show-failure";
+import { ShowFailure } from "../features/shows";
 import { sShowPreference } from "../schemas/show-preferences";
 import { sFavoriteShow, sShow, sTvMazeId } from "../schemas/shows";
 
@@ -10,7 +10,6 @@ import { sFavoriteShow, sShow, sTvMazeId } from "../schemas/shows";
 export default GroupSpec.make()
   // QUERIES -------------------------------------------------------------------------------------------------------------------------------
   .addFunction(FunctionSpec.publicQuery({ args: () => ({ tvMazeId: sTvMazeId }), name: "getPreference", returns: () => sShowPreference }))
-  .addFunction(FunctionSpec.publicQuery({ name: "listFavoriteIds", returns: () => S.Array(sTvMazeId) }))
   // MUTATIONS -----------------------------------------------------------------------------------------------------------------------------
   .addFunction(
     FunctionSpec.publicMutation({
@@ -42,4 +41,6 @@ export default GroupSpec.make()
       name: "listFavorites",
       returns: () => S.Array(sFavoriteShow),
     })
-  );
+  )
+  // INTERNAL QUERIES ----------------------------------------------------------------------------------------------------------------------
+  .addFunction(FunctionSpec.internalQuery({ name: "listFavoriteIds", returns: () => S.Array(sTvMazeId) }));

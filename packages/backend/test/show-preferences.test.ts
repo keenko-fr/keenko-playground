@@ -32,7 +32,7 @@ describe("show preferences", () => {
         yield* test.mutation(refs.public.shows.setPreference, { preference: "favorite", tvMazeId: 7 });
         yield* test.mutation(refs.public.shows.setPreference, { preference: "ignored", tvMazeId: 8 });
 
-        expect(yield* test.query(refs.public.shows.listFavoriteIds)).toEqual([7]);
+        expect(yield* test.query(refs.internal.shows.listFavoriteIds)).toEqual([7]);
 
         yield* test.mutation(refs.public.shows.setPreference, { preference: "unset", tvMazeId: 999 });
         expect(yield* test.query(refs.public.shows.getPreference, { tvMazeId: 999 })).toBe("unset");
@@ -47,7 +47,7 @@ describe("show preferences", () => {
         for (let tvMazeId = 1; tvMazeId <= 51; tvMazeId += 1)
           yield* test.mutation(refs.public.shows.setPreference, { preference: "favorite", tvMazeId });
 
-        expect(yield* test.query(refs.public.shows.listFavoriteIds)).toHaveLength(51);
+        expect(yield* test.query(refs.internal.shows.listFavoriteIds)).toHaveLength(51);
       }).pipe(E.provide(layer))
     ));
 });

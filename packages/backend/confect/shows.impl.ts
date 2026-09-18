@@ -10,7 +10,6 @@ import spec from "./shows.spec";
 
 // QUERIES ---------------------------------------------------------------------------------------------------------------------------------
 const getPreference = FunctionImpl.make(databaseSchema, spec, "getPreference", ({ tvMazeId }) => showsFeatures.getPreference(tvMazeId));
-const listFavoriteIds = FunctionImpl.make(databaseSchema, spec, "listFavoriteIds", showsFeatures.listFavoriteIds);
 
 // MUTATIONS -------------------------------------------------------------------------------------------------------------------------------
 const setPreference = FunctionImpl.make(databaseSchema, spec, "setPreference", ({ preference, tvMazeId }) =>
@@ -24,11 +23,14 @@ const get = FunctionImpl.make(databaseSchema, spec, "get", ({ tvMazeId }) => sho
 const listFavorites = FunctionImpl.make(databaseSchema, spec, "listFavorites", () =>
   E.gen(function* () {
     const runQuery = yield* QueryRunner.QueryRunner;
-    const tvMazeIds = yield* runQuery(refs.public.shows.listFavoriteIds).pipe(E.orDie);
+    const tvMazeIds = yield* runQuery(refs.internal.shows.listFavoriteIds).pipe(E.orDie);
     // oxlint-disable-next-line effect/noInlineProvide -- The provider implementation is selected at the Confect runtime boundary.
     return yield* showsFeatures.hydrateFavorites(tvMazeIds).pipe(E.provide(tvMazeLayer));
   })
 );
+
+// INTERNAL QUERIES ------------------------------------------------------------------------------------------------------------------------
+const listFavoriteIds = FunctionImpl.make(databaseSchema, spec, "listFavoriteIds", showsFeatures.listFavoriteIds);
 
 // GROUP -----------------------------------------------------------------------------------------------------------------------------------
 export default GroupImpl.make(databaseSchema, spec).pipe(

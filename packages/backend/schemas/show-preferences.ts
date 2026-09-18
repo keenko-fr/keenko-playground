@@ -14,7 +14,6 @@ export type StoredShowPreference = typeof sStoredShowPreference.Type;
 export const sShowPreferenceFields = S.Struct({ preference: sStoredShowPreference, tvMazeId: sTvMazeId });
 export type ShowPreferenceFields = typeof sShowPreferenceFields.Type;
 
-// ENTITY ----------------------------------------------------------------------------------------------------------------------------------
 export const sShowPreferenceDoc = SystemFields.extendWithSystemFields("showPreferences", sShowPreferenceFields);
 export type ShowPreferenceDoc = typeof sShowPreferenceDoc.Type;
 

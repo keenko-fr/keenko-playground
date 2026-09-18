@@ -1,10 +1,15 @@
-import { Effect as E, Match, Option as O } from "effect";
+import { Effect as E, Match, Option as O, Schema as S } from "effect";
 
 import * as preferenceData from "../data/show-preferences";
 import { TvMaze, type TvMazeFailure, type TvMazeIssue } from "../infra/tvmaze";
 import type { ShowPreference } from "../schemas/show-preferences";
 import type { FavoriteShow, TvMazeId } from "../schemas/shows";
-import { ShowFailure, type ShowFailureIssue } from "./show-failure";
+
+// ERRORS ----------------------------------------------------------------------------------------------------------------------------------
+export const sShowFailureIssue = S.Literals(["provider_unavailable", "invalid_provider_response", "show_not_found"]);
+export type ShowFailureIssue = typeof sShowFailureIssue.Type;
+
+export class ShowFailure extends S.TaggedError<ShowFailure>()("ShowFailure", { issue: sShowFailureIssue }) {}
 
 // SEARCH ----------------------------------------------------------------------------------------------------------------------------------
 export const search = E.fn("shows.features.search")(function* (query: string) {
@@ -62,7 +67,7 @@ export const setPreference = E.fn("shows.features.setPreference")(function* (tvM
     return;
   }
 
-  if (existing.value.preference !== preference) yield* preferenceData.update(existing.value._id, preference);
+  if (existing.value.preference !== preference) yield* preferenceData.update(existing.value._id, { preference });
 });
 
 // INTERNALS -------------------------------------------------------------------------------------------------------------------------------
