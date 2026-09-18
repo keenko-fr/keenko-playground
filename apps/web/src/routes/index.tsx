@@ -1,13 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Schema as S } from "effect";
 
-import * as m from "#/paraglide/messages";
+import { DiscoveryPage } from "#/features/shows/discovery-page";
 
 // ROUTE -----------------------------------------------------------------------------------------------------------------------------------
 export const Route = createFileRoute("/")({
-  component: IndexPage,
+  component: DiscoveryPage,
+  validateSearch: S.toStandardSchemaV1(S.Struct({ q: S.optional(S.String) })),
 });
-
-// PAGE ------------------------------------------------------------------------------------------------------------------------------------
-function IndexPage() {
-  return <h1 className="text-3xl font-bold">{m.calm_green_otter()}</h1>;
-}
