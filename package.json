@@ -23,7 +23,7 @@
     "typecheck": "nx run-many -t typecheck"
   },
   "dependencies": {
-    "keenko": "1.0.1-rc.1"
+    "keenko": "1.0.1-rc.2"
   },
   "devDependencies": {
     "@effect/tsgo": "0.45.0",
