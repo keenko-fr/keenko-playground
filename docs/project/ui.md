@@ -22,7 +22,7 @@ Record the chosen families, roles, and usage intent. Keep executable setup in co
 
 ## Navigation and page-layout model
 
-Record the durable navigation model, page hierarchy, and layout decisions.
+The primary ShowMe navigation exposes Discover and Favorite Shows. Discovery is the home route. Show detail is reached from a poster card and keeps preference controls beside the show metadata.
 
 ## Density
 
@@ -30,15 +30,15 @@ Record the project's density intent where it has been settled.
 
 ## Responsive behavior
 
-Record product-level responsive intent and durable behavior decisions. Keep exact breakpoints and implementation values in code/config.
+Poster collections use a single-column layout on narrow screens and expand into a card grid as space allows. Show detail stacks its poster and content on narrow screens.
 
 ## Interaction and feedback conventions
 
-Record settled interaction and feedback behavior that should remain consistent across the product.
+Search submission commits the query to the URL. Preference choices are explicit buttons for Favorite, Ignored, and Unset, with the active value exposed as pressed state.
 
 ## Loading, empty, error, and mutation-state presentation
 
-Record how the project intends to present these states when decisions have been settled.
+ShowMe pages use inline notices for loading, empty, and failure states. Preference buttons disable while a write is pending. Favorite Shows keeps available cards visible when individual TVMaze records are missing and explains that the saved preferences remain intact.
 
 ## Destructive-action conventions
 

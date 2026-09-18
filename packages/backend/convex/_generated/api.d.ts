@@ -10,6 +10,7 @@
 
 import type * as http from "../http.js";
 import type * as identity from "../identity.js";
+import type * as shows from "../shows.js";
 import type * as workos from "../workos.js";
 
 import type {
@@ -21,6 +22,7 @@ import type {
 declare const fullApi: ApiFromModules<{
   http: typeof http;
   identity: typeof identity;
+  shows: typeof shows;
   workos: typeof workos;
 }>;
 
