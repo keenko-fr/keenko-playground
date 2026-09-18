@@ -9,7 +9,8 @@ import * as m from "#/paraglide/messages";
 
 // CONSTANTS -------------------------------------------------------------------------------------------------------------------------------
 const navs = linkOptions([
-  { key: "home", label: m.calm_green_otter, to: "/" },
+  { key: "discover", label: m.next_aware_millipede_snip, search: { q: "" }, to: "/" },
+  { key: "favorites", label: m.crisp_brave_cat_commend, to: "/shows/favorites" },
   { key: "workspace", label: m.quiet_silver_lynx, to: "/mon-espace" },
 ]);
 
